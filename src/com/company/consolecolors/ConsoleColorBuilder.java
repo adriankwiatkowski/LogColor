@@ -77,7 +77,7 @@ public class ConsoleColorBuilder {
      * @param textLeft foreground text on left.
      * @param textRight foreground text on right.
      */
-    public void appendFgBg(String fg, String bg, int textLeft, int textRight) {
+    public void appendFgBg(AnsiColor fg, AnsiColor bg, int textLeft, int textRight) {
         appendFgBg(fg, bg, String.valueOf(textLeft), String.valueOf(textRight));
     }
 
@@ -89,9 +89,9 @@ public class ConsoleColorBuilder {
      * @param fgTextLeft foregroundTextLeft length must not be greater than max.
      * @param fgTextRight foregroundTextRight length must not be grater than max.
      */
-    public void appendFgBg(String fg, String bg, String fgTextLeft, String fgTextRight) {
+    public void appendFgBg(AnsiColor fg, AnsiColor bg, String fgTextLeft, String fgTextRight) {
         // Encode foreground and background colors.
-        stringBuilder.append(fg).append(bg);
+        stringBuilder.append(fg.getValue()).append(bg.getValue());
 
         // Append white spaces to left to align text right.
         appendWhiteSpace_numToTextLength(getLength(fgTextLeft), maxTextLeft);
@@ -125,7 +125,7 @@ public class ConsoleColorBuilder {
      * Use it only after encoding color and only if you are done using this color.
      */
     public void appendAnsiReset() {
-        stringBuilder.append(ConsoleColors.ANSI_RESET);
+        stringBuilder.append(AnsiColor.ANSI_RESET.getValue());
     }
 
     /**

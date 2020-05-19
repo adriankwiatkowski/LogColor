@@ -2,23 +2,20 @@ package com.company.consolecolors;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.company.consolecolors.ConsoleColors.BACKGROUNDS;
-import static com.company.consolecolors.ConsoleColors.FOREGROUNDS;
-
 public class ConsoleColorPrinter {
 
     /**
      * Prints all backgrounds and foregrounds with text indexes.
      */
     public void printAllColorsIndexed() {
-        int fgTextLength = ConsoleColorBuilder.getTextLength(FOREGROUNDS);
-        int bgTextLength = ConsoleColorBuilder.getTextLength(BACKGROUNDS);
+        int fgTextLength = ConsoleColorBuilder.getTextLength(AnsiColor.FOREGROUNDS);
+        int bgTextLength = ConsoleColorBuilder.getTextLength(AnsiColor.BACKGROUNDS);
         ConsoleColorBuilder consoleColorBuilder = new ConsoleColorBuilder(fgTextLength, bgTextLength);
 
-        for (int i = 0; i < FOREGROUNDS.length; ++i) {
-            String fg = FOREGROUNDS[i];
-            for (int j = 0; j < BACKGROUNDS.length; ++j) {
-                String bg = BACKGROUNDS[j];
+        for (int i = 0; i < AnsiColor.FOREGROUNDS.length; ++i) {
+            AnsiColor fg = AnsiColor.FOREGROUNDS[i];
+            for (int j = 0; j < AnsiColor.BACKGROUNDS.length; ++j) {
+                AnsiColor bg = AnsiColor.BACKGROUNDS[j];
                 consoleColorBuilder.appendFgBg(fg, bg, i, j);
             }
             consoleColorBuilder.appendAnsiReset_newLine();
@@ -35,8 +32,8 @@ public class ConsoleColorPrinter {
         int maxNumberLength = ConsoleColorBuilder.getTextLength(randomNumber);
         ConsoleColorBuilder consoleColorBuilder = new ConsoleColorBuilder(maxNumberLength, maxNumberLength);
 
-        final int maxFgIndex = FOREGROUNDS.length;
-        final int maxBgIndex = BACKGROUNDS.length;
+        final int maxFgIndex = AnsiColor.FOREGROUNDS.length;
+        final int maxBgIndex = AnsiColor.BACKGROUNDS.length;
         int fgIndex = 0;
         int bgIndex = 0;
         for (int i = 0; i <= randomNumber; ++i, ++bgIndex) {
@@ -46,8 +43,8 @@ public class ConsoleColorPrinter {
                     fgIndex = 0;
                 consoleColorBuilder.appendAnsiReset_newLine();
             }
-            String fg = FOREGROUNDS[fgIndex];
-            String bg = BACKGROUNDS[bgIndex];
+            AnsiColor fg = AnsiColor.FOREGROUNDS[fgIndex];
+            AnsiColor bg = AnsiColor.BACKGROUNDS[bgIndex];
             consoleColorBuilder.appendFgBg(fg, bg, i, i);
         }
 
@@ -72,8 +69,8 @@ public class ConsoleColorPrinter {
         ConsoleColorBuilder consoleColorBuilder =
                 new ConsoleColorBuilder(maxTextLeft + 1, maxTextRight + 1);
 
-        for (String fg : FOREGROUNDS) {
-            for (String bg : BACKGROUNDS) {
+        for (AnsiColor fg : AnsiColor.FOREGROUNDS) {
+            for (AnsiColor bg : AnsiColor.BACKGROUNDS) {
                 String left = generateRandomString(maxTextLeft);
                 String right = generateRandomString(maxTextRight);
                 consoleColorBuilder.appendFgBg(fg, bg, left, right);
