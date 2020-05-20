@@ -1,18 +1,39 @@
-package com.company.consolecolors;
+package com.company.consolecolors.builders;
+
+import com.company.consolecolors.models.AnsiColor;
+import com.company.consolecolors.models.TextAlignment;
+
+import java.util.Objects;
 
 public abstract class AbstractColorBuilder {
 
     // String builder used throughout class.
-    private StringBuilder mStringBuilder = new StringBuilder();
+    private StringBuilder mStringBuilder;
 
-    public AbstractColorBuilder() {
+    AbstractColorBuilder(Builder<?> builder) {
+        mStringBuilder = Objects.requireNonNullElseGet(builder.stringBuilder, StringBuilder::new);
+    }
+
+    public abstract static class Builder<T extends Builder<T>> {
+
+        StringBuilder stringBuilder;
+
+        public T addStringBuilder(StringBuilder stringBuilder) {
+            this.stringBuilder = stringBuilder;
+            return self();
+        }
+
+        public abstract AbstractColorBuilder build();
+
+        protected abstract T self();
     }
 
     /**
      * Appends aligned text specified by <c>TextAlignment</c>.
-     * @param text appended text.
+     *
+     * @param text          appended text.
      * @param maxTextLength max length of text.
-     * @param spaceLength space between texts.
+     * @param spaceLength   space between texts.
      * @param textAlignment constrains how text is aligned.
      * @see TextAlignment
      */
@@ -21,6 +42,7 @@ public abstract class AbstractColorBuilder {
 
     /**
      * Calculates number of digits from array length.
+     *
      * @param array Array must be nonnull.
      * @return Returns number of digits from array length.
      */
@@ -33,6 +55,7 @@ public abstract class AbstractColorBuilder {
 
     /**
      * Calculates number of digits in number.
+     *
      * @param num number.
      * @return Returns number of digits in number.
      */
@@ -42,6 +65,7 @@ public abstract class AbstractColorBuilder {
 
     /**
      * Calculate number of digits in number.
+     *
      * @param num number.
      * @return Returns number of digits in number.
      */
@@ -55,6 +79,7 @@ public abstract class AbstractColorBuilder {
 
     /**
      * Uses String built in method to return length.
+     *
      * @param text String text.
      * @return Returns length of text.
      */
@@ -65,7 +90,8 @@ public abstract class AbstractColorBuilder {
     /**
      * Encodes colors and append text to that color.
      * Does not encode reset.
-     * @param color foreground or background color.
+     *
+     * @param color       foreground or background color.
      * @param coloredText text to be colored.
      */
     public void appendColoredText(AnsiColor color, String coloredText) {
@@ -76,8 +102,9 @@ public abstract class AbstractColorBuilder {
     /**
      * Encodes colors and append text to that color.
      * Does not encode reset.
-     * @param fg foreground color.
-     * @param bg background color.
+     *
+     * @param fg          foreground color.
+     * @param bg          background color.
      * @param coloredText text to be colored.
      */
     public void appendColoredText(AnsiColor fg, AnsiColor bg, String coloredText) {
@@ -111,6 +138,7 @@ public abstract class AbstractColorBuilder {
 
     /**
      * Build String from <c>StringBuilder</c> and create new <c>StringBuilder</c>.
+     *
      * @return String from <c>StringBuilder</c>.
      */
     public String getStringText_clear() {
@@ -121,6 +149,7 @@ public abstract class AbstractColorBuilder {
 
     /**
      * Builds String from <c>StringBuilder</c>.
+     *
      * @return String from <c>StringBuilder</c>.
      */
     public String getStringText() {

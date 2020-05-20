@@ -1,4 +1,4 @@
-package com.company.consolecolors;
+package com.company.consolecolors.models;
 
 public enum TextAlignment {
     NONE {
@@ -54,15 +54,17 @@ public enum TextAlignment {
 
     /**
      * Appends aligned text on <c>StringBuilder</c>.
-     * @param sb StringBuilder used to append text.
-     * @param text text.
+     *
+     * @param sb            StringBuilder used to append text.
+     * @param text          text.
      * @param maxTextLength max text length.
      */
     public abstract void appendAligned(StringBuilder sb, String text, int maxTextLength);
 
     /**
      * Checks if text length does not exceed max length.
-     * @param text text to append.
+     *
+     * @param text      text to append.
      * @param maxLength max text length.
      */
     public void invalidate(String text, int maxLength) {
@@ -73,7 +75,8 @@ public enum TextAlignment {
     /**
      * Appends white spaces on <c>StringBuilder</c>.
      * Used to align text.
-     * @param length number od digits or letters.
+     *
+     * @param length        number od digits or letters.
      * @param maxTextLength number of max digits or letters in text.
      * @throws IllegalArgumentException if length is grater than max length.
      */
@@ -93,6 +96,7 @@ public enum TextAlignment {
 
     /**
      * Uses String built in method to return length.
+     *
      * @param text String text.
      * @return Returns length of text.
      */

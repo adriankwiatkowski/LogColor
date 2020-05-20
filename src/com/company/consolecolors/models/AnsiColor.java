@@ -1,4 +1,4 @@
-package com.company.consolecolors;
+package com.company.consolecolors.models;
 
 public enum AnsiColor {
     ANSI_RESET("\u001B[0m"),
