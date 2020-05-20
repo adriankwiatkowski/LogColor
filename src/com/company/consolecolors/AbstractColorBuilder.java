@@ -3,10 +3,21 @@ package com.company.consolecolors;
 public abstract class AbstractColorBuilder {
 
     // String builder used throughout class.
-    private StringBuilder stringBuilder;
+    private StringBuilder mStringBuilder = new StringBuilder();
 
     public AbstractColorBuilder() {
     }
+
+    /**
+     * Appends aligned text specified by <c>TextAlignment</c>.
+     * @param text appended text.
+     * @param maxTextLength max length of text.
+     * @param spaceLength space between texts.
+     * @param textAlignment constrains how text is aligned.
+     * @see TextAlignment
+     */
+    public abstract void appendAlignedText(
+            String text, int maxTextLength, int spaceLength, TextAlignment textAlignment);
 
     /**
      * Calculates number of digits from array length.
@@ -22,7 +33,7 @@ public abstract class AbstractColorBuilder {
 
     /**
      * Calculates number of digits in number.
-     * @param num number
+     * @param num number.
      * @return Returns number of digits in number.
      */
     public static int getTextLength(int num) {
@@ -52,6 +63,30 @@ public abstract class AbstractColorBuilder {
     }
 
     /**
+     * Encodes colors and append text to that color.
+     * Does not encode reset.
+     * @param color foreground or background color.
+     * @param coloredText text to be colored.
+     */
+    public void appendColoredText(AnsiColor color, String coloredText) {
+        append(color.getValue());
+        append(coloredText);
+    }
+
+    /**
+     * Encodes colors and append text to that color.
+     * Does not encode reset.
+     * @param fg foreground color.
+     * @param bg background color.
+     * @param coloredText text to be colored.
+     */
+    public void appendColoredText(AnsiColor fg, AnsiColor bg, String coloredText) {
+        append(fg.getValue());
+        append(bg.getValue());
+        append(coloredText);
+    }
+
+    /**
      * Appends encoded ansi reset and new line on <c>StringBuilder</c>.
      */
     public void appendAnsiReset_newLine() {
@@ -64,14 +99,14 @@ public abstract class AbstractColorBuilder {
      * Use it only after encoding color and only if you are done using this color.
      */
     public void appendAnsiReset() {
-        stringBuilder.append(AnsiColor.ANSI_RESET.getValue());
+        mStringBuilder.append(AnsiColor.ANSI_RESET.getValue());
     }
 
     /**
      * Appends new line on <c>StringBuilder</c>
      */
     public void appendNewLine() {
-        stringBuilder.append('\n');
+        mStringBuilder.append('\n');
     }
 
     /**
@@ -89,25 +124,29 @@ public abstract class AbstractColorBuilder {
      * @return String from <c>StringBuilder</c>.
      */
     public String getStringText() {
-        return stringBuilder.toString();
+        return mStringBuilder.toString();
     }
 
     /**
      * Creates new <c>StringBuilder</c>.
      */
     public void flushStringBuilder() {
-        stringBuilder = new StringBuilder();
+        mStringBuilder = new StringBuilder();
+    }
+
+    protected StringBuilder getStringBuilder() {
+        return mStringBuilder;
     }
 
     public void append(String str) {
-        stringBuilder.append(str);
+        mStringBuilder.append(str);
     }
 
     public void append(int i) {
-        stringBuilder.append(i);
+        mStringBuilder.append(i);
     }
 
     public void append(char c) {
-        stringBuilder.append(c);
+        mStringBuilder.append(c);
     }
 }
