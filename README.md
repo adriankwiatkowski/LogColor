@@ -1,11 +1,14 @@
 # ConsoleColors
 Prints colored text to terminal.
 
-# Colored indexes <h1>
+# Colored indexes
 ![alt text](./readme_images/colored_indexes.PNG)
 
-# Colored incremental numbers <h1>
+# Colored incremental numbers
 ![alt text](./readme_images/colored_incremental_numbers.PNG)
 
-# Colored random text <h1>
+# Colored random text
 ![alt text](./readme_images/colored_random_text.PNG)
+
+# Example logs
+![alt text](./readme_images/example_logs.PNG)

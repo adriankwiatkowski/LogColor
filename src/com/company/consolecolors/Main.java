@@ -37,11 +37,11 @@ public class Main {
         CommandLine commandLine = new CommandLine();
         commandLine.readCommands();
 
-        Log.v("Not colored verbose tag", "Useless verbose message.");
-        Log.i("Not colored info tag", "Informative message.");
+        Log.v("Verbose tag", "Useless verbose message.");
+        Log.i("Info tag", "Informative message.");
         Log.d("DEBUG_TAG", "Something not working here.");
-        Log.w("Not colored warning tag", "Warning, take care!");
-        Log.e("Not colored error tag", "Behold almighty error...");
+        Log.w("Warning tag", "Warning, take care!");
+        Log.e("Error tag", "Behold almighty error...");
         Log.w("Warning tag that will exceed max character limit.", "Friendly warning message.");
     }
 }
