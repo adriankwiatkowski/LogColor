@@ -1,5 +1,7 @@
 package com.company.consolecolors.utils;
 
+import com.company.consolecolors.utils.log.Log;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomUtils {

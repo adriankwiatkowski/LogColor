@@ -1,6 +1,6 @@
 package com.company.consolecolors.models;
 
-import com.company.consolecolors.utils.Log;
+import com.company.consolecolors.utils.log.Log;
 
 import java.util.Optional;
 

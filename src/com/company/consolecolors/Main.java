@@ -3,7 +3,7 @@ package com.company.consolecolors;
 import com.company.consolecolors.cli.CommandLine;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.printers.ConsoleColorPrinter;
-import com.company.consolecolors.utils.Log;
+import com.company.consolecolors.utils.log.Log;
 import com.company.consolecolors.utils.RandomUtils;
 
 public class Main {
