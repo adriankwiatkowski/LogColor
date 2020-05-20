@@ -201,7 +201,7 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param color    background or foreground ANSI.
      * @param textList list of texts.
      */
-    public void appendColor(AnsiColor color, List<String> textList) {
+    public void appendColoredText(AnsiColor color, List<String> textList) {
         // Encode background or foreground color.
         append(color.getValue());
         // Append aligned text.
@@ -215,7 +215,8 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param color background or foreground ANSI.
      * @param text1 text 1.
      */
-    public void appendColor(AnsiColor color, String text1) {
+    @Override
+    public void appendColoredText(AnsiColor color, String text1) {
         // Encode background or foreground color.
         append(color.getValue());
         // Append aligned text.
@@ -230,7 +231,7 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text1 text 1.
      * @param text2 text 2.
      */
-    public void appendColor(AnsiColor color, String text1, String text2) {
+    public void appendColoredText(AnsiColor color, String text1, String text2) {
         // Encode background or foreground color.
         append(color.getValue());
         // Append aligned text.
@@ -246,7 +247,7 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text2 text 2.
      * @param text3 text 3.
      */
-    public void appendColor(AnsiColor color, String text1, String text2, String text3) {
+    public void appendColoredText(AnsiColor color, String text1, String text2, String text3) {
         // Encode background or foreground color.
         append(color.getValue());
         // Append aligned text.
@@ -261,7 +262,7 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param bg       background ANSI.
      * @param textList
      */
-    public void appendFgBg(AnsiColor fg, AnsiColor bg, List<String> textList) {
+    public void appendColoredText(AnsiColor fg, AnsiColor bg, List<String> textList) {
         // Encode foreground and background colors.
         append(fg.getValue());
         append(bg.getValue());
@@ -277,7 +278,8 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param bg    background ANSI.
      * @param text1 text 1.
      */
-    public void appendFgBg(AnsiColor fg, AnsiColor bg, String text1) {
+    @Override
+    public void appendColoredText(AnsiColor fg, AnsiColor bg, String text1) {
         // Encode foreground and background colors.
         append(fg.getValue());
         append(bg.getValue());
@@ -294,7 +296,7 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text1 text 1.
      * @param text2 text 2.
      */
-    public void appendFgBg(AnsiColor fg, AnsiColor bg, String text1, String text2) {
+    public void appendColoredText(AnsiColor fg, AnsiColor bg, String text1, String text2) {
         // Encode foreground and background colors.
         append(fg.getValue());
         append(bg.getValue());
@@ -312,7 +314,7 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text2 text 2.
      * @param text3 text 3.
      */
-    public void appendFgBg(AnsiColor fg, AnsiColor bg, String text1, String text2, String text3) {
+    public void appendColoredText(AnsiColor fg, AnsiColor bg, String text1, String text2, String text3) {
         // Encode foreground and background colors.
         append(fg.getValue());
         append(bg.getValue());

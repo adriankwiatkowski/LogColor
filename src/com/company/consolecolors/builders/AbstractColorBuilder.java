@@ -37,8 +37,8 @@ public abstract class AbstractColorBuilder {
      * @param textAlignment constrains how text is aligned.
      * @see TextAlignment
      */
-    public abstract void appendAlignedText(
-            String text, int maxTextLength, int spaceLength, TextAlignment textAlignment);
+    public abstract void appendAlignedText(String text, int maxTextLength,
+                                           int spaceLength, TextAlignment textAlignment);
 
     /**
      * Calculates number of digits from array length.
@@ -94,10 +94,7 @@ public abstract class AbstractColorBuilder {
      * @param color       foreground or background color.
      * @param coloredText text to be colored.
      */
-    public void appendColoredText(AnsiColor color, String coloredText) {
-        append(color.getValue());
-        append(coloredText);
-    }
+    public abstract void appendColoredText(AnsiColor color, String coloredText);
 
     /**
      * Encodes colors and append text to that color.
@@ -107,11 +104,7 @@ public abstract class AbstractColorBuilder {
      * @param bg          background color.
      * @param coloredText text to be colored.
      */
-    public void appendColoredText(AnsiColor fg, AnsiColor bg, String coloredText) {
-        append(fg.getValue());
-        append(bg.getValue());
-        append(coloredText);
-    }
+    public abstract void appendColoredText(AnsiColor fg, AnsiColor bg, String coloredText);
 
     /**
      * Appends encoded ansi reset and new line on <c>StringBuilder</c>.

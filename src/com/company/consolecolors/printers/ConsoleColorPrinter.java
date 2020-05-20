@@ -24,6 +24,30 @@ public class ConsoleColorPrinter {
         this.mSpaceLength = spaceLength;
     }
 
+    public void printColorDebugInfo() {
+        int maxTextLength = 0;
+        for (AnsiColor fg : AnsiColor.FOREGROUNDS) {
+            for (AnsiColor bg : AnsiColor.BACKGROUNDS) {
+                maxTextLength = Math.max(
+                        Math.max(
+                                maxTextLength,
+                                fg.toString().length()),
+                        bg.toString().length());
+            }
+        }
+
+        TextAttribute textAttribute = new TextAttribute(mTextAlignment, maxTextLength, 0);
+        ColorBuilder colorBuilder = new ColorBuilder.Builder(textAttribute, 2).build();
+        for (AnsiColor fg : AnsiColor.FOREGROUNDS) {
+            for (AnsiColor bg : AnsiColor.BACKGROUNDS) {
+                colorBuilder.appendColoredText(fg, bg, fg.toString(), bg.toString());
+            }
+            colorBuilder.appendAnsiReset_newLine();
+        }
+
+        System.out.println(colorBuilder.getStringText_clear());
+    }
+
     /**
      * Prints all backgrounds and foregrounds with text indexes.
      */
@@ -45,7 +69,7 @@ public class ConsoleColorPrinter {
             AnsiColor fg = AnsiColor.FOREGROUNDS[i];
             for (int j = 0; j < AnsiColor.BACKGROUNDS.length; ++j) {
                 AnsiColor bg = AnsiColor.BACKGROUNDS[j];
-                colorBuilder.appendFgBg(fg, bg, String.valueOf(i), String.valueOf(j));
+                colorBuilder.appendColoredText(fg, bg, String.valueOf(i), String.valueOf(j));
             }
             colorBuilder.appendAnsiReset_newLine();
         }
@@ -78,7 +102,7 @@ public class ConsoleColorPrinter {
             }
             AnsiColor fg = AnsiColor.FOREGROUNDS[fgIndex];
             AnsiColor bg = AnsiColor.BACKGROUNDS[bgIndex];
-            colorBuilder.appendFgBg(fg, bg, String.valueOf(i));
+            colorBuilder.appendColoredText(fg, bg, String.valueOf(i));
         }
 
         if (bgIndex <= maxBgIndex) {
@@ -92,13 +116,13 @@ public class ConsoleColorPrinter {
      * Prints random generated colored strings.
      *
      * @param maxBoundTextLength max letters in text. Has to be at least 1.
-     * @param textCount          describes how many random strings will be printed on one color.
+     * @param textCountInColumn          describes how many random strings will be printed on one color.
      * @throws IllegalArgumentException if maxBoundTextLength is < 1.
      */
-    public void printAllColorsText(int maxBoundTextLength, int textCount) {
+    public void printAllColorsText(int maxBoundTextLength, int textCountInColumn) {
         if (maxBoundTextLength < 1)
             throw new IllegalArgumentException("Max bound text length has to be at least 1.");
-        if (textCount <= 0)
+        if (textCountInColumn <= 0)
             throw new IllegalArgumentException("Text count mu be grater than 0");
 
         int columnCount = AnsiColor.FOREGROUNDS.length;
@@ -106,7 +130,7 @@ public class ConsoleColorPrinter {
         List<List<TextAttribute>> randomTextAttributesList = new ArrayList<>();
         while (columnCount-- > 0) {
             List<TextAttribute> textAttributeList = new ArrayList<>();
-            for (int i = 0; i < textCount; ++i) {
+            for (int i = 0; i < textCountInColumn; ++i) {
                 int maxTextLength = RandomUtils.generateRandomNumber(MIN_TEXT_LENGTH, maxBoundTextLength);
                 TextAttribute textAttribute1 = new TextAttribute(mTextAlignment, maxTextLength, mSpaceLength);
                 textAttributeList.add(textAttribute1);
@@ -128,7 +152,7 @@ public class ConsoleColorPrinter {
                     textList.add(RandomUtils.generateRandomAsciiString(textAttribute.getTextLength()));
                 }
 
-                colorBuilder.appendFgBg(fg, bg, textList);
+                colorBuilder.appendColoredText(fg, bg, textList);
 
                 i = (i + 1) % AnsiColor.BACKGROUNDS.length;
                 List<TextAttribute> textAttributeList = randomTextAttributesList.get(i);
