@@ -6,7 +6,7 @@ import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.models.TextAttribute;
 import com.company.consolecolors.utils.AppExecutors;
 import com.company.consolecolors.utils.RandomUtils;
-import com.company.consolecolors.utils.TextLengthUtils;
+import com.company.consolecolors.utils.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +62,8 @@ public class ConsoleColorPrinter {
      */
     public void printAllColorsIndexed() {
         int maxTextLength = Math.max(
-                TextLengthUtils.getTextLength(AnsiColor.FOREGROUNDS),
-                TextLengthUtils.getTextLength(AnsiColor.BACKGROUNDS));
+                TextUtils.getTextLength(AnsiColor.FOREGROUNDS),
+                TextUtils.getTextLength(AnsiColor.BACKGROUNDS));
 
         TextAttribute textAttribute =
                 new TextAttribute(mTextAlignment, maxTextLength + mExtraSpace);
@@ -94,7 +94,7 @@ public class ConsoleColorPrinter {
      */
     public void printIncrementalNumbers(int maxBoundIncremental) {
         int randomNumber = RandomUtils.generateRandomNumber(maxBoundIncremental);
-        int maxNumberLength = TextLengthUtils.getTextLength(randomNumber);
+        int maxNumberLength = TextUtils.getTextLength(randomNumber);
 
         TextAttribute textAttribute =
                 new TextAttribute(mTextAlignment, maxNumberLength + mExtraSpace);

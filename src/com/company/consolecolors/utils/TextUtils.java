@@ -1,8 +1,8 @@
 package com.company.consolecolors.utils;
 
-public class TextLengthUtils {
+public class TextUtils {
 
-    private TextLengthUtils() {
+    private TextUtils() {
     }
 
     /**
@@ -12,17 +12,7 @@ public class TextLengthUtils {
      * @return Returns number of digits from array length.
      */
     public static int getTextLength(Object[] array) {
-        return (array == null) ? (0) : (getLength(array.length));
-    }
-
-    /**
-     * Calculates number of digits in number.
-     *
-     * @param num number.
-     * @return Returns number of digits in number.
-     */
-    public static int getTextLength(int num) {
-        return getLength(num);
+        return (array == null) ? (0) : (getTextLength(array.length));
     }
 
     /**
@@ -31,7 +21,7 @@ public class TextLengthUtils {
      * @param num number.
      * @return Returns number of digits in number.
      */
-    public static int getLength(int num) {
+    public static int getTextLength(int num) {
         int length = 1;
         while ((num /= 10) > 0) {
             ++length;

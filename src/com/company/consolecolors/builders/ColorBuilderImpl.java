@@ -3,10 +3,10 @@ package com.company.consolecolors.builders;
 import com.company.consolecolors.models.AnsiColor;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.models.TextAttribute;
-import com.company.consolecolors.utils.TextLengthUtils;
+import com.company.consolecolors.utils.TextUtils;
 import com.company.consolecolors.utils.log.Log;
 
-import static com.company.consolecolors.utils.TextLengthUtils.*;
+import static com.company.consolecolors.utils.TextUtils.*;
 
 public class ColorBuilderImpl extends AbstractColorBuilder {
 
@@ -109,7 +109,7 @@ public class ColorBuilderImpl extends AbstractColorBuilder {
      */
     @Override
     public void appendTextAlign(String text, int maxTextLength, TextAlignment textAlignment) {
-        int textLength = TextLengthUtils.getTextLength(text);
+        int textLength = TextUtils.getTextLength(text);
         if (maxTextLength < textLength) {
             onInvalidTextLength(TAG, ERROR_TEXT_LENGTH_GRATER_THAN_MAX_LENGTH);
             maxTextLength = textLength;

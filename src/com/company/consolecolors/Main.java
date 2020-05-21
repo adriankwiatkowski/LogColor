@@ -2,6 +2,7 @@ package com.company.consolecolors;
 
 import com.company.consolecolors.cli.CommandLine;
 import com.company.consolecolors.models.AnsiColor;
+import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.utils.AppExecutors;
 import com.company.consolecolors.utils.log.Log;
 import com.company.consolecolors.utils.printers.Printer;
@@ -23,8 +24,7 @@ public class Main {
     }
 
     private void startCommandLineInterface() {
-        CommandLine commandLine = new CommandLine();
-        commandLine.readCommands();
+        new CommandLine().readCommands();
     }
 
     private void printSampleText() {
@@ -40,6 +40,22 @@ public class Main {
         Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, " Blue text");
         Printer.println(AnsiColor.ANSI_BRIGHT_GREEN, " Green text.");
         Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, "Blue text again.");
+
+        Printer.println();
+        Printer.println();
+
+        Printer.println("Message.");
+        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, "Message.");
+        Printer.println(AnsiColor.ANSI_BRIGHT_BG_WHITE, AnsiColor.ANSI_BRIGHT_BLUE, "Message.");
+        Printer.println(TextAlignment.CENTER, 10, "Message.");
+        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, TextAlignment.CENTER, 10, "Message.");
+        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, AnsiColor.ANSI_BRIGHT_BG_WHITE, TextAlignment.CENTER, 10, "Message.");
+        Printer.print("Message.");
+        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, "Message.");
+        Printer.print(AnsiColor.ANSI_BRIGHT_BG_WHITE, AnsiColor.ANSI_BRIGHT_BLUE, "Message.");
+        Printer.print(TextAlignment.CENTER, 10, "Message.");
+        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, TextAlignment.CENTER, 10, "Message.");
+        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, AnsiColor.ANSI_BRIGHT_BG_WHITE, TextAlignment.CENTER, 10, "Message.");
 
         Printer.println();
         Printer.println();

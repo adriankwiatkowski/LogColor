@@ -1,7 +1,7 @@
 package com.company.consolecolors.builders;
 
 import com.company.consolecolors.models.TextAlignment;
-import com.company.consolecolors.utils.TextLengthUtils;
+import com.company.consolecolors.utils.TextUtils;
 
 public class SimpleColorBuilder extends ColorBuilderImpl {
 
@@ -60,7 +60,7 @@ public class SimpleColorBuilder extends ColorBuilderImpl {
     @Override
     public void appendTextAlign(String text, int maxTextLength, TextAlignment textAlignment) {
         if (mTextLength != INVALID_TEXT_LENGTH) {
-            int textLength = TextLengthUtils.getTextLength(text);
+            int textLength = TextUtils.getTextLength(text);
             if (mTextLength < textLength) {
                 onInvalidTextLength(TAG, ERROR_TRUNCATING_STRING);
                 text = text.substring(0, mTextLength);
