@@ -1,11 +1,13 @@
 package com.company.consolecolors.cli;
 
+import com.company.consolecolors.models.AnsiColor;
 import com.company.consolecolors.models.Command;
 import com.company.consolecolors.models.LogType;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.utils.printers.ConsoleColorPrinter;
 import com.company.consolecolors.utils.CLIHelper;
 import com.company.consolecolors.utils.log.Log;
+import com.company.consolecolors.utils.printers.Printer;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -27,6 +29,9 @@ public class CommandLine {
     private static final String LOG_TYPE_INFO = createLogTypeInfo();
     private static final String EXITING_MSG = "Exiting...";
 
+    private static final AnsiColor ERROR_FOREGROUND = AnsiColor.ANSI_RED;
+    private static final AnsiColor ERROR_BACKGROUND = AnsiColor.ANSI_BRIGHT_BG_WHITE;
+
     private static final int EXTRA_SPACE = 0b101;
 
     private ConsoleColorPrinter mConsoleColorPrinter;
@@ -46,7 +51,7 @@ public class CommandLine {
             CLIHelper.readCommand(mScanner, TAG, COMMAND_INFO)
                     .ifPresentOrElse(
                             this::processCommand,
-                            () -> Log.w(TAG, ERROR_INVALID_COMMAND));
+                            () -> printErrorMsg(ERROR_INVALID_COMMAND));
         }
 
         mScanner.close();
@@ -100,7 +105,7 @@ public class CommandLine {
                 optionalLogType.get().log(tag, msg);
                 break;
             } else {
-                Log.w(TAG, ERROR_INVALID_LOG_TYPE);
+                printErrorMsg(ERROR_INVALID_LOG_TYPE);
             }
         }
     }
@@ -125,5 +130,9 @@ public class CommandLine {
         logTypes.deleteCharAt(logTypes.length() - 1);
         logTypes.append("]\nType log level: ");
         return logTypes.toString();
+    }
+
+    private void printErrorMsg(String msg) {
+        Printer.println(ERROR_FOREGROUND, ERROR_BACKGROUND, ERROR_INVALID_LOG_TYPE);
     }
 }

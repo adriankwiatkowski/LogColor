@@ -15,7 +15,8 @@ public class Main {
 
     private void start() {
         AppExecutors.getInstance().mainThread().execute(() -> {
-            printSampleText();
+//            printSampleText();
+//            printAllLevelLogsTest();
 
             startCommandLineInterface();
 
@@ -28,34 +29,23 @@ public class Main {
     }
 
     private void printSampleText() {
-        Printer.print(AnsiColor.ANSI_RED, "Red text");
-        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, " Blue text");
-        Printer.println(AnsiColor.ANSI_BRIGHT_GREEN, " Green text.");
-        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, "Blue text again.");
-
-        Printer.println();
-        Printer.println();
-
-        Printer.print(AnsiColor.ANSI_RED, AnsiColor.ANSI_BRIGHT_BG_WHITE, "Red text");
-        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, " Blue text");
-        Printer.println(AnsiColor.ANSI_BRIGHT_GREEN, " Green text.");
-        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, "Blue text again.");
-
-        Printer.println();
-        Printer.println();
-
-        Printer.println("Message.");
-        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, "Message.");
-        Printer.println(AnsiColor.ANSI_BRIGHT_BG_WHITE, AnsiColor.ANSI_BRIGHT_BLUE, "Message.");
-        Printer.println(TextAlignment.CENTER, 10, "Message.");
-        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, TextAlignment.CENTER, 10, "Message.");
-        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, AnsiColor.ANSI_BRIGHT_BG_WHITE, TextAlignment.CENTER, 10, "Message.");
-        Printer.print("Message.");
-        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, "Message.");
-        Printer.print(AnsiColor.ANSI_BRIGHT_BG_WHITE, AnsiColor.ANSI_BRIGHT_BLUE, "Message.");
-        Printer.print(TextAlignment.CENTER, 10, "Message.");
-        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, TextAlignment.CENTER, 10, "Message.");
-        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, AnsiColor.ANSI_BRIGHT_BG_WHITE, TextAlignment.CENTER, 10, "Message.");
+        AnsiColor fg = AnsiColor.ANSI_BRIGHT_BLUE;
+        AnsiColor bg = AnsiColor.ANSI_BRIGHT_BG_WHITE;
+        TextAlignment center = TextAlignment.CENTER;
+        int space = 10;
+        String msg = "Message.";
+        Printer.println(msg);
+        Printer.println(fg, msg);
+        Printer.println(fg, bg, msg);
+        Printer.println(center, space, msg);
+        Printer.println(fg, center, space, msg);
+        Printer.println(fg, bg, center, space, msg);
+        Printer.print(msg);
+        Printer.print(fg, msg);
+        Printer.print(fg, bg, msg);
+        Printer.print(center, space, msg);
+        Printer.print(fg, center, space, msg);
+        Printer.print(fg, bg, center, space, msg);
 
         Printer.println();
         Printer.println();
