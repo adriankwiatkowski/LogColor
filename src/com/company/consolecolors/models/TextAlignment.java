@@ -3,39 +3,39 @@ package com.company.consolecolors.models;
 public enum TextAlignment {
     NONE {
         @Override
-        public void appendAligned(StringBuilder sb, String text, int maxTextLength) {
-            invalidate(text, maxTextLength);
-            LEFT.appendAligned(sb, text, maxTextLength);
+        public void appendAligned(StringBuilder sb, String text, int totalSpace) {
+            invalidate(text, totalSpace);
+            LEFT.appendAligned(sb, text, totalSpace);
         }
     },
     LEFT {
         @Override
-        public void appendAligned(StringBuilder sb, String text, int maxTextLength) {
-            invalidate(text, maxTextLength);
+        public void appendAligned(StringBuilder sb, String text, int totalSpace) {
+            invalidate(text, totalSpace);
             // Append text on left side.
             sb.append(text);
             // Append white spaces to right to align text to left.
-            appendWhiteSpace_numToTextLength(sb, getTextLength(text), maxTextLength);
+            appendWhiteSpace_numToTextLength(sb, getTextLength(text), totalSpace);
         }
     },
     RIGHT {
         @Override
-        public void appendAligned(StringBuilder sb, String text, int maxTextLength) {
-            invalidate(text, maxTextLength);
+        public void appendAligned(StringBuilder sb, String text, int totalSpace) {
+            invalidate(text, totalSpace);
             // Append white spaces to left to align text to right.
-            appendWhiteSpace_numToTextLength(sb, getTextLength(text), maxTextLength);
+            appendWhiteSpace_numToTextLength(sb, getTextLength(text), totalSpace);
             // Append text on right side.
             sb.append(text);
         }
     },
     CENTER {
         @Override
-        public void appendAligned(StringBuilder sb, String text, int maxTextLength) {
-            invalidate(text, maxTextLength);
+        public void appendAligned(StringBuilder sb, String text, int totalSpace) {
+            invalidate(text, totalSpace);
 
             // Calculate count on left and right side
             // simply by dividing by 2.
-            int diff = maxTextLength - getTextLength(text);
+            int diff = totalSpace - getTextLength(text);
             int leftSpaceCount = diff / 2;
             int rightSpaceCount = leftSpaceCount;
 
@@ -55,11 +55,11 @@ public enum TextAlignment {
     /**
      * Appends aligned text on <c>StringBuilder</c>.
      *
-     * @param sb            StringBuilder used to append text.
-     * @param text          text.
-     * @param maxTextLength max text length.
+     * @param sb         StringBuilder used to append text.
+     * @param text       text.
+     * @param totalSpace max text length.
      */
-    public abstract void appendAligned(StringBuilder sb, String text, int maxTextLength);
+    public abstract void appendAligned(StringBuilder sb, String text, int totalSpace);
 
     /**
      * Checks if text length does not exceed max length.

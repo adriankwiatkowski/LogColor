@@ -5,20 +5,16 @@ import java.util.Objects;
 public class TextAttribute {
 
     private TextAlignment textAlignment;
-    private int mTextLength;
-    private int mSpaceLength;
+    private int mTotalLength;
 
-    public TextAttribute(TextAlignment textAlignment, int maxTextLength, int spaceLength) {
+    public TextAttribute(TextAlignment textAlignment, int maxTextLength) {
         if (textAlignment == null)
             throw new IllegalArgumentException("Text alignment cannot be null.");
         if (maxTextLength <= 0)
             throw new IllegalArgumentException("Text length must be at least 1.");
-        if (spaceLength < 0)
-            throw new IllegalArgumentException("Space length cannot be negative.");
 
         this.textAlignment = textAlignment;
-        this.mTextLength = maxTextLength;
-        this.mSpaceLength = spaceLength;
+        this.mTotalLength = maxTextLength;
     }
 
     public TextAttribute(TextAttribute textAttribute) {
@@ -26,16 +22,14 @@ public class TextAttribute {
             throw new IllegalArgumentException("TextAttribute cannot be null.");
 
         this.textAlignment = textAttribute.getTextAlignment();
-        this.mTextLength = textAttribute.getTextLength();
-        this.mSpaceLength = textAttribute.getSpaceLength();
+        this.mTotalLength = textAttribute.getTotalLength();
     }
 
     @Override
     public String toString() {
         return "TextAttribute{" +
                 "textAlignment=" + textAlignment +
-                ", mTextLength=" + mTextLength +
-                ", mSpaceLength=" + mSpaceLength +
+                ", mTotalLength=" + mTotalLength +
                 '}';
     }
 
@@ -44,14 +38,13 @@ public class TextAttribute {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TextAttribute that = (TextAttribute) o;
-        return mTextLength == that.mTextLength &&
-                mSpaceLength == that.mSpaceLength &&
+        return mTotalLength == that.mTotalLength &&
                 textAlignment == that.textAlignment;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(textAlignment, mTextLength, mSpaceLength);
+        return Objects.hash(textAlignment, mTotalLength);
     }
 
     public TextAlignment getTextAlignment() {
@@ -64,23 +57,13 @@ public class TextAttribute {
         this.textAlignment = textAlignment;
     }
 
-    public int getTextLength() {
-        return mTextLength;
+    public int getTotalLength() {
+        return mTotalLength;
     }
 
-    public void setTextLength(int textLength) {
+    public void setTotalLength(int textLength) {
         if (textLength <= 0)
             throw new IllegalArgumentException("Text length must be at least 1.");
-        this.mTextLength = textLength;
-    }
-
-    public int getSpaceLength() {
-        return mSpaceLength;
-    }
-
-    public void setSpaceLength(int spaceLength) {
-        if (spaceLength < 0)
-            throw new IllegalArgumentException("Space length cannot be negative.");
-        this.mSpaceLength = spaceLength;
+        this.mTotalLength = textLength;
     }
 }

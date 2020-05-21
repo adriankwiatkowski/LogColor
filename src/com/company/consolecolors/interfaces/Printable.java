@@ -28,7 +28,7 @@ public interface Printable {
 
     void appendTextAlign(String text, TextAttribute textAttribute);
 
-    void appendTextAlign(String text, int maxTextLength, int spaceLength, TextAlignment textAlignment);
+    void appendTextAlign(String text, int maxTextLength, TextAlignment textAlignment);
 
     void appendColorReset();
 
@@ -63,7 +63,8 @@ public interface Printable {
         appendColorReset();
     }
 
-    default void appendTextColor_Reset(AnsiColor fg, AnsiColor bg, String text, TextAlignment textAlignment) {
+    default void appendTextColor_Reset(AnsiColor fg, AnsiColor bg,
+                                       String text, TextAlignment textAlignment) {
         appendTextColor(fg, bg, text, textAlignment);
         appendColorReset();
     }
@@ -73,7 +74,8 @@ public interface Printable {
         appendColorReset_NewLine();
     }
 
-    default void appendTextColor_Reset_NewLine(AnsiColor color, String text, TextAlignment textAlignment) {
+    default void appendTextColor_Reset_NewLine(AnsiColor color, String text,
+                                               TextAlignment textAlignment) {
         appendTextColor(color, text, textAlignment);
         appendColorReset_NewLine();
     }
@@ -83,7 +85,8 @@ public interface Printable {
         appendColorReset_NewLine();
     }
 
-    default void appendTextColor_Reset_NewLine(AnsiColor fg, AnsiColor bg, String text, TextAlignment textAlignment) {
+    default void appendTextColor_Reset_NewLine(AnsiColor fg, AnsiColor bg,
+                                               String text, TextAlignment textAlignment) {
         appendTextColor(fg, bg, text, textAlignment);
         appendColorReset_NewLine();
     }

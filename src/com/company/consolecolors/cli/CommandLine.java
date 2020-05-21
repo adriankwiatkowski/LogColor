@@ -3,7 +3,7 @@ package com.company.consolecolors.cli;
 import com.company.consolecolors.models.Command;
 import com.company.consolecolors.models.LogType;
 import com.company.consolecolors.models.TextAlignment;
-import com.company.consolecolors.printers.ConsoleColorPrinter;
+import com.company.consolecolors.utils.printers.ConsoleColorPrinter;
 import com.company.consolecolors.utils.CLIHelper;
 import com.company.consolecolors.utils.log.Log;
 
@@ -27,7 +27,7 @@ public class CommandLine {
     private static final String LOG_TYPE_INFO = createLogTypeInfo();
     private static final String EXITING_MSG = "Exiting...";
 
-    private static final int SPACE_BETWEEN_TEXTS = 0b101;
+    private static final int EXTRA_SPACE = 0b101;
 
     private ConsoleColorPrinter mConsoleColorPrinter;
     private Scanner mScanner;
@@ -38,7 +38,7 @@ public class CommandLine {
     }
 
     public void readCommands() {
-        mConsoleColorPrinter = new ConsoleColorPrinter(TextAlignment.CENTER, SPACE_BETWEEN_TEXTS);
+        mConsoleColorPrinter = new ConsoleColorPrinter(TextAlignment.CENTER, EXTRA_SPACE);
         mScanner = new Scanner(System.in);
         mIsReading = true;
 

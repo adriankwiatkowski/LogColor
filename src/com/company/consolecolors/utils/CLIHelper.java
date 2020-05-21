@@ -14,7 +14,6 @@ public class CLIHelper {
 
     public static Optional<Command> readCommand(Scanner scanner, String tag, String msg) {
         Log.i(tag, msg);
-        System.out.println(msg);
         return Command.extractCommand(scanner.nextLine().trim());
     }
 
@@ -29,9 +28,8 @@ public class CLIHelper {
     }
 
     public static int readInt(Scanner scanner, String tag, String msg) {
-        Log.i(tag, msg);
         while (true) {
-            System.out.println(msg);
+            Log.i(tag, msg);
             String line = scanner.nextLine().trim();
             try {
                 return Integer.parseInt(line);

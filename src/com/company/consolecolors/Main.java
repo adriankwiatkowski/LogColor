@@ -1,30 +1,25 @@
 package com.company.consolecolors;
 
 import com.company.consolecolors.cli.CommandLine;
-import com.company.consolecolors.models.TextAlignment;
-import com.company.consolecolors.printers.ConsoleColorPrinter;
+import com.company.consolecolors.models.AnsiColor;
 import com.company.consolecolors.utils.AppExecutors;
 import com.company.consolecolors.utils.log.Log;
-import com.company.consolecolors.utils.RandomUtils;
+import com.company.consolecolors.utils.printers.Printer;
 
 public class Main {
-
-    private static final int SPACE_BETWEEN_TEXTS = 0b101;
-    private static final int MAX_BOUND_INCREMENTAL = 0xFF;
-    private static final int MAX_BOUND_TEXT_LENGTH = 0xC;
-    private static final int TEXT_COUNT = 0b1000;
 
     public static void main(String[] args) {
         new Main().start();
     }
 
     private void start() {
-        alignedConsolePrinterTest();
-        startCommandLineInterface();
-        printRandomLogsTest();
-        printAllLevelLogsTest();
+        AppExecutors.getInstance().mainThread().execute(() -> {
+            printSampleText();
 
-        AppExecutors.getInstance().shutdownExecutors();
+            startCommandLineInterface();
+
+            AppExecutors.getInstance().shutdownMainThread();
+        });
     }
 
     private void startCommandLineInterface() {
@@ -32,17 +27,22 @@ public class Main {
         commandLine.readCommands();
     }
 
-    private void alignedConsolePrinterTest() {
-        ConsoleColorPrinter consoleColorPrinter =
-                new ConsoleColorPrinter(TextAlignment.CENTER, SPACE_BETWEEN_TEXTS);
-        consoleColorPrinter.printColorDebugInfo();
-        consoleColorPrinter.printAllColorsIndexed();
-        consoleColorPrinter.printIncrementalNumbers(MAX_BOUND_INCREMENTAL);
-        consoleColorPrinter.printAllColorsText(MAX_BOUND_TEXT_LENGTH, TEXT_COUNT);
-    }
+    private void printSampleText() {
+        Printer.print(AnsiColor.ANSI_RED, "Red text");
+        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, " Blue text");
+        Printer.println(AnsiColor.ANSI_BRIGHT_GREEN, " Green text.");
+        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, "Blue text again.");
 
-    private void printRandomLogsTest() {
-        RandomUtils.printRandomDebugInfo();
+        Printer.println();
+        Printer.println();
+
+        Printer.print(AnsiColor.ANSI_RED, AnsiColor.ANSI_BRIGHT_BG_WHITE, "Red text");
+        Printer.print(AnsiColor.ANSI_BRIGHT_BLUE, " Blue text");
+        Printer.println(AnsiColor.ANSI_BRIGHT_GREEN, " Green text.");
+        Printer.println(AnsiColor.ANSI_BRIGHT_BLUE, "Blue text again.");
+
+        Printer.println();
+        Printer.println();
     }
 
     private void printAllLevelLogsTest() {

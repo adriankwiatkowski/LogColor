@@ -1,34 +1,34 @@
 package com.company.consolecolors.builders;
 
 import com.company.consolecolors.models.TextAlignment;
+import com.company.consolecolors.utils.TextLengthUtils;
 
 public class SimpleColorBuilder extends ColorBuilderImpl {
 
+    private static final String TAG = SimpleColorBuilder.class.getSimpleName();
+    private static final String ERROR_TRUNCATING_STRING = "String too long, truncating.";
+
     private static final TextAlignment DEFAULT_TEXT_ALIGNMENT = TextAlignment.NONE;
     private static final int INVALID_TEXT_LENGTH = -1;
-    private static final int DEFAULT_SPACE_LENGTH = 0;
 
     private TextAlignment mTextAlignment;
     private int mTextLength;
-    private int mSpaceLength;
 
     private SimpleColorBuilder(Builder builder) {
         super(builder);
         this.mTextAlignment = builder.textAlignment;
         this.mTextLength = builder.textLength;
-        this.mSpaceLength = builder.spaceLength;
     }
 
     public static class Builder extends ColorBuilderImpl.Builder {
         private TextAlignment textAlignment = DEFAULT_TEXT_ALIGNMENT;
         private int textLength = INVALID_TEXT_LENGTH;
-        private int spaceLength = DEFAULT_SPACE_LENGTH;
 
         public Builder() {
         }
 
         public Builder addTextAlignment(TextAlignment textAlignment) {
-            if (this.textAlignment == null)
+            if (textAlignment == null)
                 throw new IllegalArgumentException("TextAlignment cannot be null.");
 
             this.textAlignment = textAlignment;
@@ -46,16 +46,6 @@ public class SimpleColorBuilder extends ColorBuilderImpl {
             return this;
         }
 
-        public Builder setSpaceLength(int spaceLength) {
-            if (spaceLength < 0) {
-                throw new IllegalArgumentException("Space length must be non negative number.");
-            }
-
-            this.spaceLength = spaceLength;
-
-            return this;
-        }
-
         @Override
         public SimpleColorBuilder build() {
             return new SimpleColorBuilder(this);
@@ -68,13 +58,22 @@ public class SimpleColorBuilder extends ColorBuilderImpl {
     }
 
     @Override
-    protected int getDefaultSpaceLength() {
-        return mSpaceLength;
+    public void appendTextAlign(String text, int maxTextLength, TextAlignment textAlignment) {
+        if (mTextLength != INVALID_TEXT_LENGTH) {
+            int textLength = TextLengthUtils.getTextLength(text);
+            if (mTextLength < textLength) {
+                onInvalidTextLength(TAG, ERROR_TRUNCATING_STRING);
+                text = text.substring(0, mTextLength);
+            }
+
+            getTextAlignment().appendAligned(getStringBuilder(), text, mTextLength);
+        } else {
+            super.appendTextAlign(text, maxTextLength, getTextAlignment());
+        }
     }
 
-    @Override
-    protected TextAlignment getDefaultTextAlignment() {
-        return mTextAlignment;
+    public void resetTextLength() {
+        this.mTextLength = INVALID_TEXT_LENGTH;
     }
 
     public void setTextLength(int textLength) {
@@ -85,11 +84,19 @@ public class SimpleColorBuilder extends ColorBuilderImpl {
         this.mTextLength = textLength;
     }
 
-    public void setSpaceLength(int spaceLength) {
-        if (spaceLength < 0) {
-            throw new IllegalArgumentException("Space length must be non negative number.");
-        }
+    public void setTextAlignment(TextAlignment textAlignment) {
+        if (textAlignment == null)
+            throw new IllegalArgumentException("TextAlignment cannot be null.");
 
-        this.mSpaceLength = spaceLength;
+        this.mTextAlignment = textAlignment;
+    }
+
+    public TextAlignment getTextAlignment() {
+        return mTextAlignment;
+    }
+
+    @Override
+    protected TextAlignment getDefaultTextAlignment() {
+        return mTextAlignment;
     }
 }

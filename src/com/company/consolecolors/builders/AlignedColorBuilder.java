@@ -98,8 +98,7 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
             TextAttribute textAttribute = mTextAttributeList.get(i);
 
             appendTextAlign(text,
-                    textAttribute.getTextLength(),
-                    textAttribute.getSpaceLength(),
+                    textAttribute.getTotalLength(),
                     textAttribute.getTextAlignment());
         }
     }
@@ -120,8 +119,7 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
         appendTextAlign(text1,
-                textAttribute.getTextLength(),
-                textAttribute.getSpaceLength(),
+                textAttribute.getTotalLength(),
                 textAttribute.getTextAlignment());
     }
 
@@ -141,15 +139,13 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
         appendTextAlign(text1,
-                textAttribute.getTextLength(),
-                textAttribute.getSpaceLength(),
+                textAttribute.getTotalLength(),
                 textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(1);
 
         appendTextAlign(text2,
-                textAttribute.getTextLength(),
-                textAttribute.getSpaceLength(),
+                textAttribute.getTotalLength(),
                 textAttribute.getTextAlignment());
     }
 
@@ -170,22 +166,19 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
         appendTextAlign(text1,
-                textAttribute.getTextLength(),
-                textAttribute.getSpaceLength(),
+                textAttribute.getTotalLength(),
                 textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(1);
 
         appendTextAlign(text2,
-                textAttribute.getTextLength(),
-                textAttribute.getSpaceLength(),
+                textAttribute.getTotalLength(),
                 textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(2);
 
         appendTextAlign(text3,
-                textAttribute.getTextLength(),
-                textAttribute.getSpaceLength(),
+                textAttribute.getTotalLength(),
                 textAttribute.getTextAlignment());
     }
 
@@ -315,14 +308,7 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
         if (index < 0 || index >= mTextAttributeList.size())
             throw new IndexOutOfBoundsException("Wrong index.");
 
-        mTextAttributeList.get(index).setTextLength(maxTextLength);
-    }
-
-    public void setTextAttributeSpaceLength(int index, int spaceLength) {
-        if (index < 0 || index >= mTextAttributeList.size())
-            throw new IndexOutOfBoundsException("Wrong index.");
-
-        mTextAttributeList.get(index).setSpaceLength(spaceLength);
+        mTextAttributeList.get(index).setTotalLength(maxTextLength);
     }
 
     public void setTextAttributeTextAlignment(int index, TextAlignment textAlignment) {

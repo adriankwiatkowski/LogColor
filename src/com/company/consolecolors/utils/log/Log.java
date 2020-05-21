@@ -3,6 +3,7 @@ package com.company.consolecolors.utils.log;
 import com.company.consolecolors.builders.SimpleColorBuilder;
 import com.company.consolecolors.interfaces.Printable;
 import com.company.consolecolors.models.AnsiColor;
+import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.utils.AppExecutors;
 
 import java.text.Format;
@@ -15,28 +16,28 @@ import static com.company.consolecolors.models.AnsiColor.*;
 
 public class Log {
 
-    private static final String ERROR_MESSAGE_EMPTY = "Log message cannot be null or empty.";
-
-    private static final String TAG_MSG_SEPARATOR = ": ";
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-    private static final String DEFAULT_TAG = createDefaultTag();
-
+    private static final int DATE_TAG_EXTRA_CHAR_LIMIT = 8;
     private static final int TAG_CHAR_LIMIT = 30;
-    private static final String ERROR_TAG_LOG_LIMIT = "ERR_MAX_CHAR_LIMIT";
-    private static final String ERROR_TAG_LOG_LIMIT_MSG = "Tag too long, truncating to "
-            + TAG_CHAR_LIMIT
-            + " characters.";
-
-    private static final AnsiColor TAG_COLOR = ANSI_BLUE;
-
-    private static final int LEVEL_INFO_LENGTH_LIMIT =
+    private static final int LEVEL_INFO_CHAR_LIMIT =
             Arrays.stream(LogLevel.values())
                     .map(LogLevel::getLevelTag)
                     .max(Comparator.comparingInt(String::length))
                     .get()
                     .length();
+
+    private static final String ERROR_MESSAGE_EMPTY = "Log message cannot be null or empty.";
+
+    private static final String DEFAULT_TAG = createDefaultTag();
+    private static final String TAG_MSG_SEPARATOR = ": ";
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    private static final AnsiColor DATE_TAG_COLOR = ANSI_BRIGHT_BG_WHITE;
+    private static final AnsiColor TAG_COLOR = ANSI_BLUE;
+
+    private static final TextAlignment TEXT_ALIGNMENT_LEVEL_LOG_INFO = TextAlignment.CENTER;
+    private static final TextAlignment TEXT_ALIGNMENT_DATE_TAG = TextAlignment.CENTER;
+    private static final TextAlignment TEXT_ALIGNMENT_TAG = TextAlignment.NONE;
+    private static final TextAlignment TEXT_ALIGNMENT_MSG = TextAlignment.NONE;
 
     private static final LogManager mLogManager = LogManager.getInstance();
 
@@ -117,8 +118,11 @@ public class Log {
 
     private static void addLog(AnsiColor fg, AnsiColor bg, String debugLevelInfo,
                                String tag, String msg) {
-        AppExecutors.getInstance().logThread().execute(() ->
-                print(fg, bg, debugLevelInfo, tag, msg));
+        AppExecutors appExecutors = AppExecutors.getInstance();
+        if (!appExecutors.isLogExecutorShutdown()) {
+            appExecutors.logThread().execute(() ->
+                    print(fg, bg, debugLevelInfo, tag, msg));
+        }
     }
 
     private static void print(AnsiColor fg, AnsiColor bg, String debugLevelInfo,
@@ -127,37 +131,41 @@ public class Log {
             throw new IllegalArgumentException(ERROR_MESSAGE_EMPTY);
         }
 
-        Printable printable = new SimpleColorBuilder.Builder().build();
+        SimpleColorBuilder simpleColorBuilder = new SimpleColorBuilder.Builder().build();
 
-        appendLevelInfo(printable, bg, debugLevelInfo);
-        appendDateTag(printable);
-        appendTag(printable, tag);
-        appendMsg(printable, fg, bg, msg);
-        System.out.print(printable.getText_Flush());
+        simpleColorBuilder.setTextLength(LEVEL_INFO_CHAR_LIMIT);
+        simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_LEVEL_LOG_INFO);
+        appendLevelInfo(simpleColorBuilder, bg, debugLevelInfo);
+
+        String dateTag = createCurrentDateTag();
+        int desiredLength = dateTag.length() + DATE_TAG_EXTRA_CHAR_LIMIT;
+        simpleColorBuilder.setTextLength(desiredLength);
+        simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_DATE_TAG);
+        appendDateTag(simpleColorBuilder, dateTag, desiredLength);
+
+        simpleColorBuilder.setTextLength(TAG_CHAR_LIMIT);
+        simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_TAG);
+        appendTag(simpleColorBuilder, tag);
+
+        simpleColorBuilder.resetTextLength();
+        simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_MSG);
+        appendMsg(simpleColorBuilder, fg, bg, msg);
+
+        System.out.print(simpleColorBuilder.getText_Flush());
     }
 
     private static void appendLevelInfo(Printable printable, AnsiColor bg,
                                         String debugLevelInfo) {
-        int diff = LEVEL_INFO_LENGTH_LIMIT - debugLevelInfo.length();
-        debugLevelInfo += getWhiteSpaces(diff);
         appendTextColor_Reset_Separator(printable, bg, debugLevelInfo, TAG_MSG_SEPARATOR);
     }
 
-    private static void appendDateTag(Printable printable) {
-        String dateTag = createCurrentDateTag();
-        appendTextColor_Reset_Separator(printable, TAG_COLOR, dateTag, TAG_MSG_SEPARATOR);
+    private static void appendDateTag(Printable printable, String dateTag,
+                                      int desiredLength) {
+        appendTextColor_Reset_Separator(printable, DATE_TAG_COLOR, dateTag, TAG_MSG_SEPARATOR);
     }
 
     private static void appendTag(Printable printable, String tag) {
         tag = (tag == null || tag.isEmpty()) ? DEFAULT_TAG : tag;
-
-        if (tag.length() > TAG_CHAR_LIMIT) {
-            tag = tag.substring(0, TAG_CHAR_LIMIT);
-            Log.internal_err(ERROR_TAG_LOG_LIMIT, ERROR_TAG_LOG_LIMIT_MSG);
-        }
-
-        int diff = TAG_CHAR_LIMIT - tag.length();
-        tag += getWhiteSpaces(diff);
 
         appendTextColor_Reset_Separator(printable, TAG_COLOR, tag, TAG_MSG_SEPARATOR);
     }
@@ -172,17 +180,6 @@ public class Log {
                                                         String msg, String separator) {
         printable.appendTextColor_Reset(color, msg);
         printable.append(separator);
-    }
-
-    private static String getWhiteSpaces(int count) {
-        if (count <= 0)
-            return "";
-
-        StringBuilder sbWhiteSpace = new StringBuilder(count);
-        while (count-- > 0) {
-            sbWhiteSpace.append(' ');
-        }
-        return sbWhiteSpace.toString();
     }
 
     private static String createCurrentDateTag() {

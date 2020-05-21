@@ -1,4 +1,4 @@
-package com.company.consolecolors.printers;
+package com.company.consolecolors.utils.printers;
 
 import com.company.consolecolors.builders.AlignedColorBuilder;
 import com.company.consolecolors.models.AnsiColor;
@@ -16,14 +16,14 @@ public class ConsoleColorPrinter {
     private static final int MIN_TEXT_LENGTH = 1;
 
     private TextAlignment mTextAlignment;
-    private int mSpaceLength;
+    private int mExtraSpace;
 
-    public ConsoleColorPrinter(TextAlignment textAlignment, int spaceLength) {
+    public ConsoleColorPrinter(TextAlignment textAlignment, int extraSpace) {
         if (textAlignment == null)
             throw new IllegalArgumentException("TextAlignment cannot be null.");
 
         this.mTextAlignment = textAlignment;
-        this.mSpaceLength = spaceLength;
+        this.mExtraSpace = extraSpace;
     }
 
     public void printColorDebugInfo() {
@@ -39,9 +39,13 @@ public class ConsoleColorPrinter {
         }
 
         TextAttribute textAttribute =
-                new TextAttribute(mTextAlignment, maxTextLength, 0);
-        AlignedColorBuilder alignedColorBuilder =
-                new AlignedColorBuilder.Builder(textAttribute, 2).build();
+                new TextAttribute(mTextAlignment, maxTextLength + mExtraSpace);
+        int textAttributeDuplicateCount = 2;
+
+        AlignedColorBuilder alignedColorBuilder = new AlignedColorBuilder
+                .Builder(textAttribute, textAttributeDuplicateCount)
+                .build();
+
         for (AnsiColor fg : AnsiColor.FOREGROUNDS) {
             for (AnsiColor bg : AnsiColor.BACKGROUNDS) {
                 alignedColorBuilder.appendTextColor(fg, bg, fg.toString(), bg.toString());
@@ -62,13 +66,13 @@ public class ConsoleColorPrinter {
                 TextLengthUtils.getTextLength(AnsiColor.BACKGROUNDS));
 
         TextAttribute textAttribute =
-                new TextAttribute(mTextAlignment, maxTextLength, mSpaceLength);
+                new TextAttribute(mTextAlignment, maxTextLength + mExtraSpace);
 
         int textAttributeDuplicateCount = 2;
 
-        AlignedColorBuilder alignedColorBuilder =
-                new AlignedColorBuilder.Builder(textAttribute, textAttributeDuplicateCount)
-                        .build();
+        AlignedColorBuilder alignedColorBuilder = new AlignedColorBuilder
+                .Builder(textAttribute, textAttributeDuplicateCount)
+                .build();
 
         for (int i = 0; i < AnsiColor.FOREGROUNDS.length; ++i) {
             AnsiColor fg = AnsiColor.FOREGROUNDS[i];
@@ -93,9 +97,10 @@ public class ConsoleColorPrinter {
         int maxNumberLength = TextLengthUtils.getTextLength(randomNumber);
 
         TextAttribute textAttribute =
-                new TextAttribute(mTextAlignment, maxNumberLength, mSpaceLength);
-        AlignedColorBuilder alignedColorBuilder =
-                new AlignedColorBuilder.Builder(textAttribute).build();
+                new TextAttribute(mTextAlignment, maxNumberLength + mExtraSpace);
+        AlignedColorBuilder alignedColorBuilder = new AlignedColorBuilder
+                .Builder(textAttribute)
+                .build();
 
         final int maxFgIndex = AnsiColor.FOREGROUNDS.length;
         final int maxBgIndex = AnsiColor.BACKGROUNDS.length;
@@ -143,15 +148,15 @@ public class ConsoleColorPrinter {
                 int maxTextLength =
                         RandomUtils.generateRandomNumber(MIN_TEXT_LENGTH, maxBoundTextLength);
                 TextAttribute textAttribute1 =
-                        new TextAttribute(mTextAlignment, maxTextLength, mSpaceLength);
+                        new TextAttribute(mTextAlignment, maxTextLength + mExtraSpace);
                 textAttributeList.add(textAttribute1);
             }
             randomTextAttributesList.add(textAttributeList);
         }
 
-        AlignedColorBuilder alignedColorBuilder =
-                new AlignedColorBuilder.Builder(randomTextAttributesList.get(0))
-                        .build();
+        AlignedColorBuilder alignedColorBuilder = new AlignedColorBuilder
+                .Builder(randomTextAttributesList.get(0))
+                .build();
 
         randomTextAttributesList = new ArrayList<>(randomTextAttributesList);
 
@@ -162,9 +167,8 @@ public class ConsoleColorPrinter {
 
                 List<String> textList = new ArrayList<>();
                 for (TextAttribute textAttribute : randomTextAttributesList.get(i)) {
-                    textList
-                            .add(RandomUtils
-                                    .generateRandomAsciiString(textAttribute.getTextLength()));
+                    textList.add(RandomUtils
+                            .generateRandomAsciiString(textAttribute.getTotalLength()));
                 }
 
                 alignedColorBuilder.appendTextColor(fg, bg, textList);
