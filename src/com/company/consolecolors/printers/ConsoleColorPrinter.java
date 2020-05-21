@@ -1,10 +1,12 @@
 package com.company.consolecolors.printers;
 
-import com.company.consolecolors.builders.ColorBuilder;
+import com.company.consolecolors.builders.AlignedColorBuilder;
 import com.company.consolecolors.models.AnsiColor;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.models.TextAttribute;
+import com.company.consolecolors.utils.AppExecutors;
 import com.company.consolecolors.utils.RandomUtils;
+import com.company.consolecolors.utils.TextLengthUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,45 +38,49 @@ public class ConsoleColorPrinter {
             }
         }
 
-        TextAttribute textAttribute = new TextAttribute(mTextAlignment, maxTextLength, 0);
-        ColorBuilder colorBuilder = new ColorBuilder.Builder(textAttribute, 2).build();
+        TextAttribute textAttribute =
+                new TextAttribute(mTextAlignment, maxTextLength, 0);
+        AlignedColorBuilder alignedColorBuilder =
+                new AlignedColorBuilder.Builder(textAttribute, 2).build();
         for (AnsiColor fg : AnsiColor.FOREGROUNDS) {
             for (AnsiColor bg : AnsiColor.BACKGROUNDS) {
-                colorBuilder.appendColoredText(fg, bg, fg.toString(), bg.toString());
+                alignedColorBuilder.appendTextColor(fg, bg, fg.toString(), bg.toString());
             }
-            colorBuilder.appendAnsiReset_newLine();
+            alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        System.out.println(colorBuilder.getStringText_clear());
+        AppExecutors.getInstance().consoleThread().execute(() ->
+                System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
     /**
      * Prints all backgrounds and foregrounds with text indexes.
      */
     public void printAllColorsIndexed() {
-        int fgTextLength = ColorBuilder.getTextLength(AnsiColor.FOREGROUNDS);
-        int bgTextLength = ColorBuilder.getTextLength(AnsiColor.BACKGROUNDS);
+        int maxTextLength = Math.max(
+                TextLengthUtils.getTextLength(AnsiColor.FOREGROUNDS),
+                TextLengthUtils.getTextLength(AnsiColor.BACKGROUNDS));
 
-        int maxTextLength =
-                Math.max(
-                        ColorBuilder.getTextLength(fgTextLength),
-                        ColorBuilder.getTextLength(bgTextLength));
-        TextAttribute textAttribute = new TextAttribute(mTextAlignment, maxTextLength, mSpaceLength);
+        TextAttribute textAttribute =
+                new TextAttribute(mTextAlignment, maxTextLength, mSpaceLength);
+
         int textAttributeDuplicateCount = 2;
-        ColorBuilder colorBuilder =
-                new ColorBuilder.Builder(textAttribute, textAttributeDuplicateCount)
+
+        AlignedColorBuilder alignedColorBuilder =
+                new AlignedColorBuilder.Builder(textAttribute, textAttributeDuplicateCount)
                         .build();
 
         for (int i = 0; i < AnsiColor.FOREGROUNDS.length; ++i) {
             AnsiColor fg = AnsiColor.FOREGROUNDS[i];
             for (int j = 0; j < AnsiColor.BACKGROUNDS.length; ++j) {
                 AnsiColor bg = AnsiColor.BACKGROUNDS[j];
-                colorBuilder.appendColoredText(fg, bg, String.valueOf(i), String.valueOf(j));
+                alignedColorBuilder.appendTextColor(fg, bg, String.valueOf(i), String.valueOf(j));
             }
-            colorBuilder.appendAnsiReset_newLine();
+            alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        System.out.println(colorBuilder.getStringText_clear());
+        AppExecutors.getInstance().consoleThread().execute(() ->
+                System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
     /**
@@ -84,10 +90,12 @@ public class ConsoleColorPrinter {
      */
     public void printIncrementalNumbers(int maxBoundIncremental) {
         int randomNumber = RandomUtils.generateRandomNumber(maxBoundIncremental);
-        int maxNumberLength = ColorBuilder.getTextLength(randomNumber);
+        int maxNumberLength = TextLengthUtils.getTextLength(randomNumber);
 
-        TextAttribute textAttribute = new TextAttribute(mTextAlignment, maxNumberLength, mSpaceLength);
-        ColorBuilder colorBuilder = new ColorBuilder.Builder(textAttribute).build();
+        TextAttribute textAttribute =
+                new TextAttribute(mTextAlignment, maxNumberLength, mSpaceLength);
+        AlignedColorBuilder alignedColorBuilder =
+                new AlignedColorBuilder.Builder(textAttribute).build();
 
         final int maxFgIndex = AnsiColor.FOREGROUNDS.length;
         final int maxBgIndex = AnsiColor.BACKGROUNDS.length;
@@ -98,25 +106,26 @@ public class ConsoleColorPrinter {
                 bgIndex = 0;
                 if (++fgIndex >= maxFgIndex)
                     fgIndex = 0;
-                colorBuilder.appendAnsiReset_newLine();
+                alignedColorBuilder.appendColorReset_NewLine();
             }
             AnsiColor fg = AnsiColor.FOREGROUNDS[fgIndex];
             AnsiColor bg = AnsiColor.BACKGROUNDS[bgIndex];
-            colorBuilder.appendColoredText(fg, bg, String.valueOf(i));
+            alignedColorBuilder.appendTextColor(fg, bg, String.valueOf(i));
         }
 
         if (bgIndex <= maxBgIndex) {
-            colorBuilder.appendAnsiReset_newLine();
+            alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        System.out.println(colorBuilder.getStringText_clear());
+        AppExecutors.getInstance().consoleThread().execute(() ->
+                System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
     /**
      * Prints random generated colored strings.
      *
      * @param maxBoundTextLength max letters in text. Has to be at least 1.
-     * @param textCountInColumn          describes how many random strings will be printed on one color.
+     * @param textCountInColumn  describes how many random strings will be printed on one color.
      * @throws IllegalArgumentException if maxBoundTextLength is < 1.
      */
     public void printAllColorsText(int maxBoundTextLength, int textCountInColumn) {
@@ -131,14 +140,18 @@ public class ConsoleColorPrinter {
         while (columnCount-- > 0) {
             List<TextAttribute> textAttributeList = new ArrayList<>();
             for (int i = 0; i < textCountInColumn; ++i) {
-                int maxTextLength = RandomUtils.generateRandomNumber(MIN_TEXT_LENGTH, maxBoundTextLength);
-                TextAttribute textAttribute1 = new TextAttribute(mTextAlignment, maxTextLength, mSpaceLength);
+                int maxTextLength =
+                        RandomUtils.generateRandomNumber(MIN_TEXT_LENGTH, maxBoundTextLength);
+                TextAttribute textAttribute1 =
+                        new TextAttribute(mTextAlignment, maxTextLength, mSpaceLength);
                 textAttributeList.add(textAttribute1);
             }
             randomTextAttributesList.add(textAttributeList);
         }
 
-        ColorBuilder colorBuilder = new ColorBuilder.Builder(randomTextAttributesList.get(0)).build();
+        AlignedColorBuilder alignedColorBuilder =
+                new AlignedColorBuilder.Builder(randomTextAttributesList.get(0))
+                        .build();
 
         randomTextAttributesList = new ArrayList<>(randomTextAttributesList);
 
@@ -149,22 +162,25 @@ public class ConsoleColorPrinter {
 
                 List<String> textList = new ArrayList<>();
                 for (TextAttribute textAttribute : randomTextAttributesList.get(i)) {
-                    textList.add(RandomUtils.generateRandomAsciiString(textAttribute.getTextLength()));
+                    textList
+                            .add(RandomUtils
+                                    .generateRandomAsciiString(textAttribute.getTextLength()));
                 }
 
-                colorBuilder.appendColoredText(fg, bg, textList);
+                alignedColorBuilder.appendTextColor(fg, bg, textList);
 
                 i = (i + 1) % AnsiColor.BACKGROUNDS.length;
                 List<TextAttribute> textAttributeList = randomTextAttributesList.get(i);
                 for (int j = 0; j < textAttributeList.size(); ++j) {
-                    colorBuilder.setTextAttribute(j, textAttributeList.get(j));
+                    alignedColorBuilder.setTextAttribute(j, textAttributeList.get(j));
                 }
             }
 
-            colorBuilder.appendAnsiReset_newLine();
+            alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        System.out.println(colorBuilder.getStringText_clear());
+        AppExecutors.getInstance().consoleThread().execute(() ->
+                System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
 }

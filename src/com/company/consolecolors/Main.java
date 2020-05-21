@@ -3,6 +3,7 @@ package com.company.consolecolors;
 import com.company.consolecolors.cli.CommandLine;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.printers.ConsoleColorPrinter;
+import com.company.consolecolors.utils.AppExecutors;
 import com.company.consolecolors.utils.log.Log;
 import com.company.consolecolors.utils.RandomUtils;
 
@@ -18,30 +19,39 @@ public class Main {
     }
 
     private void start() {
-        System.out.println("Normal output.");
-        Log.v("Verbose.");
-        Log.i("Info.");
-        Log.d("Debug.");
-        Log.w("Warning.");
-        Log.e("Error.");
+        alignedConsolePrinterTest();
+        startCommandLineInterface();
+        printRandomLogsTest();
+        printAllLevelLogsTest();
 
+        AppExecutors.getInstance().shutdownExecutors();
+    }
+
+    private void startCommandLineInterface() {
+        CommandLine commandLine = new CommandLine();
+        commandLine.readCommands();
+    }
+
+    private void alignedConsolePrinterTest() {
         ConsoleColorPrinter consoleColorPrinter =
                 new ConsoleColorPrinter(TextAlignment.CENTER, SPACE_BETWEEN_TEXTS);
         consoleColorPrinter.printColorDebugInfo();
         consoleColorPrinter.printAllColorsIndexed();
         consoleColorPrinter.printIncrementalNumbers(MAX_BOUND_INCREMENTAL);
         consoleColorPrinter.printAllColorsText(MAX_BOUND_TEXT_LENGTH, TEXT_COUNT);
+    }
 
+    private void printRandomLogsTest() {
         RandomUtils.printRandomDebugInfo();
+    }
 
-        CommandLine commandLine = new CommandLine();
-        commandLine.readCommands();
-
+    private void printAllLevelLogsTest() {
         Log.v("Verbose tag", "Useless verbose message.");
         Log.i("Info tag", "Informative message.");
         Log.d("DEBUG_TAG", "Something not working here.");
         Log.w("Warning tag", "Warning, take care!");
         Log.e("Error tag", "Behold almighty error...");
-        Log.w("Warning tag that will exceed max character limit.", "Friendly warning message.");
+        Log.w("Warning tag that will exceed max character limit.",
+                "Friendly warning message.");
     }
 }

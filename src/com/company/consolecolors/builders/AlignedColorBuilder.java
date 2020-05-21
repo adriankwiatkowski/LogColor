@@ -13,16 +13,16 @@ import java.util.List;
  *
  * @see StringBuilder
  */
-public class ColorBuilder extends AbstractColorBuilder {
+public class AlignedColorBuilder extends ColorBuilderImpl {
 
     private List<TextAttribute> mTextAttributeList;
 
-    public ColorBuilder(Builder builder) {
+    private AlignedColorBuilder(Builder builder) {
         super(builder);
         mTextAttributeList = builder.textAttributeList;
     }
 
-    public static class Builder extends AbstractColorBuilder.Builder<Builder> {
+    public static class Builder extends ColorBuilderImpl.Builder {
         private List<TextAttribute> textAttributeList;
 
         public Builder(TextAttribute textAttribute, int textAttributeDuplicateCount) {
@@ -71,20 +71,14 @@ public class ColorBuilder extends AbstractColorBuilder {
         }
 
         @Override
-        public ColorBuilder build() {
-            return new ColorBuilder(this);
+        public AlignedColorBuilder build() {
+            return new AlignedColorBuilder(this);
         }
 
         @Override
         protected Builder self() {
             return this;
         }
-    }
-
-    @Override
-    public void appendAlignedText(String text, int maxTextLength, int spaceLength, TextAlignment textAlignment) {
-        textAlignment.appendAligned(getStringBuilder(), text, maxTextLength + spaceLength);
-        //System.out.print(fg + bg + fgIndex + " " + bgIndex);
     }
 
     /**
@@ -95,7 +89,7 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param textList list of texts.
      * @throws IllegalArgumentException if text count isn't equal attribute count.
      */
-    public void appendAlignedText(List<String> textList) {
+    public void appendTextAlign(List<String> textList) {
         if (textList.size() != mTextAttributeList.size())
             throw new IllegalArgumentException("There must be same texts as attributes count.");
 
@@ -103,7 +97,7 @@ public class ColorBuilder extends AbstractColorBuilder {
             String text = textList.get(i);
             TextAttribute textAttribute = mTextAttributeList.get(i);
 
-            appendAlignedText(text,
+            appendTextAlign(text,
                     textAttribute.getTextLength(),
                     textAttribute.getSpaceLength(),
                     textAttribute.getTextAlignment());
@@ -118,13 +112,14 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text1 text.
      * @throws IllegalArgumentException if text count isn't equal attribute count.
      */
-    public void appendAlignedText(String text1) {
+    @Override
+    public void appendTextAlign(String text1) {
         if (1 != mTextAttributeList.size())
             throw new IllegalArgumentException("There must be same texts as attributes count.");
 
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
-        appendAlignedText(text1,
+        appendTextAlign(text1,
                 textAttribute.getTextLength(),
                 textAttribute.getSpaceLength(),
                 textAttribute.getTextAlignment());
@@ -139,20 +134,20 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text2 text 2.
      * @throws IllegalArgumentException if text count isn't equal attribute count.
      */
-    public void appendAlignedText(String text1, String text2) {
+    public void appendTextAlign(String text1, String text2) {
         if (2 != mTextAttributeList.size())
             throw new IllegalArgumentException("There must be same texts as attributes count.");
 
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
-        appendAlignedText(text1,
+        appendTextAlign(text1,
                 textAttribute.getTextLength(),
                 textAttribute.getSpaceLength(),
                 textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(1);
 
-        appendAlignedText(text2,
+        appendTextAlign(text2,
                 textAttribute.getTextLength(),
                 textAttribute.getSpaceLength(),
                 textAttribute.getTextAlignment());
@@ -168,27 +163,27 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text3 text 3.
      * @throws IllegalArgumentException if text count isn't equal attribute count.
      */
-    public void appendAlignedText(String text1, String text2, String text3) {
+    public void appendTextAlign(String text1, String text2, String text3) {
         if (3 != mTextAttributeList.size())
             throw new IllegalArgumentException("There must be same texts as attributes count.");
 
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
-        appendAlignedText(text1,
+        appendTextAlign(text1,
                 textAttribute.getTextLength(),
                 textAttribute.getSpaceLength(),
                 textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(1);
 
-        appendAlignedText(text2,
+        appendTextAlign(text2,
                 textAttribute.getTextLength(),
                 textAttribute.getSpaceLength(),
                 textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(2);
 
-        appendAlignedText(text3,
+        appendTextAlign(text3,
                 textAttribute.getTextLength(),
                 textAttribute.getSpaceLength(),
                 textAttribute.getTextAlignment());
@@ -201,26 +196,11 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param color    background or foreground ANSI.
      * @param textList list of texts.
      */
-    public void appendColoredText(AnsiColor color, List<String> textList) {
+    public void appendTextColor(AnsiColor color, List<String> textList) {
         // Encode background or foreground color.
-        append(color.getValue());
+        appendColor(color);
         // Append aligned text.
-        appendAlignedText(textList);
-    }
-
-    /**
-     * Appends colored text to <c>StringBuilder</c>.
-     * Does not reset color.
-     *
-     * @param color background or foreground ANSI.
-     * @param text1 text 1.
-     */
-    @Override
-    public void appendColoredText(AnsiColor color, String text1) {
-        // Encode background or foreground color.
-        append(color.getValue());
-        // Append aligned text.
-        appendAlignedText(text1);
+        appendTextAlign(textList);
     }
 
     /**
@@ -231,11 +211,11 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text1 text 1.
      * @param text2 text 2.
      */
-    public void appendColoredText(AnsiColor color, String text1, String text2) {
+    public void appendTextColor(AnsiColor color, String text1, String text2) {
         // Encode background or foreground color.
-        append(color.getValue());
+        appendColor(color);
         // Append aligned text.
-        appendAlignedText(text1, text2);
+        appendTextAlign(text1, text2);
     }
 
     /**
@@ -247,11 +227,11 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text2 text 2.
      * @param text3 text 3.
      */
-    public void appendColoredText(AnsiColor color, String text1, String text2, String text3) {
+    public void appendTextColor(AnsiColor color, String text1, String text2, String text3) {
         // Encode background or foreground color.
-        append(color.getValue());
+        appendColor(color);
         // Append aligned text.
-        appendAlignedText(text1, text2, text3);
+        appendTextAlign(text1, text2, text3);
     }
 
     /**
@@ -260,14 +240,14 @@ public class ColorBuilder extends AbstractColorBuilder {
      *
      * @param fg       foreground ANSI.
      * @param bg       background ANSI.
-     * @param textList
+     * @param textList list of texts.
      */
-    public void appendColoredText(AnsiColor fg, AnsiColor bg, List<String> textList) {
+    public void appendTextColor(AnsiColor fg, AnsiColor bg, List<String> textList) {
         // Encode foreground and background colors.
-        append(fg.getValue());
-        append(bg.getValue());
+        appendColor(fg);
+        appendColor(bg);
         // Append aligned text.
-        appendAlignedText(textList);
+        appendTextAlign(textList);
     }
 
     /**
@@ -279,12 +259,12 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text1 text 1.
      */
     @Override
-    public void appendColoredText(AnsiColor fg, AnsiColor bg, String text1) {
+    public void appendTextColor(AnsiColor fg, AnsiColor bg, String text1) {
         // Encode foreground and background colors.
         append(fg.getValue());
         append(bg.getValue());
         // Append aligned text.
-        appendAlignedText(text1);
+        appendTextAlign(text1);
     }
 
     /**
@@ -296,12 +276,12 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text1 text 1.
      * @param text2 text 2.
      */
-    public void appendColoredText(AnsiColor fg, AnsiColor bg, String text1, String text2) {
+    public void appendTextColor(AnsiColor fg, AnsiColor bg, String text1, String text2) {
         // Encode foreground and background colors.
         append(fg.getValue());
         append(bg.getValue());
         // Append aligned text.
-        appendAlignedText(text1, text2);
+        appendTextAlign(text1, text2);
     }
 
     /**
@@ -314,12 +294,12 @@ public class ColorBuilder extends AbstractColorBuilder {
      * @param text2 text 2.
      * @param text3 text 3.
      */
-    public void appendColoredText(AnsiColor fg, AnsiColor bg, String text1, String text2, String text3) {
+    public void appendTextColor(AnsiColor fg, AnsiColor bg, String text1, String text2, String text3) {
         // Encode foreground and background colors.
         append(fg.getValue());
         append(bg.getValue());
         // Append aligned text.
-        appendAlignedText(text1, text2, text3);
+        appendTextAlign(text1, text2, text3);
     }
 
     public void setTextAttribute(int index, TextAttribute textAttribute) {

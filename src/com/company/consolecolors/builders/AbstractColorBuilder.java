@@ -1,16 +1,16 @@
 package com.company.consolecolors.builders;
 
+import com.company.consolecolors.interfaces.Printable;
 import com.company.consolecolors.models.AnsiColor;
-import com.company.consolecolors.models.TextAlignment;
 
 import java.util.Objects;
 
-public abstract class AbstractColorBuilder {
+public abstract class AbstractColorBuilder implements Printable {
 
     // String builder used throughout class.
     private StringBuilder mStringBuilder;
 
-    AbstractColorBuilder(Builder<?> builder) {
+    public AbstractColorBuilder(Builder<?> builder) {
         mStringBuilder = Objects.requireNonNullElseGet(builder.stringBuilder, StringBuilder::new);
     }
 
@@ -29,115 +29,20 @@ public abstract class AbstractColorBuilder {
     }
 
     /**
-     * Appends aligned text specified by <c>TextAlignment</c>.
-     *
-     * @param text          appended text.
-     * @param maxTextLength max length of text.
-     * @param spaceLength   space between texts.
-     * @param textAlignment constrains how text is aligned.
-     * @see TextAlignment
-     */
-    public abstract void appendAlignedText(String text, int maxTextLength,
-                                           int spaceLength, TextAlignment textAlignment);
-
-    /**
-     * Calculates number of digits from array length.
-     *
-     * @param array Array must be nonnull.
-     * @return Returns number of digits from array length.
-     */
-    public static int getTextLength(Object[] array) {
-        if (array == null)
-            throw new IllegalArgumentException("Array cannot be null");
-
-        return getLength(array.length);
-    }
-
-    /**
-     * Calculates number of digits in number.
-     *
-     * @param num number.
-     * @return Returns number of digits in number.
-     */
-    public static int getTextLength(int num) {
-        return getLength(num);
-    }
-
-    /**
-     * Calculate number of digits in number.
-     *
-     * @param num number.
-     * @return Returns number of digits in number.
-     */
-    protected static int getLength(int num) {
-        int length = 1;
-        while ((num /= 10) > 0) {
-            ++length;
-        }
-        return length;
-    }
-
-    /**
-     * Uses String built in method to return length.
-     *
-     * @param text String text.
-     * @return Returns length of text.
-     */
-    protected static int getLength(String text) {
-        return text.length();
-    }
-
-    /**
-     * Encodes colors and append text to that color.
-     * Does not encode reset.
-     *
-     * @param color       foreground or background color.
-     * @param coloredText text to be colored.
-     */
-    public abstract void appendColoredText(AnsiColor color, String coloredText);
-
-    /**
-     * Encodes colors and append text to that color.
-     * Does not encode reset.
-     *
-     * @param fg          foreground color.
-     * @param bg          background color.
-     * @param coloredText text to be colored.
-     */
-    public abstract void appendColoredText(AnsiColor fg, AnsiColor bg, String coloredText);
-
-    /**
-     * Appends encoded ansi reset and new line on <c>StringBuilder</c>.
-     */
-    public void appendAnsiReset_newLine() {
-        appendAnsiReset();
-        appendNewLine();
-    }
-
-    /**
      * Appends encoded ansi reset on <c>StringBuilder</c>.
      * Use it only after encoding color and only if you are done using this color.
      */
-    public void appendAnsiReset() {
+    @Override
+    public void appendColorReset() {
         mStringBuilder.append(AnsiColor.ANSI_RESET.getValue());
     }
 
     /**
      * Appends new line on <c>StringBuilder</c>
      */
+    @Override
     public void appendNewLine() {
         mStringBuilder.append('\n');
-    }
-
-    /**
-     * Build String from <c>StringBuilder</c> and create new <c>StringBuilder</c>.
-     *
-     * @return String from <c>StringBuilder</c>.
-     */
-    public String getStringText_clear() {
-        String stringText = getStringText();
-        flushStringBuilder();
-        return stringText;
     }
 
     /**
@@ -145,30 +50,35 @@ public abstract class AbstractColorBuilder {
      *
      * @return String from <c>StringBuilder</c>.
      */
-    public String getStringText() {
+    @Override
+    public String getText() {
         return mStringBuilder.toString();
     }
 
     /**
      * Creates new <c>StringBuilder</c>.
      */
-    public void flushStringBuilder() {
+    @Override
+    public void flush() {
         mStringBuilder = new StringBuilder();
     }
 
-    protected StringBuilder getStringBuilder() {
-        return mStringBuilder;
-    }
-
+    @Override
     public void append(String str) {
         mStringBuilder.append(str);
     }
 
+    @Override
     public void append(int i) {
         mStringBuilder.append(i);
     }
 
+    @Override
     public void append(char c) {
         mStringBuilder.append(c);
+    }
+
+    protected StringBuilder getStringBuilder() {
+        return mStringBuilder;
     }
 }

@@ -5,11 +5,20 @@ import com.company.consolecolors.models.LogType;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.printers.ConsoleColorPrinter;
 import com.company.consolecolors.utils.CLIHelper;
+import com.company.consolecolors.utils.log.Log;
 
 import java.util.Optional;
 import java.util.Scanner;
 
 public class CommandLine {
+
+    private static final String TAG = CommandLine.class.getSimpleName();
+
+    private static final String MSG_INPUT_MAX_INC_RANDOM = "Max incremental random: ";
+    private static final String MSG_INPUT_MAX_TEXT_LENGTH = "Max text length: ";
+    private static final String MSG_INPUT_TEXT_IN_COLUMN = "How many texts in one column: ";
+    private static final String MSG_INPUT_TYPE_TAG = "Type tag: ";
+    private static final String MSG_INPUT_TYPE_MESSAGE = "Type message: ";
 
     private static final String ERROR_UNKNOWN_COMMAND = "Unknown command.";
     private static final String ERROR_INVALID_COMMAND = "Invalid command.";
@@ -34,10 +43,10 @@ public class CommandLine {
         mIsReading = true;
 
         while (mIsReading) {
-            CLIHelper.readCommand(mScanner, COMMAND_INFO)
+            CLIHelper.readCommand(mScanner, TAG, COMMAND_INFO)
                     .ifPresentOrElse(
                             this::processCommand,
-                            () -> System.out.println(ERROR_INVALID_COMMAND));
+                            () -> Log.w(TAG, ERROR_INVALID_COMMAND));
         }
 
         mScanner.close();
@@ -71,27 +80,27 @@ public class CommandLine {
     }
 
     private void printIncremental() {
-        int maxBoundIncremental = CLIHelper.readInt(mScanner, "Max incremental random: ");
+        int maxBoundIncremental = CLIHelper.readInt(mScanner, TAG, MSG_INPUT_MAX_INC_RANDOM);
         mConsoleColorPrinter.printIncrementalNumbers(maxBoundIncremental);
     }
 
     private void printTexts() {
-        int maxTextLength = CLIHelper.readInt(mScanner, "Max text length: ");
-        int textCountInColumn = CLIHelper.readInt(mScanner, "How many texts in one column: ");
+        int maxTextLength = CLIHelper.readInt(mScanner, TAG, MSG_INPUT_MAX_TEXT_LENGTH);
+        int textCountInColumn = CLIHelper.readInt(mScanner, TAG, MSG_INPUT_TEXT_IN_COLUMN);
         mConsoleColorPrinter.printAllColorsText(maxTextLength, textCountInColumn);
     }
 
     private void writeLog() {
-        String tag = CLIHelper.readString(mScanner, "Type tag: ");
-        String msg = CLIHelper.readString(mScanner, "Type message: ");
+        String tag = CLIHelper.readString(mScanner, TAG, MSG_INPUT_TYPE_TAG);
+        String msg = CLIHelper.readString(mScanner, TAG, MSG_INPUT_TYPE_MESSAGE);
 
         while (true) {
-            Optional<LogType> optionalLogType = CLIHelper.readLogType(mScanner, LOG_TYPE_INFO);
+            Optional<LogType> optionalLogType = CLIHelper.readLogType(mScanner, TAG, LOG_TYPE_INFO);
             if (optionalLogType.isPresent()) {
                 optionalLogType.get().log(tag, msg);
                 break;
             } else {
-                System.out.println(ERROR_INVALID_LOG_TYPE);
+                Log.w(TAG, ERROR_INVALID_LOG_TYPE);
             }
         }
     }

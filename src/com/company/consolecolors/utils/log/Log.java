@@ -1,9 +1,8 @@
 package com.company.consolecolors.utils.log;
 
-import com.company.consolecolors.builders.ColorBuilder;
+import com.company.consolecolors.builders.SimpleColorBuilder;
+import com.company.consolecolors.interfaces.Printable;
 import com.company.consolecolors.models.AnsiColor;
-import com.company.consolecolors.models.TextAlignment;
-import com.company.consolecolors.models.TextAttribute;
 import com.company.consolecolors.utils.AppExecutors;
 
 import java.text.Format;
@@ -32,8 +31,6 @@ public class Log {
 
     private static final AnsiColor TAG_COLOR = ANSI_BLUE;
 
-    private static final int DEFAULT_EXTRA_SPACE = 0;
-
     private static final int LEVEL_INFO_LENGTH_LIMIT =
             Arrays.stream(LogLevel.values())
                     .map(LogLevel::getLevelTag)
@@ -53,7 +50,9 @@ public class Log {
     private static void internal_err(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.INTERNAL_ERROR))
             return;
-        addLog(ANSI_BRIGHT_WHITE, ANSI_BG_BLACK, LogLevel.INTERNAL_ERROR.getLevelTag(), tag, msg);
+        // Print log directly instead of scheduling.
+        print(ANSI_BRIGHT_WHITE, ANSI_BG_BLACK,
+                LogLevel.INTERNAL_ERROR.getLevelTag(), tag, msg);
     }
 
     public static void v(String msg) {
@@ -63,7 +62,8 @@ public class Log {
     public static void v(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.VERBOSE))
             return;
-        addLog(ANSI_BRIGHT_WHITE, ANSI_BG_WHITE, LogLevel.VERBOSE.getLevelTag(), tag, msg);
+        addLog(ANSI_BRIGHT_WHITE, ANSI_BG_WHITE,
+                LogLevel.VERBOSE.getLevelTag(), tag, msg);
     }
 
     public static void i(String msg) {
@@ -73,7 +73,8 @@ public class Log {
     public static void i(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.INFO))
             return;
-        addLog(ANSI_BRIGHT_WHITE, ANSI_BG_BLUE, LogLevel.INFO.getLevelTag(), tag, msg);
+        addLog(ANSI_BRIGHT_WHITE, ANSI_BG_BLUE,
+                LogLevel.INFO.getLevelTag(), tag, msg);
     }
 
     public static void d(String msg) {
@@ -83,7 +84,8 @@ public class Log {
     public static void d(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.DEBUG))
             return;
-        addLog(ANSI_BRIGHT_GREEN, ANSI_BRIGHT_BG_BLACK, LogLevel.DEBUG.getLevelTag(), tag, msg);
+        addLog(ANSI_BRIGHT_GREEN, ANSI_BRIGHT_BG_BLACK,
+                LogLevel.DEBUG.getLevelTag(), tag, msg);
     }
 
     public static void w(String msg) {
@@ -93,7 +95,8 @@ public class Log {
     public static void w(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.WARNING))
             return;
-        addLog(ANSI_BRIGHT_WHITE, ANSI_BRIGHT_BG_YELLOW, LogLevel.WARNING.getLevelTag(), tag, msg);
+        addLog(ANSI_BRIGHT_WHITE, ANSI_BRIGHT_BG_YELLOW,
+                LogLevel.WARNING.getLevelTag(), tag, msg);
     }
 
     public static void e(String msg) {
@@ -103,67 +106,49 @@ public class Log {
     public static void e(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.ERROR))
             return;
-        addLog(ANSI_RED, ANSI_BRIGHT_BG_WHITE, LogLevel.ERROR.getLevelTag(), tag, msg);
+        addLog(ANSI_RED, ANSI_BRIGHT_BG_WHITE,
+                LogLevel.ERROR.getLevelTag(), tag, msg);
     }
 
-    private static void addLog(AnsiColor color, String debugLevelInfo, String tag, String msg) {
+    private static void addLog(AnsiColor color, String debugLevelInfo,
+                               String tag, String msg) {
         addLog(color, color, debugLevelInfo, tag, msg);
     }
 
-    private static void addLog(AnsiColor fg, AnsiColor bg, String debugLevelInfo, String tag, String msg) {
-        AppExecutors.getInstance().logThread().execute(() ->  {
-            print(fg, bg, debugLevelInfo, tag, msg);
-        });
+    private static void addLog(AnsiColor fg, AnsiColor bg, String debugLevelInfo,
+                               String tag, String msg) {
+        AppExecutors.getInstance().logThread().execute(() ->
+                print(fg, bg, debugLevelInfo, tag, msg));
     }
 
-    private static void print(AnsiColor fg, AnsiColor bg, String debugLevelInfo, String tag, String msg) {
-
+    private static void print(AnsiColor fg, AnsiColor bg, String debugLevelInfo,
+                              String tag, String msg) {
         if (msg == null || msg.isEmpty()) {
             throw new IllegalArgumentException(ERROR_MESSAGE_EMPTY);
         }
 
-        TextAttribute textAttribute =
-                new TextAttribute(TextAlignment.LEFT,
-                        getDebugLevelInfoColorLength(debugLevelInfo),
-                        DEFAULT_EXTRA_SPACE);
-        ColorBuilder colorBuilder = new ColorBuilder.Builder(textAttribute).build();
+        Printable printable = new SimpleColorBuilder.Builder().build();
 
-        appendLevelInfo(colorBuilder, bg, debugLevelInfo);
-
-        appendDateTag(colorBuilder);
-
-        appendTag(colorBuilder, tag);
-
-        colorBuilder.setTextAttributeMaxTextLength(getCurrentTextAttributeIndex(), msg.length());
-
-        appendColoredText(colorBuilder, fg, bg, msg);
-
-        colorBuilder.appendAnsiReset_newLine();
-
-        System.out.print(colorBuilder.getStringText_clear());
+        appendLevelInfo(printable, bg, debugLevelInfo);
+        appendDateTag(printable);
+        appendTag(printable, tag);
+        appendMsg(printable, fg, bg, msg);
+        System.out.print(printable.getText_Flush());
     }
 
-    private static void appendLevelInfo(ColorBuilder colorBuilder, AnsiColor bg, String debugLevelInfo) {
+    private static void appendLevelInfo(Printable printable, AnsiColor bg,
+                                        String debugLevelInfo) {
         int diff = LEVEL_INFO_LENGTH_LIMIT - debugLevelInfo.length();
         debugLevelInfo += getWhiteSpaces(diff);
-        appendColoredText(colorBuilder, bg, debugLevelInfo);
-        colorBuilder.appendAnsiReset();
-        colorBuilder.append(TAG_MSG_SEPARATOR);
+        appendTextColor_Reset_Separator(printable, bg, debugLevelInfo, TAG_MSG_SEPARATOR);
     }
 
-    private static int getDebugLevelInfoColorLength(String debugLevelInfo) {
-        return LEVEL_INFO_LENGTH_LIMIT;
-    }
-
-    private static void appendDateTag(ColorBuilder colorBuilder) {
+    private static void appendDateTag(Printable printable) {
         String dateTag = createCurrentDateTag();
-        colorBuilder.setTextAttributeMaxTextLength(getCurrentTextAttributeIndex(), dateTag.length());
-        appendColoredText(colorBuilder, TAG_COLOR, dateTag);
-        colorBuilder.appendAnsiReset();
-        colorBuilder.append(TAG_MSG_SEPARATOR);
+        appendTextColor_Reset_Separator(printable, TAG_COLOR, dateTag, TAG_MSG_SEPARATOR);
     }
 
-    private static void appendTag(ColorBuilder colorBuilder, String tag) {
+    private static void appendTag(Printable printable, String tag) {
         tag = (tag == null || tag.isEmpty()) ? DEFAULT_TAG : tag;
 
         if (tag.length() > TAG_CHAR_LIMIT) {
@@ -174,10 +159,19 @@ public class Log {
         int diff = TAG_CHAR_LIMIT - tag.length();
         tag += getWhiteSpaces(diff);
 
-        colorBuilder.setTextAttributeMaxTextLength(getCurrentTextAttributeIndex(), tag.length());
-        appendColoredText(colorBuilder, TAG_COLOR, tag);
-        colorBuilder.appendAnsiReset();
-        colorBuilder.append(TAG_MSG_SEPARATOR);
+        appendTextColor_Reset_Separator(printable, TAG_COLOR, tag, TAG_MSG_SEPARATOR);
+    }
+
+    private static void appendMsg(Printable printable, AnsiColor fg,
+                                  AnsiColor bg, String msg) {
+        printable.appendTextColor(fg, bg, msg);
+        printable.appendColorReset_NewLine();
+    }
+
+    private static void appendTextColor_Reset_Separator(Printable printable, AnsiColor color,
+                                                        String msg, String separator) {
+        printable.appendTextColor_Reset(color, msg);
+        printable.append(separator);
     }
 
     private static String getWhiteSpaces(int count) {
@@ -189,19 +183,6 @@ public class Log {
             sbWhiteSpace.append(' ');
         }
         return sbWhiteSpace.toString();
-    }
-
-    private static void appendColoredText(ColorBuilder colorBuilder, AnsiColor color, String msg) {
-        colorBuilder.appendColoredText(color, msg);
-    }
-
-    private static void appendColoredText(ColorBuilder colorBuilder,
-                                          AnsiColor fg, AnsiColor bg, String msg) {
-        colorBuilder.appendColoredText(fg, bg, msg);
-    }
-
-    private static int getCurrentTextAttributeIndex() {
-        return 0;
     }
 
     private static String createCurrentDateTag() {
