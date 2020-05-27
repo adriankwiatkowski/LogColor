@@ -4,6 +4,7 @@ import com.company.consolecolors.builders.SimpleColorBuilder;
 import com.company.consolecolors.models.AnsiColor;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.utils.AppExecutors;
+import com.company.consolecolors.utils.PrintableManager;
 import com.company.consolecolors.utils.TextUtils;
 
 public class Printer {
@@ -114,8 +115,8 @@ public class Printer {
             throw new IllegalArgumentException("Message cannot be null.");
 
         AppExecutors appExecutors = AppExecutors.getInstance();
-        if (!appExecutors.isConsoleExecutorShutdown()) {
-            AppExecutors.getInstance().consoleThread().execute(() ->
+        if (!appExecutors.isLogExecutorShutdown()) {
+            AppExecutors.getInstance().logThread().execute(() ->
                     printScheduled(fg, bg, textAlignment, extraSpace, msg, newLine));
         }
     }
@@ -143,6 +144,6 @@ public class Printer {
         if (newLine)
             colorBuilder.appendNewLine();
 
-        System.out.print(colorBuilder.getText_Flush());
+        PrintableManager.getInstance().getPrintable().print_flush(colorBuilder);
     }
 }

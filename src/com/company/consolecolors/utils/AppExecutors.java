@@ -10,12 +10,10 @@ public class AppExecutors {
     private static AppExecutors sInstance;
     private final Executor mMainThread;
     private final Executor mLogExecutor;
-    private final Executor mConsoleExecutor;
 
-    private AppExecutors(Executor mainThread, Executor logExecutor, Executor consoleExecutor) {
+    private AppExecutors(Executor mainThread, Executor logExecutor) {
         this.mMainThread = mainThread;
         this.mLogExecutor = logExecutor;
-        this.mConsoleExecutor = consoleExecutor;
     }
 
     public static AppExecutors getInstance() {
@@ -23,7 +21,6 @@ public class AppExecutors {
             synchronized (LOCK) {
                 if (sInstance == null) {
                     sInstance = new AppExecutors(
-                            Executors.newSingleThreadExecutor(),
                             Executors.newSingleThreadExecutor(),
                             Executors.newSingleThreadExecutor());
                 }
@@ -41,10 +38,6 @@ public class AppExecutors {
         return mLogExecutor;
     }
 
-    public Executor consoleThread() {
-        return mConsoleExecutor;
-    }
-
     public void shutdownMainThread() {
 //        ((ExecutorService) mMainThread).shutdownNow();
         shutdownExecutors();
@@ -53,13 +46,11 @@ public class AppExecutors {
     public void shutdownExecutors() {
         ((ExecutorService) mMainThread).shutdown();
         ((ExecutorService) mLogExecutor).shutdown();
-        ((ExecutorService) mConsoleExecutor).shutdown();
     }
 
     public void shutdownNowExecutors() {
         ((ExecutorService) mMainThread).shutdownNow();
         ((ExecutorService) mLogExecutor).shutdownNow();
-        ((ExecutorService) mConsoleExecutor).shutdownNow();
     }
 
     public boolean isMainThreadShutdown() {
@@ -68,9 +59,5 @@ public class AppExecutors {
 
     public boolean isLogExecutorShutdown() {
         return ((ExecutorService) mLogExecutor).isShutdown();
-    }
-
-    public boolean isConsoleExecutorShutdown() {
-        return ((ExecutorService) mConsoleExecutor).isShutdown();
     }
 }

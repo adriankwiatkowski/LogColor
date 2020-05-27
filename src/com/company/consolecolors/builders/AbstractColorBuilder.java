@@ -1,11 +1,11 @@
 package com.company.consolecolors.builders;
 
-import com.company.consolecolors.interfaces.Printable;
+import com.company.consolecolors.interfaces.ColorBuilder;
 import com.company.consolecolors.models.AnsiColor;
 
 import java.util.Objects;
 
-public abstract class AbstractColorBuilder implements Printable {
+public abstract class AbstractColorBuilder implements ColorBuilder {
 
     // String builder used throughout class.
     private StringBuilder mStringBuilder;
@@ -34,7 +34,7 @@ public abstract class AbstractColorBuilder implements Printable {
      */
     @Override
     public void appendColorReset() {
-        mStringBuilder.append(AnsiColor.ANSI_RESET.getValue());
+        mStringBuilder.append(AnsiColor.ANSI_RESET.getAnsi());
     }
 
     /**

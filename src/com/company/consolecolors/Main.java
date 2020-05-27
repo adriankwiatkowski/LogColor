@@ -4,8 +4,12 @@ import com.company.consolecolors.cli.CommandLine;
 import com.company.consolecolors.models.AnsiColor;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.utils.AppExecutors;
+import com.company.consolecolors.utils.PrintableFactory;
+import com.company.consolecolors.utils.PrintableManager;
 import com.company.consolecolors.utils.log.Log;
 import com.company.consolecolors.utils.printers.Printer;
+
+import javax.swing.*;
 
 public class Main {
 
@@ -15,12 +19,29 @@ public class Main {
 
     private void start() {
         AppExecutors.getInstance().mainThread().execute(() -> {
-//            printSampleText();
-//            printAllLevelLogsTest();
+            setLookAndFeel();
 
-            startCommandLineInterface();
+            PrintableManager printableManager = PrintableManager.getInstance();
+            printableManager.setPrintableConsole(PrintableFactory.PrintableType.WINDOW);
+            printableManager.setDayTheme();
 
-            AppExecutors.getInstance().shutdownMainThread();
+            printSampleText();
+            printAllLevelLogsTest();
+
+//            try {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+
+            printableManager.setNightTheme();
+            printableManager.setPrintableConsole(PrintableFactory.PrintableType.CONSOLE);
+            printSampleText();
+            printAllLevelLogsTest();
+
+//            startCommandLineInterface();
+
+//            AppExecutors.getInstance().shutdownMainThread();
         });
     }
 
@@ -54,10 +75,24 @@ public class Main {
     private void printAllLevelLogsTest() {
         Log.v("Verbose tag", "Useless verbose message.");
         Log.i("Info tag", "Informative message.");
-        Log.d("DEBUG_TAG", "Something not working here.");
+        Log.d("Debug tag", "Something not working here.");
         Log.w("Warning tag", "Warning, take care!");
         Log.e("Error tag", "Behold almighty error...");
         Log.w("Warning tag that will exceed max character limit.",
                 "Friendly warning message.");
+    }
+
+    private void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
     }
 }

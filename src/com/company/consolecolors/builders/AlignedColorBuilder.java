@@ -254,8 +254,8 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
     @Override
     public void appendTextColor(AnsiColor fg, AnsiColor bg, String text1) {
         // Encode foreground and background colors.
-        append(fg.getValue());
-        append(bg.getValue());
+        append(fg.getAnsi());
+        append(bg.getAnsi());
         // Append aligned text.
         appendTextAlign(text1);
     }
@@ -271,8 +271,8 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
      */
     public void appendTextColor(AnsiColor fg, AnsiColor bg, String text1, String text2) {
         // Encode foreground and background colors.
-        append(fg.getValue());
-        append(bg.getValue());
+        append(fg.getAnsi());
+        append(bg.getAnsi());
         // Append aligned text.
         appendTextAlign(text1, text2);
     }
@@ -289,8 +289,8 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
      */
     public void appendTextColor(AnsiColor fg, AnsiColor bg, String text1, String text2, String text3) {
         // Encode foreground and background colors.
-        append(fg.getValue());
-        append(bg.getValue());
+        append(fg.getAnsi());
+        append(bg.getAnsi());
         // Append aligned text.
         appendTextAlign(text1, text2, text3);
     }

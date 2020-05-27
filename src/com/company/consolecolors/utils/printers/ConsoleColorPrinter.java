@@ -53,7 +53,7 @@ public class ConsoleColorPrinter {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        AppExecutors.getInstance().consoleThread().execute(() ->
+        AppExecutors.getInstance().logThread().execute(() ->
                 System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
@@ -83,7 +83,7 @@ public class ConsoleColorPrinter {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        AppExecutors.getInstance().consoleThread().execute(() ->
+        AppExecutors.getInstance().logThread().execute(() ->
                 System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
@@ -122,7 +122,7 @@ public class ConsoleColorPrinter {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        AppExecutors.getInstance().consoleThread().execute(() ->
+        AppExecutors.getInstance().logThread().execute(() ->
                 System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
@@ -183,7 +183,7 @@ public class ConsoleColorPrinter {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        AppExecutors.getInstance().consoleThread().execute(() ->
+        AppExecutors.getInstance().logThread().execute(() ->
                 System.out.println(alignedColorBuilder.getText_Flush()));
     }
 

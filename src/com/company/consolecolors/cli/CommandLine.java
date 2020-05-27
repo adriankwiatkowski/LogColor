@@ -6,7 +6,6 @@ import com.company.consolecolors.models.LogType;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.utils.printers.ConsoleColorPrinter;
 import com.company.consolecolors.utils.CLIHelper;
-import com.company.consolecolors.utils.log.Log;
 import com.company.consolecolors.utils.printers.Printer;
 
 import java.util.Optional;

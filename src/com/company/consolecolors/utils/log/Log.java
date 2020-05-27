@@ -1,10 +1,12 @@
 package com.company.consolecolors.utils.log;
 
 import com.company.consolecolors.builders.SimpleColorBuilder;
+import com.company.consolecolors.interfaces.ColorBuilder;
 import com.company.consolecolors.interfaces.Printable;
 import com.company.consolecolors.models.AnsiColor;
 import com.company.consolecolors.models.TextAlignment;
 import com.company.consolecolors.utils.AppExecutors;
+import com.company.consolecolors.utils.PrintableManager;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -30,9 +32,12 @@ public class Log {
     private static final String DEFAULT_TAG = createDefaultTag();
     private static final String TAG_MSG_SEPARATOR = ": ";
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final Format FORMATTER_DEFAULT = new SimpleDateFormat(DATE_FORMAT);
 
-    private static final AnsiColor DATE_TAG_COLOR = ANSI_BRIGHT_BG_WHITE;
-    private static final AnsiColor TAG_COLOR = ANSI_BLUE;
+    private static final AnsiColor DATE_TAG_COLOR_DAY = ANSI_BRIGHT_BG_BLACK;
+    private static final AnsiColor DATE_TAG_COLOR_NIGHT = ANSI_BRIGHT_BG_WHITE;
+    private static final AnsiColor TAG_COLOR_DAY = ANSI_BLUE;
+    private static final AnsiColor TAG_COLOR_NIGHT = ANSI_BLUE;
 
     private static final TextAlignment TEXT_ALIGNMENT_LEVEL_LOG_INFO = TextAlignment.CENTER;
     private static final TextAlignment TEXT_ALIGNMENT_DATE_TAG = TextAlignment.CENTER;
@@ -52,8 +57,16 @@ public class Log {
         if (!mLogManager.isLoggable(LogLevel.INTERNAL_ERROR))
             return;
         // Print log directly instead of scheduling.
-        print(ANSI_BRIGHT_WHITE, ANSI_BG_BLACK,
-                LogLevel.INTERNAL_ERROR.getLevelTag(), tag, msg);
+        AnsiColor fg;
+        AnsiColor bg;
+        if (PrintableManager.getInstance().isDayTheme()) {
+            fg = LogLevel.INTERNAL_ERROR.getDayThemeFg();
+            bg = LogLevel.INTERNAL_ERROR.getDayThemeBg();
+        } else {
+            fg = LogLevel.INTERNAL_ERROR.getNightThemeFg();
+            bg = LogLevel.INTERNAL_ERROR.getNightThemeBg();
+        }
+        print(fg, bg, LogLevel.INTERNAL_ERROR.getLevelTag(), tag, msg);
     }
 
     public static void v(String msg) {
@@ -63,8 +76,16 @@ public class Log {
     public static void v(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.VERBOSE))
             return;
-        addLog(ANSI_BRIGHT_WHITE, ANSI_BG_WHITE,
-                LogLevel.VERBOSE.getLevelTag(), tag, msg);
+        AnsiColor fg;
+        AnsiColor bg;
+        if (PrintableManager.getInstance().isDayTheme()) {
+            fg = LogLevel.VERBOSE.getDayThemeFg();
+            bg = LogLevel.VERBOSE.getDayThemeBg();
+        } else {
+            fg = LogLevel.VERBOSE.getNightThemeFg();
+            bg = LogLevel.VERBOSE.getNightThemeBg();
+        }
+        addLog(fg, bg, LogLevel.VERBOSE.getLevelTag(), tag, msg);
     }
 
     public static void i(String msg) {
@@ -74,8 +95,16 @@ public class Log {
     public static void i(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.INFO))
             return;
-        addLog(ANSI_BRIGHT_WHITE, ANSI_BG_BLUE,
-                LogLevel.INFO.getLevelTag(), tag, msg);
+        AnsiColor fg;
+        AnsiColor bg;
+        if (PrintableManager.getInstance().isDayTheme()) {
+            fg = LogLevel.INFO.getDayThemeFg();
+            bg = LogLevel.INFO.getDayThemeBg();
+        } else {
+            fg = LogLevel.INFO.getNightThemeFg();
+            bg = LogLevel.INFO.getNightThemeBg();
+        }
+        addLog(fg, bg, LogLevel.INFO.getLevelTag(), tag, msg);
     }
 
     public static void d(String msg) {
@@ -85,8 +114,16 @@ public class Log {
     public static void d(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.DEBUG))
             return;
-        addLog(ANSI_BRIGHT_GREEN, ANSI_BRIGHT_BG_BLACK,
-                LogLevel.DEBUG.getLevelTag(), tag, msg);
+        AnsiColor fg;
+        AnsiColor bg;
+        if (PrintableManager.getInstance().isDayTheme()) {
+            fg = LogLevel.DEBUG.getDayThemeFg();
+            bg = LogLevel.DEBUG.getDayThemeBg();
+        } else {
+            fg = LogLevel.DEBUG.getNightThemeFg();
+            bg = LogLevel.DEBUG.getNightThemeBg();
+        }
+        addLog(fg, bg, LogLevel.DEBUG.getLevelTag(), tag, msg);
     }
 
     public static void w(String msg) {
@@ -96,8 +133,16 @@ public class Log {
     public static void w(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.WARNING))
             return;
-        addLog(ANSI_BRIGHT_WHITE, ANSI_BRIGHT_BG_YELLOW,
-                LogLevel.WARNING.getLevelTag(), tag, msg);
+        AnsiColor fg;
+        AnsiColor bg;
+        if (PrintableManager.getInstance().isDayTheme()) {
+            fg = LogLevel.WARNING.getDayThemeFg();
+            bg = LogLevel.WARNING.getDayThemeBg();
+        } else {
+            fg = LogLevel.WARNING.getNightThemeFg();
+            bg = LogLevel.WARNING.getNightThemeBg();
+        }
+        addLog(fg, bg, LogLevel.WARNING.getLevelTag(), tag, msg);
     }
 
     public static void e(String msg) {
@@ -107,8 +152,16 @@ public class Log {
     public static void e(String tag, String msg) {
         if (!mLogManager.isLoggable(LogLevel.ERROR))
             return;
-        addLog(ANSI_RED, ANSI_BRIGHT_BG_WHITE,
-                LogLevel.ERROR.getLevelTag(), tag, msg);
+        AnsiColor fg;
+        AnsiColor bg;
+        if (PrintableManager.getInstance().isDayTheme()) {
+            fg = LogLevel.ERROR.getDayThemeFg();
+            bg = LogLevel.ERROR.getDayThemeBg();
+        } else {
+            fg = LogLevel.ERROR.getNightThemeFg();
+            bg = LogLevel.ERROR.getNightThemeBg();
+        }
+        addLog(fg, bg, LogLevel.ERROR.getLevelTag(), tag, msg);
     }
 
     private static void addLog(AnsiColor color, String debugLevelInfo,
@@ -135,7 +188,7 @@ public class Log {
 
         simpleColorBuilder.setTextLength(LEVEL_INFO_CHAR_LIMIT);
         simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_LEVEL_LOG_INFO);
-        appendLevelInfo(simpleColorBuilder, bg, debugLevelInfo);
+        appendLevelInfo(simpleColorBuilder, fg, bg, debugLevelInfo);
 
         String dateTag = createCurrentDateTag();
         int desiredLength = dateTag.length() + DATE_TAG_EXTRA_CHAR_LIMIT;
@@ -151,40 +204,61 @@ public class Log {
         simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_MSG);
         appendMsg(simpleColorBuilder, fg, bg, msg);
 
-        System.out.print(simpleColorBuilder.getText_Flush());
+        PrintableManager.getInstance().getPrintable().print_flush(simpleColorBuilder);
     }
 
-    private static void appendLevelInfo(Printable printable, AnsiColor bg,
+    private static void appendLevelInfo(ColorBuilder colorBuilder,
+                                        AnsiColor fg,
+                                        AnsiColor bg,
                                         String debugLevelInfo) {
-        appendTextColor_Reset_Separator(printable, bg, debugLevelInfo, TAG_MSG_SEPARATOR);
+        appendTextColor_Reset_Separator(colorBuilder, fg, bg, debugLevelInfo, TAG_MSG_SEPARATOR);
     }
 
-    private static void appendDateTag(Printable printable, String dateTag,
+    private static void appendDateTag(ColorBuilder colorBuilder, String dateTag,
                                       int desiredLength) {
-        appendTextColor_Reset_Separator(printable, DATE_TAG_COLOR, dateTag, TAG_MSG_SEPARATOR);
+        AnsiColor color;
+        if (PrintableManager.getInstance().isDayTheme()) {
+            color = DATE_TAG_COLOR_DAY;
+        } else {
+            color = DATE_TAG_COLOR_NIGHT;
+        }
+        appendTextColor_Reset_Separator(colorBuilder, color, dateTag, TAG_MSG_SEPARATOR);
     }
 
-    private static void appendTag(Printable printable, String tag) {
+    private static void appendTag(ColorBuilder colorBuilder, String tag) {
         tag = (tag == null || tag.isEmpty()) ? DEFAULT_TAG : tag;
 
-        appendTextColor_Reset_Separator(printable, TAG_COLOR, tag, TAG_MSG_SEPARATOR);
+        AnsiColor color;
+        if (PrintableManager.getInstance().isDayTheme()) {
+            color = TAG_COLOR_DAY;
+        } else {
+            color = TAG_COLOR_NIGHT;
+        }
+        appendTextColor_Reset_Separator(colorBuilder, color, tag, TAG_MSG_SEPARATOR);
     }
 
-    private static void appendMsg(Printable printable, AnsiColor fg,
+    private static void appendMsg(ColorBuilder colorBuilder, AnsiColor fg,
                                   AnsiColor bg, String msg) {
-        printable.appendTextColor(fg, bg, msg);
-        printable.appendColorReset_NewLine();
+        colorBuilder.appendTextColor(fg, bg, msg);
+        colorBuilder.appendColorReset_NewLine();
     }
 
-    private static void appendTextColor_Reset_Separator(Printable printable, AnsiColor color,
+    private static void appendTextColor_Reset_Separator(ColorBuilder colorBuilder, AnsiColor color,
                                                         String msg, String separator) {
-        printable.appendTextColor_Reset(color, msg);
-        printable.append(separator);
+        colorBuilder.appendTextColor_Reset(color, msg);
+        colorBuilder.append(separator);
+    }
+
+    private static void appendTextColor_Reset_Separator(ColorBuilder colorBuilder,
+                                                        AnsiColor fg,
+                                                        AnsiColor bg,
+                                                        String msg, String separator) {
+        colorBuilder.appendTextColor_Reset(fg, bg, msg);
+        colorBuilder.append(separator);
     }
 
     private static String createCurrentDateTag() {
-        Format formatter = new SimpleDateFormat(DATE_FORMAT);
-        return formatter.format(new Date());
+        return FORMATTER_DEFAULT.format(new Date());
     }
 
     private static String createDefaultTag() {

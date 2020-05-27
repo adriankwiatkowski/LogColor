@@ -38,13 +38,13 @@ public class ColorBuilderImpl extends AbstractColorBuilder {
 
     @Override
     public void appendColor(AnsiColor color) {
-        append(color.getValue());
+        append(color.getAnsi());
     }
 
     @Override
     public void appendColor(AnsiColor fg, AnsiColor bg) {
-        append(fg.getValue());
-        append(bg.getValue());
+        append(bg.getAnsi());
+        append(fg.getAnsi());
     }
 
     /**
@@ -76,16 +76,14 @@ public class ColorBuilderImpl extends AbstractColorBuilder {
      */
     @Override
     public void appendTextColor(AnsiColor fg, AnsiColor bg, String text) {
-        appendColor(fg);
-        appendColor(bg);
+        appendColor(fg, bg);
         appendTextAlign(text);
     }
 
     @Override
     public void appendTextColor(AnsiColor fg, AnsiColor bg,
                                 String text, TextAlignment textAlignment) {
-        appendColor(fg);
-        appendColor(bg);
+        appendColor(fg, bg);
         appendTextAlign(text, getTextLength(text), textAlignment);
     }
 
