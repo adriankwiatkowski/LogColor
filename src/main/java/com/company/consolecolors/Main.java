@@ -22,11 +22,11 @@ public class Main {
             setLookAndFeel();
 
             PrintableManager printableManager = PrintableManager.getInstance();
-            printableManager.setPrintableConsole(PrintableFactory.PrintableType.WINDOW);
-            printableManager.setDayTheme();
-
-            printSampleText();
-            printAllLevelLogsTest();
+//            printableManager.setPrintableConsole(PrintableFactory.PrintableType.WINDOW);
+//            printableManager.setDayTheme();
+//
+//            printSampleText();
+//            printAllLevelLogsTest();
 
 //            try {
 //                Thread.sleep(5000);
@@ -38,6 +38,14 @@ public class Main {
             printableManager.setPrintableConsole(PrintableFactory.PrintableType.CONSOLE);
             printSampleText();
             printAllLevelLogsTest();
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            AppExecutors.getInstance().shutdownNowExecutors();
 
 //            startCommandLineInterface();
 
