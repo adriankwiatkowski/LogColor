@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ConsoleColors.iml" filepath="$PROJECT_DIR$/ConsoleColors.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConsoleColors.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ConsoleColors.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConsoleColors.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ConsoleColors.test.iml" />
     </modules>
   </component>
 </project>

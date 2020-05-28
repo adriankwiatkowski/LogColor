@@ -1,4 +1,12 @@
-/out/
-/src/META-INF/
-/.idea/artifacts
 /.idea/codeStyles
+*.iml
+.gradle
+/local.properties
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+/gradle.properties
