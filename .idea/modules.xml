@@ -6,10 +6,19 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LogColor.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LogColor.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LogColor.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LogColor.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LogColor.app.test.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LogColor.app.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/color/LogColor.color.iml" filepath="$PROJECT_DIR$/.idea/modules/color/LogColor.color.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/color/LogColor.color.main.iml" filepath="$PROJECT_DIR$/.idea/modules/color/LogColor.color.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/color/LogColor.color.test.iml" filepath="$PROJECT_DIR$/.idea/modules/color/LogColor.color.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.iml" filepath="$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.main.iml" filepath="$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.test.iml" filepath="$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/log/LogColor.log.iml" filepath="$PROJECT_DIR$/.idea/modules/log/LogColor.log.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/log/LogColor.log.main.iml" filepath="$PROJECT_DIR$/.idea/modules/log/LogColor.log.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/log/LogColor.log.test.iml" filepath="$PROJECT_DIR$/.idea/modules/log/LogColor.log.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/LogColor.main.iml" filepath="$PROJECT_DIR$/.idea/modules/LogColor.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/printers/LogColor.printers.iml" filepath="$PROJECT_DIR$/.idea/modules/printers/LogColor.printers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/printers/LogColor.printers.main.iml" filepath="$PROJECT_DIR$/.idea/modules/printers/LogColor.printers.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/printers/LogColor.printers.test.iml" filepath="$PROJECT_DIR$/.idea/modules/printers/LogColor.printers.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/LogColor.test.iml" filepath="$PROJECT_DIR$/.idea/modules/LogColor.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app.iml" />
     </modules>

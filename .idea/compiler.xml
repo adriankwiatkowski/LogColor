@@ -4,9 +4,15 @@
     <bytecodeTargetLevel>
       <module name="LogColor.app.main" target="1.8" />
       <module name="LogColor.app.test" target="1.8" />
+      <module name="LogColor.color.main" target="1.8" />
+      <module name="LogColor.color.test" target="1.8" />
       <module name="LogColor.colorbuilder.main" target="1.8" />
       <module name="LogColor.colorbuilder.test" target="1.8" />
+      <module name="LogColor.log.main" target="1.8" />
+      <module name="LogColor.log.test" target="1.8" />
       <module name="LogColor.main" target="1.8" />
+      <module name="LogColor.printers.main" target="1.8" />
+      <module name="LogColor.printers.test" target="1.8" />
       <module name="LogColor.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>

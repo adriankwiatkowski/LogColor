@@ -8,12 +8,16 @@ public class AppExecutors {
 
     private static final Object LOCK = new Object();
     private static AppExecutors sInstance;
-    private final Executor mMainThread;
-    private final Executor mLogExecutor;
+    private final Executor mMainExecutor;
+    private final Executor mIOExecutor;
+    private final Executor mNetworkExecutor;
 
-    private AppExecutors(Executor mainThread, Executor logExecutor) {
-        this.mMainThread = mainThread;
-        this.mLogExecutor = logExecutor;
+    private AppExecutors(Executor mainExecutor,
+                         Executor ioExecutor,
+                         Executor networkExecutor) {
+        this.mMainExecutor = mainExecutor;
+        this.mIOExecutor = ioExecutor;
+        this.mNetworkExecutor = networkExecutor;
     }
 
     public static AppExecutors getInstance() {
@@ -21,6 +25,7 @@ public class AppExecutors {
             synchronized (LOCK) {
                 if (sInstance == null) {
                     sInstance = new AppExecutors(
+                            Executors.newSingleThreadExecutor(),
                             Executors.newSingleThreadExecutor(),
                             Executors.newSingleThreadExecutor());
                 }
@@ -31,33 +36,18 @@ public class AppExecutors {
     }
 
     public Executor mainThread() {
-        return mMainThread;
+        return mMainExecutor;
     }
 
-    public Executor logThread() {
-        return mLogExecutor;
+    public Executor diskThread() {
+        return mIOExecutor;
     }
 
-    public void shutdownMainThread() {
-//        ((ExecutorService) mMainThread).shutdownNow();
-        shutdownExecutors();
+    public Executor networkThread() {
+        return mNetworkExecutor;
     }
 
     public void shutdownExecutors() {
-        ((ExecutorService) mMainThread).shutdown();
-        ((ExecutorService) mLogExecutor).shutdown();
-    }
-
-    public void shutdownNowExecutors() {
-        ((ExecutorService) mMainThread).shutdownNow();
-        ((ExecutorService) mLogExecutor).shutdownNow();
-    }
-
-    public boolean isMainThreadShutdown() {
-        return ((ExecutorService) mMainThread).isShutdown();
-    }
-
-    public boolean isLogExecutorShutdown() {
-        return ((ExecutorService) mLogExecutor).isShutdown();
+        ((ExecutorService) mMainExecutor).shutdown();
     }
 }

@@ -10,7 +10,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/color" />
             <option value="$PROJECT_DIR$/colorbuilder" />
+            <option value="$PROJECT_DIR$/log" />
+            <option value="$PROJECT_DIR$/printers" />
           </set>
         </option>
         <option name="useQualifiedModuleNames" value="true" />

@@ -1,6 +1,6 @@
 package com.example.logcolor.utils;
 
-import com.example.logcolor.utils.log.Log;
+import com.example.log.Log;
 
 import java.util.concurrent.ThreadLocalRandom;
 
