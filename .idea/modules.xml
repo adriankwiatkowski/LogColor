@@ -2,9 +2,16 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ConsoleColors.iml" filepath="$PROJECT_DIR$/ConsoleColors.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConsoleColors.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ConsoleColors.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConsoleColors.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ConsoleColors.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LogColor.iml" filepath="$PROJECT_DIR$/.idea/modules/LogColor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LogColor.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LogColor.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LogColor.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LogColor.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LogColor.app.test.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LogColor.app.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.iml" filepath="$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.main.iml" filepath="$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.test.iml" filepath="$PROJECT_DIR$/.idea/modules/colorbuilder/LogColor.colorbuilder.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LogColor.main.iml" filepath="$PROJECT_DIR$/.idea/modules/LogColor.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LogColor.test.iml" filepath="$PROJECT_DIR$/.idea/modules/LogColor.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app.iml" />
     </modules>
   </component>
 </project>
