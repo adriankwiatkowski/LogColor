@@ -4,7 +4,6 @@ import com.example.color.models.AnsiColor;
 import com.example.color.models.TextAlignment;
 import com.example.colorbuilder.builders.SimpleColorBuilder;
 import com.example.color.utils.TextUtils;
-import com.example.printers.utils.PrinterAppExecutors;
 
 public class Printer {
 
@@ -113,7 +112,7 @@ public class Printer {
         if (msg == null)
             throw new IllegalArgumentException("Message cannot be null.");
 
-        PrinterAppExecutors.getInstance().logThread().execute(() ->
+        PrintableManager.getInstance().logThread(() ->
                 printScheduled(fg, bg, textAlignment, extraSpace, msg, newLine));
     }
 

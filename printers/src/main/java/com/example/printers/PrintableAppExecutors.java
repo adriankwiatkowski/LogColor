@@ -1,27 +1,29 @@
-package com.example.printers.utils;
+package com.example.printers;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class PrinterAppExecutors {
+class PrintableAppExecutors {
 
     private static final int TIMEOUT_TERMINATION_SECONDS = 60;
 
     private static final Object LOCK = new Object();
-    private static PrinterAppExecutors sInstance;
+
+    private static PrintableAppExecutors sInstance;
+
     private final ExecutorService mLogExecutor;
 
-    private PrinterAppExecutors(ExecutorService logExecutor) {
+    private PrintableAppExecutors(ExecutorService logExecutor) {
         this.mLogExecutor = logExecutor;
     }
 
-    public static PrinterAppExecutors getInstance() {
+    static PrintableAppExecutors getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {
-                    sInstance = new PrinterAppExecutors(
+                    sInstance = new PrintableAppExecutors(
                             Executors.newSingleThreadExecutor());
                 }
             }
@@ -30,12 +32,14 @@ public class PrinterAppExecutors {
         return sInstance;
     }
 
-    public Executor logThread() {
+    Executor logThread() {
         return mLogExecutor;
     }
 
-    public void shutdownExecutors() {
+    void shutdownExecutors() {
         shutdownAndAwaitTermination(mLogExecutor);
+
+        sInstance = null;
     }
 
     private void shutdownAndAwaitTermination(ExecutorService executorService) {

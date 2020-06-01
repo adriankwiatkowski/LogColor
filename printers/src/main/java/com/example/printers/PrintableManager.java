@@ -17,6 +17,13 @@ public class PrintableManager {
         mPrintable = PrintableFactory.createPrintable(
                 PrintableType.CONSOLE,
                 mIsNightTheme);
+
+        PrintableThreads.addCloseTask(() -> {
+            if (mPrintable != null) {
+                mPrintable.onClose();
+                mPrintable = null;
+            }
+        });
     }
 
     public static PrintableManager getInstance() {
@@ -31,6 +38,14 @@ public class PrintableManager {
         return sInstance;
     }
 
+    public void logThread(Runnable runnable) {
+        PrintableThreads.logThread(runnable);
+    }
+
+    public void shutdownThreads() {
+        PrintableThreads.shutdownThreads();
+    }
+
     public synchronized void setPrintable(Printable printable) {
         if (printable == null)
             throw new IllegalArgumentException("Printable cannot be null.");
@@ -41,8 +56,7 @@ public class PrintableManager {
         mPrintable = printable;
     }
 
-    public synchronized void setPrintableConsole(
-            PrintableType printableType) {
+    public synchronized void setPrintable(PrintableType printableType) {
         Printable printable = PrintableFactory.setPrintable(
                 printableType,
                 mPrintable,

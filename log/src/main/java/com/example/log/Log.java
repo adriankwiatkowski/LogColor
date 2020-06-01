@@ -6,7 +6,6 @@ import com.example.colorbuilder.builders.SimpleColorBuilder;
 import com.example.colorbuilder.interfaces.ColorBuilder;
 import com.example.log.models.LogLevel;
 import com.example.printers.PrintableManager;
-import com.example.printers.utils.PrinterAppExecutors;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -44,8 +43,6 @@ public class Log {
     private static final TextAlignment TEXT_ALIGNMENT_TAG = TextAlignment.NONE;
     private static final TextAlignment TEXT_ALIGNMENT_MSG = TextAlignment.NONE;
 
-    private static final LogManager mLogManager = LogManager.getInstance();
-
     private Log() {
     }
 
@@ -54,7 +51,7 @@ public class Log {
     }
 
     private static void internal_err(String tag, String msg) {
-        if (!mLogManager.isLoggable(LogLevel.INTERNAL_ERROR))
+        if (!LogManager.getInstance().isLoggable(LogLevel.INTERNAL_ERROR))
             return;
         // Print log directly instead of scheduling.
         AnsiColor fg;
@@ -74,7 +71,7 @@ public class Log {
     }
 
     public static void v(String tag, String msg) {
-        if (!mLogManager.isLoggable(LogLevel.VERBOSE))
+        if (!LogManager.getInstance().isLoggable(LogLevel.VERBOSE))
             return;
         AnsiColor fg;
         AnsiColor bg;
@@ -93,7 +90,7 @@ public class Log {
     }
 
     public static void i(String tag, String msg) {
-        if (!mLogManager.isLoggable(LogLevel.INFO))
+        if (!LogManager.getInstance().isLoggable(LogLevel.INFO))
             return;
         AnsiColor fg;
         AnsiColor bg;
@@ -112,7 +109,7 @@ public class Log {
     }
 
     public static void d(String tag, String msg) {
-        if (!mLogManager.isLoggable(LogLevel.DEBUG))
+        if (!LogManager.getInstance().isLoggable(LogLevel.DEBUG))
             return;
         AnsiColor fg;
         AnsiColor bg;
@@ -131,7 +128,7 @@ public class Log {
     }
 
     public static void w(String tag, String msg) {
-        if (!mLogManager.isLoggable(LogLevel.WARNING))
+        if (!LogManager.getInstance().isLoggable(LogLevel.WARNING))
             return;
         AnsiColor fg;
         AnsiColor bg;
@@ -150,7 +147,7 @@ public class Log {
     }
 
     public static void e(String tag, String msg) {
-        if (!mLogManager.isLoggable(LogLevel.ERROR))
+        if (!LogManager.getInstance().isLoggable(LogLevel.ERROR))
             return;
         AnsiColor fg;
         AnsiColor bg;
@@ -164,18 +161,21 @@ public class Log {
         addLog(fg, bg, LogLevel.ERROR.getLevelTag(), tag, msg);
     }
 
-    private static void addLog(AnsiColor color, String debugLevelInfo,
+    private static void addLog(AnsiColor color,
+                               String debugLevelInfo,
                                String tag, String msg) {
         addLog(color, color, debugLevelInfo, tag, msg);
     }
 
-    private static void addLog(AnsiColor fg, AnsiColor bg, String debugLevelInfo,
+    private static void addLog(AnsiColor fg, AnsiColor bg,
+                               String debugLevelInfo,
                                String tag, String msg) {
-        PrinterAppExecutors.getInstance().logThread().execute(() ->
+        PrintableManager.getInstance().logThread(() ->
                 print(fg, bg, debugLevelInfo, tag, msg));
     }
 
-    private static void print(AnsiColor fg, AnsiColor bg, String debugLevelInfo,
+    private static void print(AnsiColor fg, AnsiColor bg,
+                              String debugLevelInfo,
                               String tag, String msg) {
         if (msg == null || msg.isEmpty()) {
             throw new IllegalArgumentException(ERROR_MESSAGE_EMPTY);

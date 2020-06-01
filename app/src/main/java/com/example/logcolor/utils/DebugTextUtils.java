@@ -6,8 +6,8 @@ import com.example.color.models.TextAttribute;
 import com.example.colorbuilder.builders.AlignedColorBuilder;
 import com.example.color.utils.TextUtils;
 import com.example.log.Log;
+import com.example.printers.PrintableManager;
 import com.example.printers.Printer;
-import com.example.printers.utils.PrinterAppExecutors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,7 @@ public class DebugTextUtils {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        PrinterAppExecutors.getInstance().logThread().execute(() ->
+        PrintableManager.getInstance().logThread(() ->
                 System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
@@ -101,13 +101,13 @@ public class DebugTextUtils {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        PrinterAppExecutors.getInstance().logThread().execute(() ->
+        PrintableManager.getInstance().logThread(() ->
                 System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
     public static void printIncrementalNumbers(TextAlignment textAlignment,
-                                        int extraSpace,
-                                        int maxBoundIncremental) {
+                                               int extraSpace,
+                                               int maxBoundIncremental) {
         int randomNumber = RandomUtils.generateRandomNumber(maxBoundIncremental);
         int maxNumberLength = TextUtils.getTextLength(randomNumber);
 
@@ -137,14 +137,14 @@ public class DebugTextUtils {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        PrinterAppExecutors.getInstance().logThread().execute(() ->
+        PrintableManager.getInstance().logThread(() ->
                 System.out.println(alignedColorBuilder.getText_Flush()));
     }
 
     public static void printAllColorsText(TextAlignment textAlignment,
-                                   int extraSpace,
-                                   int maxBoundTextLength,
-                                   int textCountInColumn) {
+                                          int extraSpace,
+                                          int maxBoundTextLength,
+                                          int textCountInColumn) {
         if (maxBoundTextLength < 1)
             throw new IllegalArgumentException("Max bound text length has to be at least 1.");
         if (textCountInColumn <= 0)
@@ -194,7 +194,7 @@ public class DebugTextUtils {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        PrinterAppExecutors.getInstance().logThread().execute(() ->
+        PrintableManager.getInstance().logThread(() ->
                 System.out.println(alignedColorBuilder.getText_Flush()));
     }
 }

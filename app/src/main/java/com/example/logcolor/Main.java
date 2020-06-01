@@ -19,17 +19,18 @@ public class Main {
 
             PrintableManager printableManager = PrintableManager.getInstance();
             printableManager.setDayTheme();
-            printableManager.setPrintableConsole(PrintableType.WINDOW);
+            printableManager.setPrintable(PrintableType.WINDOW);
             DebugTextUtils.printSampleText();
             DebugTextUtils.printAllLevelLogsTest();
             RandomUtils.printRandomDebugInfo();
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
+            PrintableManager.getInstance().shutdownThreads();
             AppExecutors.getInstance().shutdownExecutors();
         });
     }

@@ -23,13 +23,16 @@ public class PrintableConsole implements Printable {
 
     @Override
     public void setDayTheme() {
+        // Not implemented.
     }
 
     @Override
     public void setNightTheme() {
+        // Not implemented.
     }
 
     @Override
     public void onClose() {
+        // Not implemented.
     }
 }
