@@ -1,14 +1,29 @@
-plugins {
-    id 'java'
-}
+allprojects {
+    apply plugin: 'java'
 
-group 'com.example.com.company.logcolor'
-version '1.0'
+    repositories {
+        mavenCentral()
+    }
+
+    group = 'com.example.logcolor'
+    version = '1.0'
+}
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
+configurations {
+    childJars
+}
+
+dependencies {
+    subprojects.each {
+        childJars project(it.path)
+    }
+}
+
+jar {
+    dependsOn configurations.childJars
+    from { configurations.childJars.collect { zipTree(it) } }
 }
 
 dependencies {

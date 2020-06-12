@@ -1,13 +1,13 @@
 package com.example.logcolor.utils;
 
-import com.example.color.models.AnsiColor;
-import com.example.color.models.TextAlignment;
-import com.example.color.models.TextAttribute;
-import com.example.colorbuilder.builders.AlignedColorBuilder;
-import com.example.color.utils.TextUtils;
-import com.example.log.Log;
-import com.example.printers.PrintableManager;
-import com.example.printers.Printer;
+import com.example.logcolor.color.models.AnsiColor;
+import com.example.logcolor.color.models.TextAlignment;
+import com.example.logcolor.color.models.TextAttribute;
+import com.example.logcolor.colorbuilder.builders.AlignedColorBuilder;
+import com.example.logcolor.color.utils.TextUtils;
+import com.example.logcolor.log.Log;
+import com.example.logcolor.printers.PrintableManager;
+import com.example.logcolor.printers.Printer;
 
 import java.util.ArrayList;
 import java.util.List;
