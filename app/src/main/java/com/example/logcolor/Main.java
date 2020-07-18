@@ -1,5 +1,11 @@
 package com.example.logcolor;
 
+import com.example.logcolor.color.models.TextAlignment;
+import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
+import com.example.logcolor.log.Log;
+import com.example.logcolor.log.LogManager;
+import com.example.logcolor.log.models.LogLevel;
+import com.example.logcolor.printers.interfaces.Printable;
 import com.example.logcolor.utils.AppExecutors;
 import com.example.logcolor.utils.DebugTextUtils;
 import com.example.logcolor.utils.RandomUtils;
@@ -14,14 +20,16 @@ public class Main {
     }
 
     private void start() {
+        /*
         AppExecutors.getInstance().mainThread().execute(() -> {
             WindowLookUtils.setLookAndFeel();
 
             PrintableManager printableManager = PrintableManager.getInstance();
-            printableManager.setDayTheme();
+            printableManager.setNightTheme();
             printableManager.setPrintable(PrintableType.WINDOW);
             DebugTextUtils.printSampleText();
             DebugTextUtils.printAllLevelLogsTest();
+            DebugTextUtils.printAllColorsIndexed(TextAlignment.CENTER, 4);
             RandomUtils.printRandomDebugInfo();
 
             try {
@@ -33,5 +41,6 @@ public class Main {
             PrintableManager.getInstance().shutdownThreads();
             AppExecutors.getInstance().shutdownExecutors();
         });
+         */
     }
 }

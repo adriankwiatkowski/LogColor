@@ -9,7 +9,7 @@ allprojects {
     version = '1.0'
 }
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.9
 
 configurations {
     childJars

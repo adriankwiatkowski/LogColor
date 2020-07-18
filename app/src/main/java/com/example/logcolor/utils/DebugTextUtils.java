@@ -75,7 +75,7 @@ public class DebugTextUtils {
         }
 
         PrintableManager.getInstance().logThread(() ->
-                System.out.println(alignedColorBuilder.getText_Flush()));
+                Printer.println(alignedColorBuilder.getText_Flush()));
     }
 
     public static void printAllColorsIndexed(TextAlignment textAlignment, int extraSpace) {
@@ -102,7 +102,7 @@ public class DebugTextUtils {
         }
 
         PrintableManager.getInstance().logThread(() ->
-                System.out.println(alignedColorBuilder.getText_Flush()));
+                Printer.println(alignedColorBuilder.getText_Flush()));
     }
 
     public static void printIncrementalNumbers(TextAlignment textAlignment,
@@ -138,7 +138,7 @@ public class DebugTextUtils {
         }
 
         PrintableManager.getInstance().logThread(() ->
-                System.out.println(alignedColorBuilder.getText_Flush()));
+                Printer.println(alignedColorBuilder.getText_Flush()));
     }
 
     public static void printAllColorsText(TextAlignment textAlignment,
@@ -195,6 +195,6 @@ public class DebugTextUtils {
         }
 
         PrintableManager.getInstance().logThread(() ->
-                System.out.println(alignedColorBuilder.getText_Flush()));
+                Printer.println(alignedColorBuilder.getText_Flush()));
     }
 }
