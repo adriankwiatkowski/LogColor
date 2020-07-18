@@ -162,7 +162,7 @@ public class PrintableWindow implements Printable {
     }
 
     private void addTextToList(String string) {
-        if (!string.contains("\n")) {
+        if (!string.contains("\n") && mListModel.size() > 0) {
             String htmlText = HtmlUtils.buildHtmlFromAnsi(string);
             htmlText = HtmlUtils.removeTextWrapperHtml(htmlText);
             String originalHtmlText = mListModel.get(mListModel.size() - 1);
