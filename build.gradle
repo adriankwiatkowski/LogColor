@@ -5,9 +5,11 @@ allprojects {
         mavenCentral()
     }
 
-    group = 'com.example.logcolor'
-    version = '1.0'
 }
+
+apply plugin: 'maven'
+group = 'com.example.logcolor'
+version = '1.0'
 
 compileJava {
     sourceCompatibility = JavaVersion.VERSION_1_9
