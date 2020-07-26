@@ -39,36 +39,38 @@ public class RandomUtils {
      * @throws IllegalArgumentException if min or max is < 0 || > 127.
      */
     public static String generateRandomAsciiString(int minAscii, int maxAscii, int maxLength) {
-        if (minAscii < 0 || minAscii > 127)
+        if (minAscii < 0 || minAscii > 127) {
             throw new IllegalArgumentException(
                     "min ascii must greater than 0 and lesser than 127 and was: "
-                            + minAscii
-                            + ".");
-        if (maxAscii < 0 || maxAscii > 127)
+                    + minAscii
+                    + ".");
+        }
+        if (maxAscii < 0 || maxAscii > 127) {
             throw new IllegalArgumentException(
                     "max Ascii must greater than 0 and lesser than 127 and was: "
-                            + minAscii
-                            + ".");
+                    + minAscii
+                    + ".");
+        }
 
         StringBuilder sb = new StringBuilder(maxLength);
 
         int randomLength = ThreadLocalRandom.current().nextInt(maxLength, maxLength + 1);
         ThreadLocalRandom.current()
-                .ints(minAscii, maxAscii)
-                .limit(randomLength)
-                .forEach(i -> sb.append((char) i));
+                         .ints(minAscii, maxAscii)
+                         .limit(randomLength)
+                         .forEach(i -> sb.append((char) i));
 
         return sb.toString();
     }
 
     public static void printRandomDebugInfo() {
         ThreadLocalRandom.current()
-                .ints(20, 75)
-                .limit(100)
-                .forEach(r -> {
-                    String msg = RandomUtils.generateRandomAsciiString(r);
-                    randomLog(msg, ThreadLocalRandom.current().nextInt(0, 4 + 1));
-                });
+                         .ints(20, 75)
+                         .limit(100)
+                         .forEach(r -> {
+                             String msg = RandomUtils.generateRandomAsciiString(r);
+                             randomLog(msg, ThreadLocalRandom.current().nextInt(0, 4 + 1));
+                         });
     }
 
     private static void randomLog(String msg, int random) {

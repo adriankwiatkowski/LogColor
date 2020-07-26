@@ -28,8 +28,9 @@ public class SimpleColorBuilder extends ColorBuilderImpl {
         }
 
         public Builder addTextAlignment(TextAlignment textAlignment) {
-            if (textAlignment == null)
+            if (textAlignment == null) {
                 throw new IllegalArgumentException("TextAlignment cannot be null.");
+            }
 
             this.textAlignment = textAlignment;
 
@@ -85,8 +86,9 @@ public class SimpleColorBuilder extends ColorBuilderImpl {
     }
 
     public void setTextAlignment(TextAlignment textAlignment) {
-        if (textAlignment == null)
+        if (textAlignment == null) {
             throw new IllegalArgumentException("TextAlignment cannot be null.");
+        }
 
         this.mTextAlignment = textAlignment;
     }

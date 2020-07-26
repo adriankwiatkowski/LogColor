@@ -2,8 +2,8 @@ package com.example.logcolor.printers;
 
 import com.example.logcolor.color.models.AnsiColor;
 import com.example.logcolor.color.models.TextAlignment;
-import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
 import com.example.logcolor.color.utils.TextUtils;
+import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
 
 public class Printer {
 
@@ -109,11 +109,17 @@ public class Printer {
     private static void addPrintToQueue(AnsiColor fg, AnsiColor bg,
                                         TextAlignment textAlignment, int extraSpace,
                                         String msg, boolean newLine) {
-        if (msg == null)
+        if (msg == null) {
             throw new IllegalArgumentException("Message cannot be null.");
+        }
 
         PrintableManager.getInstance().logThread(() ->
-                printScheduled(fg, bg, textAlignment, extraSpace, msg, newLine));
+                                                         printScheduled(fg,
+                                                                        bg,
+                                                                        textAlignment,
+                                                                        extraSpace,
+                                                                        msg,
+                                                                        newLine));
     }
 
     private static void printScheduled(AnsiColor fg, AnsiColor bg,
@@ -121,13 +127,16 @@ public class Printer {
                                        String text, boolean newLine) {
         SimpleColorBuilder colorBuilder = new SimpleColorBuilder.Builder().build();
 
-        if (fg != null)
+        if (fg != null) {
             colorBuilder.appendColor(fg);
-        if (bg != null)
+        }
+        if (bg != null) {
             colorBuilder.appendColor(bg);
+        }
 
-        if (text.isEmpty() && !newLine)
+        if (text.isEmpty() && !newLine) {
             text = EMPTY_MSG;
+        }
 
         StringBuilder sb = new StringBuilder();
         int totalSpace = TextUtils.getTextLength(text) + extraSpace;
@@ -136,8 +145,9 @@ public class Printer {
         colorBuilder.append(sb.toString());
         colorBuilder.appendColorReset();
 
-        if (newLine)
+        if (newLine) {
             colorBuilder.appendNewLine();
+        }
 
         PrintableManager.getInstance().getPrintable().print_flush(colorBuilder);
     }

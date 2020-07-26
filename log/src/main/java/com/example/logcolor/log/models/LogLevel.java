@@ -9,11 +9,21 @@ import static com.example.logcolor.color.models.AnsiColor.*;
 
 public enum LogLevel {
 
-    INTERNAL_ERROR(0, "INTERNAL_ERROR", ANSI_BLUE, ANSI_BRIGHT_BG_CYAN, ANSI_BRIGHT_WHITE, ANSI_BG_BLACK),
+    INTERNAL_ERROR(0,
+                   "INTERNAL_ERROR",
+                   ANSI_BLUE,
+                   ANSI_BRIGHT_BG_CYAN,
+                   ANSI_BRIGHT_WHITE,
+                   ANSI_BG_BLACK),
     VERBOSE(1, "VERBOSE", ANSI_BLACK, ANSI_BG_WHITE, ANSI_BRIGHT_WHITE, ANSI_BG_WHITE),
     INFO(2, "INFO", ANSI_BLACK, ANSI_BRIGHT_BG_BLACK, ANSI_BRIGHT_WHITE, ANSI_BG_BLUE),
     DEBUG(3, "DEBUG", ANSI_GREEN, ANSI_BRIGHT_BG_BLACK, ANSI_BRIGHT_GREEN, ANSI_BRIGHT_BG_BLACK),
-    WARNING(4, "WARNING", ANSI_BRIGHT_YELLOW, ANSI_BG_BLACK, ANSI_BRIGHT_WHITE, ANSI_BRIGHT_BG_YELLOW),
+    WARNING(4,
+            "WARNING",
+            ANSI_BRIGHT_YELLOW,
+            ANSI_BG_BLACK,
+            ANSI_BRIGHT_WHITE,
+            ANSI_BRIGHT_BG_YELLOW),
     ERROR(5, "ERROR", ANSI_BLACK, ANSI_BRIGHT_BG_RED, ANSI_RED, ANSI_BRIGHT_BG_WHITE);
 
     private final int level;
@@ -62,11 +72,11 @@ public enum LogLevel {
     }
 
     public static final int MIN_LOG_LEVEL = Arrays.stream(LogLevel.values())
-            .min(Comparator.comparingInt(LogLevel::getLevel))
-            .get()
-            .getLevel();
+                                                  .min(Comparator.comparingInt(LogLevel::getLevel))
+                                                  .get()
+                                                  .getLevel();
     public static final int MAX_LOG_LEVEL = Arrays.stream(LogLevel.values())
-            .max(Comparator.comparingInt(LogLevel::getLevel))
-            .get()
-            .getLevel();
+                                                  .max(Comparator.comparingInt(LogLevel::getLevel))
+                                                  .get()
+                                                  .getLevel();
 }

@@ -47,8 +47,9 @@ public class PrintableManager {
     }
 
     public synchronized void setPrintable(Printable printable) {
-        if (printable == null)
+        if (printable == null) {
             throw new IllegalArgumentException("Printable cannot be null.");
+        }
 
         if (mPrintable != null && mPrintable != printable) {
             mPrintable.onClose();
@@ -81,16 +82,18 @@ public class PrintableManager {
     }
 
     public synchronized void setNightTheme() {
-        if (isNightTheme())
+        if (isNightTheme()) {
             return;
+        }
 
         mIsNightTheme = true;
         mPrintable.setNightTheme();
     }
 
     public synchronized void setDayTheme() {
-        if (isDayTheme())
+        if (isDayTheme()) {
             return;
+        }
 
         mIsNightTheme = false;
         mPrintable.setDayTheme();

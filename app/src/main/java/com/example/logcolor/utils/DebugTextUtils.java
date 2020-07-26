@@ -3,8 +3,8 @@ package com.example.logcolor.utils;
 import com.example.logcolor.color.models.AnsiColor;
 import com.example.logcolor.color.models.TextAlignment;
 import com.example.logcolor.color.models.TextAttribute;
-import com.example.logcolor.colorbuilder.builders.AlignedColorBuilder;
 import com.example.logcolor.color.utils.TextUtils;
+import com.example.logcolor.colorbuilder.builders.AlignedColorBuilder;
 import com.example.logcolor.log.Log;
 import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
@@ -44,7 +44,7 @@ public class DebugTextUtils {
         Log.w("Warning tag", "Warning, take care!");
         Log.e("Error tag", "Behold almighty error...");
         Log.w("Warning tag that will exceed max character limit.",
-                "Friendly warning message.");
+              "Friendly warning message.");
     }
 
     public static void printColorDebugInfo(TextAlignment textAlignment, int extraSpace) {
@@ -75,7 +75,7 @@ public class DebugTextUtils {
         }
 
         PrintableManager.getInstance().logThread(() ->
-                Printer.println(alignedColorBuilder.getText_Flush()));
+                                                         Printer.println(alignedColorBuilder.getText_Flush()));
     }
 
     public static void printAllColorsIndexed(TextAlignment textAlignment, int extraSpace) {
@@ -102,7 +102,7 @@ public class DebugTextUtils {
         }
 
         PrintableManager.getInstance().logThread(() ->
-                Printer.println(alignedColorBuilder.getText_Flush()));
+                                                         Printer.println(alignedColorBuilder.getText_Flush()));
     }
 
     public static void printIncrementalNumbers(TextAlignment textAlignment,
@@ -124,8 +124,9 @@ public class DebugTextUtils {
         for (int i = 0; i <= randomNumber; ++i, ++bgIndex) {
             if (bgIndex >= maxBgIndex) {
                 bgIndex = 0;
-                if (++fgIndex >= maxFgIndex)
+                if (++fgIndex >= maxFgIndex) {
                     fgIndex = 0;
+                }
                 alignedColorBuilder.appendColorReset_NewLine();
             }
             AnsiColor fg = AnsiColor.FOREGROUNDS[fgIndex];
@@ -138,17 +139,19 @@ public class DebugTextUtils {
         }
 
         PrintableManager.getInstance().logThread(() ->
-                Printer.println(alignedColorBuilder.getText_Flush()));
+                                                         Printer.println(alignedColorBuilder.getText_Flush()));
     }
 
     public static void printAllColorsText(TextAlignment textAlignment,
                                           int extraSpace,
                                           int maxBoundTextLength,
                                           int textCountInColumn) {
-        if (maxBoundTextLength < 1)
+        if (maxBoundTextLength < 1) {
             throw new IllegalArgumentException("Max bound text length has to be at least 1.");
-        if (textCountInColumn <= 0)
+        }
+        if (textCountInColumn <= 0) {
             throw new IllegalArgumentException("Text count mu be grater than 0");
+        }
 
         int columnCount = AnsiColor.FOREGROUNDS.length;
 
@@ -179,7 +182,7 @@ public class DebugTextUtils {
                 List<String> textList = new ArrayList<>();
                 for (TextAttribute textAttribute : randomTextAttributesList.get(i)) {
                     textList.add(RandomUtils
-                            .generateRandomAsciiString(textAttribute.getTotalLength()));
+                                         .generateRandomAsciiString(textAttribute.getTotalLength()));
                 }
 
                 alignedColorBuilder.appendTextColor(fg, bg, textList);
@@ -195,6 +198,6 @@ public class DebugTextUtils {
         }
 
         PrintableManager.getInstance().logThread(() ->
-                Printer.println(alignedColorBuilder.getText_Flush()));
+                                                         Printer.println(alignedColorBuilder.getText_Flush()));
     }
 }

@@ -25,15 +25,21 @@ class PrintableFactory {
         switch (printableType) {
             case CONSOLE:
                 if (printable instanceof PrintableConsole) {
-                    if (nightTheme) printable.setNightTheme();
-                    else printable.setDayTheme();
+                    if (nightTheme) {
+                        printable.setNightTheme();
+                    } else {
+                        printable.setDayTheme();
+                    }
                     return printable;
                 }
                 return createPrintable(printableType, nightTheme);
             case WINDOW:
                 if (printable instanceof PrintableWindow) {
-                    if (nightTheme) printable.setNightTheme();
-                    else printable.setDayTheme();
+                    if (nightTheme) {
+                        printable.setNightTheme();
+                    } else {
+                        printable.setDayTheme();
+                    }
                     return printable;
                 }
                 return createPrintable(printableType, nightTheme);

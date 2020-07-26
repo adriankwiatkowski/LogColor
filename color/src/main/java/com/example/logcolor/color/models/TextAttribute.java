@@ -8,18 +8,21 @@ public class TextAttribute {
     private int mTotalLength;
 
     public TextAttribute(TextAlignment textAlignment, int maxTextLength) {
-        if (textAlignment == null)
+        if (textAlignment == null) {
             throw new IllegalArgumentException("Text alignment cannot be null.");
-        if (maxTextLength <= 0)
+        }
+        if (maxTextLength <= 0) {
             throw new IllegalArgumentException("Text length must be at least 1.");
+        }
 
         this.textAlignment = textAlignment;
         this.mTotalLength = maxTextLength;
     }
 
     public TextAttribute(TextAttribute textAttribute) {
-        if (textAttribute == null)
+        if (textAttribute == null) {
             throw new IllegalArgumentException("TextAttribute cannot be null.");
+        }
 
         this.textAlignment = textAttribute.getTextAlignment();
         this.mTotalLength = textAttribute.getTotalLength();
@@ -28,9 +31,9 @@ public class TextAttribute {
     @Override
     public String toString() {
         return "TextAttribute{" +
-                "textAlignment=" + textAlignment +
-                ", mTotalLength=" + mTotalLength +
-                '}';
+               "textAlignment=" + textAlignment +
+               ", mTotalLength=" + mTotalLength +
+               '}';
     }
 
     @Override
@@ -39,7 +42,7 @@ public class TextAttribute {
         if (o == null || getClass() != o.getClass()) return false;
         TextAttribute that = (TextAttribute) o;
         return mTotalLength == that.mTotalLength &&
-                textAlignment == that.textAlignment;
+               textAlignment == that.textAlignment;
     }
 
     @Override
@@ -52,8 +55,9 @@ public class TextAttribute {
     }
 
     public void setTextAlignment(TextAlignment textAlignment) {
-        if (textAlignment == null)
+        if (textAlignment == null) {
             throw new IllegalArgumentException("Text alignment cannot be null.");
+        }
         this.textAlignment = textAlignment;
     }
 
@@ -62,8 +66,9 @@ public class TextAttribute {
     }
 
     public void setTotalLength(int textLength) {
-        if (textLength <= 0)
+        if (textLength <= 0) {
             throw new IllegalArgumentException("Text length must be at least 1.");
+        }
         this.mTotalLength = textLength;
     }
 }

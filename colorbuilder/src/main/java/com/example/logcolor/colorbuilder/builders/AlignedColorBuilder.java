@@ -26,10 +26,12 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
         private List<TextAttribute> textAttributeList;
 
         public Builder(TextAttribute textAttribute, int textAttributeDuplicateCount) {
-            if (textAttribute == null)
+            if (textAttribute == null) {
                 throw new IllegalArgumentException("TextAttribute cannot be null.");
-            if (textAttributeDuplicateCount <= 0)
+            }
+            if (textAttributeDuplicateCount <= 0) {
                 throw new IllegalArgumentException("Text attribute count must be grater than 0.");
+            }
 
             textAttributeList = new ArrayList<>();
             while (textAttributeDuplicateCount-- > 0) {
@@ -38,23 +40,26 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
         }
 
         public Builder(TextAttribute textAttribute) {
-            if (textAttribute == null)
+            if (textAttribute == null) {
                 throw new IllegalArgumentException("TextAttribute cannot be null.");
+            }
 
             textAttributeList = new ArrayList<>();
             textAttributeList.add(textAttribute);
         }
 
         public Builder(List<TextAttribute> textAttributes) {
-            if (textAttributes == null || textAttributes.isEmpty())
+            if (textAttributes == null || textAttributes.isEmpty()) {
                 throw new IllegalArgumentException("List cannot be null or empty.");
+            }
 
             textAttributeList = new ArrayList<>(textAttributes);
         }
 
         public Builder addTextAttribute(TextAttribute textAttribute) {
-            if (textAttribute == null)
+            if (textAttribute == null) {
                 throw new IllegalArgumentException("TextAttribute cannot be null.");
+            }
 
             textAttributeList.add(textAttribute);
 
@@ -62,8 +67,9 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
         }
 
         public Builder addTextAttributeList(List<TextAttribute> textAttributes) {
-            if (textAttributes == null || textAttributes.isEmpty())
+            if (textAttributes == null || textAttributes.isEmpty()) {
                 throw new IllegalArgumentException("List cannot be null or empty.");
+            }
 
             textAttributeList.addAll(textAttributes);
 
@@ -90,16 +96,17 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
      * @throws IllegalArgumentException if text count isn't equal attribute count.
      */
     public void appendTextAlign(List<String> textList) {
-        if (textList.size() != mTextAttributeList.size())
+        if (textList.size() != mTextAttributeList.size()) {
             throw new IllegalArgumentException("There must be same texts as attributes count.");
+        }
 
         for (int i = 0; i < textList.size(); ++i) {
             String text = textList.get(i);
             TextAttribute textAttribute = mTextAttributeList.get(i);
 
             appendTextAlign(text,
-                    textAttribute.getTotalLength(),
-                    textAttribute.getTextAlignment());
+                            textAttribute.getTotalLength(),
+                            textAttribute.getTextAlignment());
         }
     }
 
@@ -113,14 +120,15 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
      */
     @Override
     public void appendTextAlign(String text1) {
-        if (1 != mTextAttributeList.size())
+        if (1 != mTextAttributeList.size()) {
             throw new IllegalArgumentException("There must be same texts as attributes count.");
+        }
 
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
         appendTextAlign(text1,
-                textAttribute.getTotalLength(),
-                textAttribute.getTextAlignment());
+                        textAttribute.getTotalLength(),
+                        textAttribute.getTextAlignment());
     }
 
     /**
@@ -133,20 +141,21 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
      * @throws IllegalArgumentException if text count isn't equal attribute count.
      */
     public void appendTextAlign(String text1, String text2) {
-        if (2 != mTextAttributeList.size())
+        if (2 != mTextAttributeList.size()) {
             throw new IllegalArgumentException("There must be same texts as attributes count.");
+        }
 
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
         appendTextAlign(text1,
-                textAttribute.getTotalLength(),
-                textAttribute.getTextAlignment());
+                        textAttribute.getTotalLength(),
+                        textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(1);
 
         appendTextAlign(text2,
-                textAttribute.getTotalLength(),
-                textAttribute.getTextAlignment());
+                        textAttribute.getTotalLength(),
+                        textAttribute.getTextAlignment());
     }
 
     /**
@@ -160,26 +169,27 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
      * @throws IllegalArgumentException if text count isn't equal attribute count.
      */
     public void appendTextAlign(String text1, String text2, String text3) {
-        if (3 != mTextAttributeList.size())
+        if (3 != mTextAttributeList.size()) {
             throw new IllegalArgumentException("There must be same texts as attributes count.");
+        }
 
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
         appendTextAlign(text1,
-                textAttribute.getTotalLength(),
-                textAttribute.getTextAlignment());
+                        textAttribute.getTotalLength(),
+                        textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(1);
 
         appendTextAlign(text2,
-                textAttribute.getTotalLength(),
-                textAttribute.getTextAlignment());
+                        textAttribute.getTotalLength(),
+                        textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(2);
 
         appendTextAlign(text3,
-                textAttribute.getTotalLength(),
-                textAttribute.getTextAlignment());
+                        textAttribute.getTotalLength(),
+                        textAttribute.getTextAlignment());
     }
 
     /**
@@ -287,7 +297,11 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
      * @param text2 text 2.
      * @param text3 text 3.
      */
-    public void appendTextColor(AnsiColor fg, AnsiColor bg, String text1, String text2, String text3) {
+    public void appendTextColor(AnsiColor fg,
+                                AnsiColor bg,
+                                String text1,
+                                String text2,
+                                String text3) {
         // Encode foreground and background colors.
         append(fg.getAnsi());
         append(bg.getAnsi());
@@ -296,26 +310,31 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
     }
 
     public void setTextAttribute(int index, TextAttribute textAttribute) {
-        if (index < 0 || index >= mTextAttributeList.size())
+        if (index < 0 || index >= mTextAttributeList.size()) {
             throw new IndexOutOfBoundsException("Wrong index.");
-        if (textAttribute == null)
+        }
+        if (textAttribute == null) {
             throw new IllegalArgumentException("TextAttribute cannot be null.");
+        }
 
         mTextAttributeList.set(index, textAttribute);
     }
 
     public void setTextAttributeMaxTextLength(int index, int maxTextLength) {
-        if (index < 0 || index >= mTextAttributeList.size())
+        if (index < 0 || index >= mTextAttributeList.size()) {
             throw new IndexOutOfBoundsException("Wrong index.");
+        }
 
         mTextAttributeList.get(index).setTotalLength(maxTextLength);
     }
 
     public void setTextAttributeTextAlignment(int index, TextAlignment textAlignment) {
-        if (index < 0 || index >= mTextAttributeList.size())
+        if (index < 0 || index >= mTextAttributeList.size()) {
             throw new IndexOutOfBoundsException("Wrong index.");
-        if (textAlignment == null)
+        }
+        if (textAlignment == null) {
             throw new IllegalArgumentException("TextAlignment cannot be null.");
+        }
 
         mTextAttributeList.get(index).setTextAlignment(textAlignment);
     }

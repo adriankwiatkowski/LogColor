@@ -40,8 +40,9 @@ public enum TextAlignment {
             int rightSpaceCount = leftSpaceCount;
 
             // If number is not even add extra space to left side.
-            if (diff % 2 == 1)
+            if (diff % 2 == 1) {
                 ++leftSpaceCount;
+            }
 
             // Append white spaces to left side.
             appendWhiteSpace_count(sb, leftSpaceCount);
@@ -68,8 +69,9 @@ public enum TextAlignment {
      * @param maxLength max text length.
      */
     public void invalidate(String text, int maxLength) {
-        if (text.length() > maxLength)
+        if (text.length() > maxLength) {
             throw new IllegalArgumentException("Text length grater than max length.");
+        }
     }
 
     /**
@@ -82,8 +84,9 @@ public enum TextAlignment {
      */
     public void appendWhiteSpace_numToTextLength(StringBuilder sb, int length, int maxTextLength) {
         int diff = maxTextLength - length;
-        if (diff < 0)
+        if (diff < 0) {
             throw new IllegalArgumentException("Length cannot be grater than max length.");
+        }
 
         appendWhiteSpace_count(sb, diff);
     }

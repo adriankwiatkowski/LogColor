@@ -8,8 +8,8 @@ class PrintableThreads {
     private static final String TAG = PrintableAppExecutors.class.getSimpleName();
 
     private static final String ERROR_GET_DEINITALIZED_INSTANCE = TAG +
-            " is closed!\n" +
-            "Creating new instance.";
+                                                                  " is closed!\n" +
+                                                                  "Creating new instance.";
 
     private static List<Runnable> mCloseTaskQueue = new ArrayList<>();
     private static boolean mIsDeinitialized = false;
@@ -20,8 +20,8 @@ class PrintableThreads {
         }
 
         PrintableAppExecutors.getInstance()
-                .logThread()
-                .execute(runnable);
+                             .logThread()
+                             .execute(runnable);
     }
 
     public static synchronized void shutdownThreads() {

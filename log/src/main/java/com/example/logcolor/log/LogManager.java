@@ -34,10 +34,14 @@ public class LogManager {
     }
 
     public void setMinLogLevel(int newMinLevel) {
-        if (newMinLevel < LogLevel.MIN_LOG_LEVEL)
-            throw new IllegalArgumentException("New min log level cannot be lower than lowest level.");
-        if (newMinLevel > LogLevel.MAX_LOG_LEVEL)
-            throw new IllegalArgumentException("New max log level cannot be grater than highest level.");
+        if (newMinLevel < LogLevel.MIN_LOG_LEVEL) {
+            throw new IllegalArgumentException(
+                    "New min log level cannot be lower than lowest level.");
+        }
+        if (newMinLevel > LogLevel.MAX_LOG_LEVEL) {
+            throw new IllegalArgumentException(
+                    "New max log level cannot be grater than highest level.");
+        }
 
         mMinLogLevel = newMinLevel;
     }

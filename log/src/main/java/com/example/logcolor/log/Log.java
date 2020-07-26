@@ -21,10 +21,10 @@ public class Log {
     private static final int TAG_CHAR_LIMIT = 30;
     private static final int LEVEL_INFO_CHAR_LIMIT =
             Arrays.stream(LogLevel.values())
-                    .map(LogLevel::getLevelTag)
-                    .max(Comparator.comparingInt(String::length))
-                    .get()
-                    .length();
+                  .map(LogLevel::getLevelTag)
+                  .max(Comparator.comparingInt(String::length))
+                  .get()
+                  .length();
 
     private static final String ERROR_MESSAGE_EMPTY = "Log message cannot be null or empty.";
 
@@ -51,8 +51,9 @@ public class Log {
     }
 
     private static void internal_err(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.INTERNAL_ERROR))
+        if (!LogManager.getInstance().isLoggable(LogLevel.INTERNAL_ERROR)) {
             return;
+        }
         // Print log directly instead of scheduling.
         AnsiColor fg;
         AnsiColor bg;
@@ -71,8 +72,9 @@ public class Log {
     }
 
     public static void v(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.VERBOSE))
+        if (!LogManager.getInstance().isLoggable(LogLevel.VERBOSE)) {
             return;
+        }
         AnsiColor fg;
         AnsiColor bg;
         if (PrintableManager.getInstance().isDayTheme()) {
@@ -90,8 +92,9 @@ public class Log {
     }
 
     public static void i(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.INFO))
+        if (!LogManager.getInstance().isLoggable(LogLevel.INFO)) {
             return;
+        }
         AnsiColor fg;
         AnsiColor bg;
         if (PrintableManager.getInstance().isDayTheme()) {
@@ -109,8 +112,9 @@ public class Log {
     }
 
     public static void d(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.DEBUG))
+        if (!LogManager.getInstance().isLoggable(LogLevel.DEBUG)) {
             return;
+        }
         AnsiColor fg;
         AnsiColor bg;
         if (PrintableManager.getInstance().isDayTheme()) {
@@ -128,8 +132,9 @@ public class Log {
     }
 
     public static void w(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.WARNING))
+        if (!LogManager.getInstance().isLoggable(LogLevel.WARNING)) {
             return;
+        }
         AnsiColor fg;
         AnsiColor bg;
         if (PrintableManager.getInstance().isDayTheme()) {
@@ -147,8 +152,9 @@ public class Log {
     }
 
     public static void e(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.ERROR))
+        if (!LogManager.getInstance().isLoggable(LogLevel.ERROR)) {
             return;
+        }
         AnsiColor fg;
         AnsiColor bg;
         if (PrintableManager.getInstance().isDayTheme()) {
@@ -171,7 +177,7 @@ public class Log {
                                String debugLevelInfo,
                                String tag, String msg) {
         PrintableManager.getInstance().logThread(() ->
-                print(fg, bg, debugLevelInfo, tag, msg));
+                                                         print(fg, bg, debugLevelInfo, tag, msg));
     }
 
     private static void print(AnsiColor fg, AnsiColor bg,
