@@ -1,6 +1,5 @@
 package com.example.logcolor.printers.printables;
 
-import com.example.logcolor.printers.interfaces.Printable;
 import com.example.logcolor.printers.utils.HtmlUtils;
 
 import javax.swing.*;
@@ -12,8 +11,8 @@ import java.util.Queue;
 
 public class PrintableWindow extends Printable {
 
-    private static final String BLACK_COLOR = "#1F1B24";
-    private static final String WHITE_COLOR = "#FFFFFF";
+    private static final String BLACK_COLOR = "000000";
+    private static final String WHITE_COLOR = "FFFFFF";
 
     private JFrame mMainFrame;
     private JList<String> mMessageList;
@@ -36,28 +35,26 @@ public class PrintableWindow extends Printable {
             mMainFrame = new JFrame("Printable Window");
             mMainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-            Color backgroundColor;
-
-            backgroundColor = nightTheme ? Color.BLACK : Color.WHITE;
-
             mMessageList = new JList<>(mListModel);
             mMessageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             mMessageList.setLayoutOrientation(JList.VERTICAL);
             mMessageList.setVisibleRowCount(-1);
             mMessageList.setCellRenderer(createCallRenderer());
-            // Set background color.
-            mMessageList.setBackground(backgroundColor);
 
             JScrollPane listScroller = new JScrollPane(mMessageList);
 
             mMainFrame.getContentPane().add(listScroller, BorderLayout.CENTER);
 
-            mMainFrame.getContentPane().setBackground(backgroundColor);
-
             mMainFrame.pack();
 
             mMainFrame.setBounds(300, 150, 1024, 768);
             mMainFrame.setVisible(true);
+
+            if (nightTheme) {
+                setNightTheme();
+            } else {
+                setDayTheme();
+            }
 
             if (mIsPendingRequest) {
                 mIsPendingRequest = false;
@@ -79,12 +76,16 @@ public class PrintableWindow extends Printable {
     public void setDayTheme() {
         if (mIsPendingRequest) {
             mPendingRequestQueue.add(() -> {
-                mMainFrame.getContentPane().setBackground(Color.getColor(WHITE_COLOR));
-                mMessageList.setBackground(Color.getColor(WHITE_COLOR));
+                mMainFrame.getContentPane().setBackground(Color.decode(WHITE_COLOR));
+                mMainFrame.getContentPane().setForeground(Color.decode(WHITE_COLOR));
+                mMessageList.setBackground(Color.decode(WHITE_COLOR));
+                mMessageList.setForeground(Color.decode(WHITE_COLOR));
             });
         } else {
-            mMainFrame.getContentPane().setBackground(Color.getColor(WHITE_COLOR));
-            mMessageList.setBackground(Color.getColor(WHITE_COLOR));
+            mMainFrame.getContentPane().setBackground(Color.decode(WHITE_COLOR));
+            mMainFrame.getContentPane().setForeground(Color.decode(WHITE_COLOR));
+            mMessageList.setBackground(Color.decode(WHITE_COLOR));
+            mMessageList.setForeground(Color.decode(WHITE_COLOR));
         }
     }
 
@@ -92,12 +93,16 @@ public class PrintableWindow extends Printable {
     public void setNightTheme() {
         if (mIsPendingRequest) {
             mPendingRequestQueue.add(() -> {
-                mMainFrame.getContentPane().setBackground(Color.getColor(BLACK_COLOR));
-                mMessageList.setBackground(Color.getColor(BLACK_COLOR));
+                mMainFrame.getContentPane().setBackground(Color.decode(BLACK_COLOR));
+                mMainFrame.getContentPane().setForeground(Color.decode(BLACK_COLOR));
+                mMessageList.setBackground(Color.decode(BLACK_COLOR));
+                mMessageList.setForeground(Color.decode(BLACK_COLOR));
             });
         } else {
-            mMainFrame.getContentPane().setBackground(Color.getColor(BLACK_COLOR));
-            mMessageList.setBackground(Color.getColor(BLACK_COLOR));
+            mMainFrame.getContentPane().setBackground(Color.decode(BLACK_COLOR));
+            mMainFrame.getContentPane().setForeground(Color.decode(BLACK_COLOR));
+            mMessageList.setBackground(Color.decode(BLACK_COLOR));
+            mMessageList.setForeground(Color.decode(BLACK_COLOR));
         }
     }
 

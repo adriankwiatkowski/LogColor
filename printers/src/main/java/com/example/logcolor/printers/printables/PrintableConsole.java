@@ -1,7 +1,5 @@
 package com.example.logcolor.printers.printables;
 
-import com.example.logcolor.printers.interfaces.Printable;
-
 import java.io.*;
 
 public class PrintableConsole extends Printable {

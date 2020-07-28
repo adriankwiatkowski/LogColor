@@ -2,7 +2,7 @@ package com.example.logcolor.printers;
 
 import com.example.logcolor.color.models.AnsiColor;
 import com.example.logcolor.color.models.TextAlignment;
-import com.example.logcolor.printers.interfaces.Printable;
+import com.example.logcolor.printers.printables.Printable;
 import com.example.logcolor.printers.models.PrintableType;
 
 public class PrintableManager {

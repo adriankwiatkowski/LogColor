@@ -1,4 +1,4 @@
-package com.example.logcolor.printers.interfaces;
+package com.example.logcolor.printers.printables;
 
 import com.example.logcolor.color.models.AnsiColor;
 import com.example.logcolor.color.models.TextAlignment;
@@ -247,7 +247,8 @@ public abstract class Printable extends PrintStream {
         SimpleColorBuilder colorBuilder =
                 new SimpleColorBuilder.Builder().addTextAlignment(textAlignment).build();
 
-        for (String splitLine : splitLines) {
+        for (int i = 0; i < splitLines.length; ++i) {
+            String splitLine = splitLines[i];
             if (fg != null) {
                 colorBuilder.appendColor(fg);
             }
@@ -255,7 +256,19 @@ public abstract class Printable extends PrintStream {
                 colorBuilder.appendColor(bg);
             }
             colorBuilder.appendTextAlign(splitLine);
-            colorBuilder.appendColorReset_NewLine();
+            colorBuilder.appendColorReset();
+
+            if (i == 0) {
+                int index = ansiText.indexOf("\n");
+                if ((index) != splitLine.length()) {
+                    continue;
+                }
+            }
+            if (i == splitLines.length - 1 && !ansiText.endsWith("\n")) {
+                continue;
+            }
+
+            colorBuilder.appendNewLine();
         }
 
         return colorBuilder.getText_Flush();
