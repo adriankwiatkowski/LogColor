@@ -198,7 +198,7 @@ public class Log {
         int desiredLength = dateTag.length() + DATE_TAG_EXTRA_CHAR_LIMIT;
         simpleColorBuilder.setTextLength(desiredLength);
         simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_DATE_TAG);
-        appendDateTag(simpleColorBuilder, dateTag, desiredLength);
+        appendDateTag(simpleColorBuilder, dateTag);
 
         simpleColorBuilder.setTextLength(TAG_CHAR_LIMIT);
         simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_TAG);
@@ -208,7 +208,7 @@ public class Log {
         simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_MSG);
         appendMsg(simpleColorBuilder, fg, bg, msg);
 
-        Printer.print(simpleColorBuilder.getText_Flush());
+        Printer.printForceOnNewLine(simpleColorBuilder.getText_Flush());
     }
 
     private static void appendLevelInfo(ColorBuilder colorBuilder,
@@ -219,8 +219,7 @@ public class Log {
     }
 
     private static void appendDateTag(ColorBuilder colorBuilder,
-                                      String dateTag,
-                                      int desiredLength) {
+                                      String dateTag) {
         AnsiColor color;
         if (PrintableManager.getInstance().isDayTheme()) {
             color = DATE_TAG_COLOR_DAY;

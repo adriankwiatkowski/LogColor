@@ -183,6 +183,10 @@ PrintableManager.getInstance().setPrintable(new Printable(outputStream) {
     }
 
     @Override
+    public void printForceOnNewLine(String msg) {
+    }
+
+    @Override
     public void setDayTheme() {
     }
 

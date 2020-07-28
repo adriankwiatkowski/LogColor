@@ -4,6 +4,7 @@ import com.example.logcolor.color.models.AnsiColor;
 import com.example.logcolor.color.models.TextAlignment;
 import com.example.logcolor.color.utils.TextUtils;
 import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
+import com.example.logcolor.printers.printables.Printable;
 
 public class Printer {
 
@@ -15,6 +16,10 @@ public class Printer {
     private static final int DEFAULT_EXTRA_SPACE = 0;
 
     private Printer() {
+    }
+
+    public static void printForceOnNewLine(String msg) {
+        addPrintToQueue(null, null, DEFAULT_TEXT_ALIGNMENT, DEFAULT_EXTRA_SPACE, msg, false, true);
     }
 
     public static void println() {
@@ -116,7 +121,7 @@ public class Printer {
                               int extraSpace,
                               String msg,
                               boolean newLine) {
-        addPrintToQueue(fg, bg, textAlignment, extraSpace, msg, newLine);
+        addPrintToQueue(fg, bg, textAlignment, extraSpace, msg, newLine, false);
     }
 
     private static void addPrintToQueue(AnsiColor fg,
@@ -124,7 +129,8 @@ public class Printer {
                                         TextAlignment textAlignment,
                                         int extraSpace,
                                         String msg,
-                                        boolean newLine) {
+                                        boolean newLine,
+                                        boolean forceOnNewLine) {
         if (msg == null) {
             throw new IllegalArgumentException("Message cannot be null.");
         }
@@ -135,7 +141,8 @@ public class Printer {
                                                         textAlignment,
                                                         extraSpace,
                                                         msg,
-                                                        newLine));
+                                                        newLine,
+                                                        forceOnNewLine));
     }
 
     private static void printScheduled(AnsiColor fg,
@@ -143,7 +150,14 @@ public class Printer {
                                        TextAlignment textAlignment,
                                        int extraSpace,
                                        String text,
-                                       boolean newLine) {
+                                       boolean newLine,
+                                       boolean forceOnNewLine) {
+        Printable printable = PrintableManager.getInstance().getPrintable();
+        if (forceOnNewLine) {
+            printable.printForceOnNewLine(text);
+            return;
+        }
+
         SimpleColorBuilder colorBuilder = new SimpleColorBuilder.Builder().build();
 
         if (fg != null) {
@@ -168,6 +182,6 @@ public class Printer {
             colorBuilder.appendNewLine();
         }
 
-        PrintableManager.getInstance().getPrintable().print_flush(colorBuilder);
+        printable.print_flush(colorBuilder);
     }
 }

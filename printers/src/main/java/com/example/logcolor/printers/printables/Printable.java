@@ -276,6 +276,8 @@ public abstract class Printable extends PrintStream {
 
     protected abstract void write(String s);
 
+    public abstract void printForceOnNewLine(String msg);
+
     public abstract void setDayTheme();
 
     public abstract void setNightTheme();

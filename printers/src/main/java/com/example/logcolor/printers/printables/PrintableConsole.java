@@ -5,6 +5,8 @@ import java.io.*;
 public class PrintableConsole extends Printable {
 
     private OutputStream outputStream;
+    private boolean mIsNextPrintNewLine = false;
+    private boolean mIsForceOnNewLine = false;
 
     public PrintableConsole(OutputStream out) {
         super(out);
@@ -47,13 +49,34 @@ public class PrintableConsole extends Printable {
 
     @Override
     protected void write(String s) {
+        if (mIsForceOnNewLine && !mIsNextPrintNewLine) {
+            mIsForceOnNewLine = false;
+            mIsNextPrintNewLine = true;
+            byte[] bytesNewLine = "\n".getBytes();
+            try {
+                outputStream.write(bytesNewLine, 0, bytesNewLine.length);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         s = setDefaultColorIfNotOverridden(s);
+
+        mIsNextPrintNewLine = s.endsWith("\n");
+        mIsForceOnNewLine = false;
+
         byte[] bytes = s.getBytes();
         try {
             outputStream.write(bytes, 0, bytes.length);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void printForceOnNewLine(String msg) {
+        mIsNextPrintNewLine = true;
+        write(msg);
     }
 
     @Override

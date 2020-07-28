@@ -11,13 +11,14 @@ import java.util.Queue;
 
 public class PrintableWindow extends Printable {
 
-    private static final String BLACK_COLOR = "000000";
-    private static final String WHITE_COLOR = "FFFFFF";
+    private static final String BLACK_COLOR = "0x000000";
+    private static final String WHITE_COLOR = "0xFFFFFF";
 
     private JFrame mMainFrame;
     private JList<String> mMessageList;
     private DefaultListModel<String> mListModel = new DefaultListModel<>();
-    private boolean mIsNewLine = false;
+    private boolean mIsNextPrintNewLine = false;
+    private boolean mIsForceOnNewLine = false;
 
     // Not safe to use, may produce Null Pointer Exception.
     private Queue<Runnable> mPendingRequestQueue = new LinkedList<>();
@@ -50,19 +51,18 @@ public class PrintableWindow extends Printable {
             mMainFrame.setBounds(300, 150, 1024, 768);
             mMainFrame.setVisible(true);
 
+
+            mIsPendingRequest = false;
             if (nightTheme) {
                 setNightTheme();
             } else {
                 setDayTheme();
             }
 
-            if (mIsPendingRequest) {
-                mIsPendingRequest = false;
-                for (Runnable runnable : mPendingRequestQueue) {
-                    runnable.run();
-                }
-                mPendingRequestQueue = null;
+            for (Runnable runnable : mPendingRequestQueue) {
+                runnable.run();
             }
+            mPendingRequestQueue = null;
         });
     }
 
@@ -73,19 +73,25 @@ public class PrintableWindow extends Printable {
     }
 
     @Override
+    public void printForceOnNewLine(String msg) {
+        mIsForceOnNewLine = true;
+        write(msg);
+    }
+
+    @Override
     public void setDayTheme() {
         if (mIsPendingRequest) {
             mPendingRequestQueue.add(() -> {
-                mMainFrame.getContentPane().setBackground(Color.decode(WHITE_COLOR));
-                mMainFrame.getContentPane().setForeground(Color.decode(WHITE_COLOR));
-                mMessageList.setBackground(Color.decode(WHITE_COLOR));
-                mMessageList.setForeground(Color.decode(WHITE_COLOR));
+                mMainFrame.getContentPane().setBackground(decodeColor(WHITE_COLOR));
+                mMainFrame.getContentPane().setForeground(decodeColor(WHITE_COLOR));
+                mMessageList.setBackground(decodeColor(WHITE_COLOR));
+                mMessageList.setForeground(decodeColor(WHITE_COLOR));
             });
         } else {
-            mMainFrame.getContentPane().setBackground(Color.decode(WHITE_COLOR));
-            mMainFrame.getContentPane().setForeground(Color.decode(WHITE_COLOR));
-            mMessageList.setBackground(Color.decode(WHITE_COLOR));
-            mMessageList.setForeground(Color.decode(WHITE_COLOR));
+            mMainFrame.getContentPane().setBackground(decodeColor(WHITE_COLOR));
+            mMainFrame.getContentPane().setForeground(decodeColor(WHITE_COLOR));
+            mMessageList.setBackground(decodeColor(WHITE_COLOR));
+            mMessageList.setForeground(decodeColor(WHITE_COLOR));
         }
     }
 
@@ -93,16 +99,16 @@ public class PrintableWindow extends Printable {
     public void setNightTheme() {
         if (mIsPendingRequest) {
             mPendingRequestQueue.add(() -> {
-                mMainFrame.getContentPane().setBackground(Color.decode(BLACK_COLOR));
-                mMainFrame.getContentPane().setForeground(Color.decode(BLACK_COLOR));
-                mMessageList.setBackground(Color.decode(BLACK_COLOR));
-                mMessageList.setForeground(Color.decode(BLACK_COLOR));
+                mMainFrame.getContentPane().setBackground(decodeColor(BLACK_COLOR));
+                mMainFrame.getContentPane().setForeground(decodeColor(BLACK_COLOR));
+                mMessageList.setBackground(decodeColor(BLACK_COLOR));
+                mMessageList.setForeground(decodeColor(BLACK_COLOR));
             });
         } else {
-            mMainFrame.getContentPane().setBackground(Color.decode(BLACK_COLOR));
-            mMainFrame.getContentPane().setForeground(Color.decode(BLACK_COLOR));
-            mMessageList.setBackground(Color.decode(BLACK_COLOR));
-            mMessageList.setForeground(Color.decode(BLACK_COLOR));
+            mMainFrame.getContentPane().setBackground(decodeColor(BLACK_COLOR));
+            mMainFrame.getContentPane().setForeground(decodeColor(BLACK_COLOR));
+            mMessageList.setBackground(decodeColor(BLACK_COLOR));
+            mMessageList.setForeground(decodeColor(BLACK_COLOR));
         }
     }
 
@@ -129,7 +135,7 @@ public class PrintableWindow extends Printable {
 
         for (String splitLine : splitLines) {
             String htmlText = HtmlUtils.buildHtmlFromAnsi(splitLine);
-            if (mIsNewLine || mListModel.isEmpty()) {
+            if (mIsNextPrintNewLine || mListModel.isEmpty() || mIsForceOnNewLine) {
                 mListModel.addElement(htmlText);
             } else {
                 htmlText = HtmlUtils.removeTextWrapperHtml(htmlText);
@@ -140,7 +146,13 @@ public class PrintableWindow extends Printable {
             }
         }
 
-        mIsNewLine = string.endsWith("\n");
+        mIsNextPrintNewLine = string.endsWith("\n");
+    }
+
+    private Color decodeColor(String hex) {
+        return new Color(Integer.valueOf(hex.substring(2, 4), 16),
+                         Integer.valueOf(hex.substring(4, 6), 16),
+                         Integer.valueOf(hex.substring(6, 8), 16));
     }
 
     private ListCellRenderer<String> createCallRenderer() {
