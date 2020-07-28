@@ -34,7 +34,8 @@ public class Printer {
     }
 
     public static void println(AnsiColor color,
-                               TextAlignment textAlignment, int extraSpace,
+                               TextAlignment textAlignment,
+                               int extraSpace,
                                String msg) {
         print(color, textAlignment, extraSpace, msg, NEW_LINE);
     }
@@ -43,8 +44,10 @@ public class Printer {
         print(fg, bg, msg, NEW_LINE);
     }
 
-    public static void println(AnsiColor fg, AnsiColor bg,
-                               TextAlignment textAlignment, int extraSpace,
+    public static void println(AnsiColor fg,
+                               AnsiColor bg,
+                               TextAlignment textAlignment,
+                               int extraSpace,
                                String msg) {
         print(fg, bg, textAlignment, extraSpace, msg, NEW_LINE);
     }
@@ -62,7 +65,8 @@ public class Printer {
     }
 
     public static void print(AnsiColor color,
-                             TextAlignment textAlignment, int extraSpace,
+                             TextAlignment textAlignment,
+                             int extraSpace,
                              String msg) {
         print(color, textAlignment, extraSpace, msg, NO_LINE);
     }
@@ -71,8 +75,10 @@ public class Printer {
         print(fg, bg, msg, NO_LINE);
     }
 
-    public static void print(AnsiColor fg, AnsiColor bg,
-                             TextAlignment textAlignment, int extraSpace,
+    public static void print(AnsiColor fg,
+                             AnsiColor bg,
+                             TextAlignment textAlignment,
+                             int extraSpace,
                              String msg) {
         print(fg, bg, textAlignment, extraSpace, msg, NO_LINE);
     }
@@ -81,8 +87,10 @@ public class Printer {
         print(null, msg, newLine);
     }
 
-    private static void print(TextAlignment textAlignment, int extraSpace,
-                              String msg, boolean newLine) {
+    private static void print(TextAlignment textAlignment,
+                              int extraSpace,
+                              String msg,
+                              boolean newLine) {
         print(null, null, textAlignment, extraSpace, msg, newLine);
     }
 
@@ -91,8 +99,10 @@ public class Printer {
     }
 
     private static void print(AnsiColor color,
-                              TextAlignment textAlignment, int extraSpace,
-                              String msg, boolean newLine) {
+                              TextAlignment textAlignment,
+                              int extraSpace,
+                              String msg,
+                              boolean newLine) {
         print(null, color, textAlignment, extraSpace, msg, newLine);
     }
 
@@ -100,31 +110,40 @@ public class Printer {
         print(fg, bg, DEFAULT_TEXT_ALIGNMENT, DEFAULT_EXTRA_SPACE, msg, newLine);
     }
 
-    private static void print(AnsiColor fg, AnsiColor bg,
-                              TextAlignment textAlignment, int extraSpace,
-                              String msg, boolean newLine) {
+    private static void print(AnsiColor fg,
+                              AnsiColor bg,
+                              TextAlignment textAlignment,
+                              int extraSpace,
+                              String msg,
+                              boolean newLine) {
         addPrintToQueue(fg, bg, textAlignment, extraSpace, msg, newLine);
     }
 
-    private static void addPrintToQueue(AnsiColor fg, AnsiColor bg,
-                                        TextAlignment textAlignment, int extraSpace,
-                                        String msg, boolean newLine) {
+    private static void addPrintToQueue(AnsiColor fg,
+                                        AnsiColor bg,
+                                        TextAlignment textAlignment,
+                                        int extraSpace,
+                                        String msg,
+                                        boolean newLine) {
         if (msg == null) {
             throw new IllegalArgumentException("Message cannot be null.");
         }
 
-        PrintableManager.getInstance().logThread(() ->
-                                                         printScheduled(fg,
-                                                                        bg,
-                                                                        textAlignment,
-                                                                        extraSpace,
-                                                                        msg,
-                                                                        newLine));
+        PrintableManager.getInstance()
+                        .logThread(() -> printScheduled(fg,
+                                                        bg,
+                                                        textAlignment,
+                                                        extraSpace,
+                                                        msg,
+                                                        newLine));
     }
 
-    private static void printScheduled(AnsiColor fg, AnsiColor bg,
-                                       TextAlignment textAlignment, int extraSpace,
-                                       String text, boolean newLine) {
+    private static void printScheduled(AnsiColor fg,
+                                       AnsiColor bg,
+                                       TextAlignment textAlignment,
+                                       int extraSpace,
+                                       String text,
+                                       boolean newLine) {
         SimpleColorBuilder colorBuilder = new SimpleColorBuilder.Builder().build();
 
         if (fg != null) {

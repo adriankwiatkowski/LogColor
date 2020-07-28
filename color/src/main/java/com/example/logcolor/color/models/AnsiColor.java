@@ -35,19 +35,39 @@ public enum AnsiColor {
     ANSI_BRIGHT_BG_CYAN("\u001B[106m", "LightCyan", "#E0FFFF"),
     ANSI_BRIGHT_BG_WHITE("\u001B[107m", "LightGrey", "#D3D3D3");
 
-    public static final AnsiColor[] FOREGROUNDS = {
-            ANSI_BLACK, ANSI_RED, ANSI_GREEN, ANSI_YELLOW,
-            ANSI_BLUE, ANSI_PURPLE, ANSI_CYAN, ANSI_WHITE,
-            ANSI_BRIGHT_BLACK, ANSI_BRIGHT_RED, ANSI_BRIGHT_GREEN, ANSI_BRIGHT_YELLOW,
-            ANSI_BRIGHT_BLUE, ANSI_BRIGHT_PURPLE, ANSI_BRIGHT_CYAN, ANSI_BRIGHT_WHITE
-    };
+    public static final AnsiColor[] FOREGROUNDS = {ANSI_BLACK,
+                                                   ANSI_RED,
+                                                   ANSI_GREEN,
+                                                   ANSI_YELLOW,
+                                                   ANSI_BLUE,
+                                                   ANSI_PURPLE,
+                                                   ANSI_CYAN,
+                                                   ANSI_WHITE,
+                                                   ANSI_BRIGHT_BLACK,
+                                                   ANSI_BRIGHT_RED,
+                                                   ANSI_BRIGHT_GREEN,
+                                                   ANSI_BRIGHT_YELLOW,
+                                                   ANSI_BRIGHT_BLUE,
+                                                   ANSI_BRIGHT_PURPLE,
+                                                   ANSI_BRIGHT_CYAN,
+                                                   ANSI_BRIGHT_WHITE};
 
-    public static final AnsiColor[] BACKGROUNDS = {
-            ANSI_BG_BLACK, ANSI_BG_RED, ANSI_BG_GREEN, ANSI_BG_YELLOW,
-            ANSI_BG_BLUE, ANSI_BG_PURPLE, ANSI_BG_CYAN, ANSI_BG_WHITE,
-            ANSI_BRIGHT_BG_BLACK, ANSI_BRIGHT_BG_RED, ANSI_BRIGHT_BG_GREEN, ANSI_BRIGHT_BG_YELLOW,
-            ANSI_BRIGHT_BG_BLUE, ANSI_BRIGHT_BG_PURPLE, ANSI_BRIGHT_BG_CYAN, ANSI_BRIGHT_BG_WHITE
-    };
+    public static final AnsiColor[] BACKGROUNDS = {ANSI_BG_BLACK,
+                                                   ANSI_BG_RED,
+                                                   ANSI_BG_GREEN,
+                                                   ANSI_BG_YELLOW,
+                                                   ANSI_BG_BLUE,
+                                                   ANSI_BG_PURPLE,
+                                                   ANSI_BG_CYAN,
+                                                   ANSI_BG_WHITE,
+                                                   ANSI_BRIGHT_BG_BLACK,
+                                                   ANSI_BRIGHT_BG_RED,
+                                                   ANSI_BRIGHT_BG_GREEN,
+                                                   ANSI_BRIGHT_BG_YELLOW,
+                                                   ANSI_BRIGHT_BG_BLUE,
+                                                   ANSI_BRIGHT_BG_PURPLE,
+                                                   ANSI_BRIGHT_BG_CYAN,
+                                                   ANSI_BRIGHT_BG_WHITE};
 
     private final String ansi;
 

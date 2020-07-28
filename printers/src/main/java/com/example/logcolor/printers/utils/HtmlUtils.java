@@ -33,9 +33,7 @@ public class HtmlUtils {
             while ((index = sb.indexOf(from)) != -1) {
                 sb.replace(index,
                            index + from.length(),
-                           "<font style=\"color:"
-                           + ansiColor.getHex()
-                           + ";\">");
+                           "<font style=\"color:" + ansiColor.getHex() + ";\">");
             }
         }
 
@@ -43,33 +41,21 @@ public class HtmlUtils {
             int indexTagBg;
             String from = ansiColor.getAnsi();
             while ((indexTagBg = sb.indexOf(from)) != -1) {
-                if (sb.toString().contains("VERBOSE")) {
-                    String a = "";
-                }
                 int replaceStartIndex = indexTagBg;
                 int replaceEndIndex = indexTagBg + from.length();
-                String replaceText = "<font style=\"background-color:"
-                                     + ansiColor.getHex()
-                                     + ";\">";
+                String replaceText =
+                        "<font style=\"background-color:" + ansiColor.getHex() + ";\">";
 
-                int indexTagEnd = getEndIndex(sb,
-                                              "</font>",
-                                              indexTagBg);
-                int indexTagStart = getStartIndex(sb,
-                                                  "<font",
-                                                  indexTagEnd,
-                                                  indexTagBg);
+                int indexTagEnd = getEndIndex(sb, "</font>", indexTagBg);
+                int indexTagStart = getStartIndex(sb, "<font", indexTagEnd, indexTagBg);
 
                 if (isBetweenTags(sb, indexTagStart, "</font>", indexTagEnd, indexTagBg)) {
                     // If foreground color was applied and not closed.
                     // If in middle of foreground color.
                     String colorOfForeground = getColorHtml(sb, indexTagStart);
 
-                    replaceText = "</font><font style=\"color:"
-                                  + colorOfForeground
-                                  + ";background-color:"
-                                  + ansiColor.getHex()
-                                  + ";\">";
+                    replaceText = "</font><font style=\"color:" + colorOfForeground +
+                                  ";background-color:" + ansiColor.getHex() + ";\">";
                 } else if (isBeforeTag(sb, indexTagStart, indexTagEnd, indexTagBg)) {
                     // If before foreground color.
                     String colorOfForeground = getColorHtml(sb, indexTagStart);
@@ -77,11 +63,8 @@ public class HtmlUtils {
                     int fgTagLength = sb.indexOf(">", indexTagStart) - indexTagStart + 1;
                     sb.delete(indexTagStart, indexTagStart + fgTagLength);
                     sb.insert(indexTagStart,
-                              "<font style=\"color:"
-                              + colorOfForeground
-                              + ";background-color:"
-                              + ansiColor.getHex()
-                              + ";\">");
+                              "<font style=\"color:" + colorOfForeground + ";background-color:" +
+                              ansiColor.getHex() + ";\">");
                     replaceText = "";
                 }
                 // Don't do anything if foreground color was applied and closed
@@ -89,6 +72,27 @@ public class HtmlUtils {
 
                 sb.replace(replaceStartIndex, replaceEndIndex, replaceText);
             }
+        }
+
+        removeExtraClosingTags(sb);
+    }
+
+    private static void removeExtraClosingTags(StringBuilder sb) {
+        int fontOpenTagCount = 0;
+        for (int index = sb.indexOf("<font"); index != -1; index = sb.indexOf("<font", index + 1)) {
+            ++fontOpenTagCount;
+        }
+        int fontCloseTagCount = 0;
+        for (int index = sb.indexOf("</font>");
+             index != -1; index = sb.indexOf("</font>", index + 1)) {
+            ++fontCloseTagCount;
+        }
+
+        int diff = fontCloseTagCount - fontOpenTagCount;
+        while (diff-- > 0) {
+            int lastIndexOf = sb.lastIndexOf("</font>");
+            int lastIndexOfEnd = lastIndexOf + "</font>".length();
+            sb.delete(lastIndexOf, lastIndexOfEnd);
         }
     }
 
@@ -109,15 +113,12 @@ public class HtmlUtils {
 
         int index = indexTagStart;
         int temp = index;
-        while ((temp = sb.indexOf(tagEnd, temp + 1)) != -1
-               && temp < indexTagEnd) {
+        while ((temp = sb.indexOf(tagEnd, temp + 1)) != -1 && temp < indexTagEnd) {
             index = temp;
         }
 
-        return indexTagStart < indexTag
-               && indexTagStart < indexTagEnd
-               && indexTag < indexTagEnd
-               && index > indexTag;
+        return indexTagStart < indexTag && indexTagStart < indexTagEnd && indexTag < indexTagEnd &&
+               index > indexTag;
     }
 
     private static boolean isBeforeTag(StringBuilder sb,
@@ -136,9 +137,7 @@ public class HtmlUtils {
         return indexTagStart < indexTagEnd && indexTagStart > indexTag;
     }
 
-    private static int getEndIndex(StringBuilder sb,
-                                   String tagEnd,
-                                   int indexTag) {
+    private static int getEndIndex(StringBuilder sb, String tagEnd, int indexTag) {
         return sb.indexOf(tagEnd, indexTag);
     }
 
@@ -149,8 +148,7 @@ public class HtmlUtils {
         int indexTagStart = -1;
 
         int temp = indexTagStart;
-        while ((temp = sb.indexOf(tagStart, temp + 1)) != -1
-               && temp < indexTagEnd) {
+        while ((temp = sb.indexOf(tagStart, temp + 1)) != -1 && temp < indexTagEnd) {
             indexTagStart = temp;
         }
 
@@ -192,9 +190,8 @@ public class HtmlUtils {
 
     public static String appendTextToHtml(String originHtmlText, String unwrappedTextToAppend) {
         int indexPreClosingTag = originHtmlText.lastIndexOf("</pre>");
-        originHtmlText = originHtmlText.substring(0, +indexPreClosingTag)
-                         + unwrappedTextToAppend
-                         + originHtmlText.substring(indexPreClosingTag);
+        originHtmlText = originHtmlText.substring(0, +indexPreClosingTag) + unwrappedTextToAppend +
+                         originHtmlText.substring(indexPreClosingTag);
         return originHtmlText;
     }
 }

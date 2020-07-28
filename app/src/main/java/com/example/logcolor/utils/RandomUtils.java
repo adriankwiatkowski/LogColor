@@ -41,15 +41,11 @@ public class RandomUtils {
     public static String generateRandomAsciiString(int minAscii, int maxAscii, int maxLength) {
         if (minAscii < 0 || minAscii > 127) {
             throw new IllegalArgumentException(
-                    "min ascii must greater than 0 and lesser than 127 and was: "
-                    + minAscii
-                    + ".");
+                    "min ascii must greater than 0 and lesser than 127 and was: " + minAscii + ".");
         }
         if (maxAscii < 0 || maxAscii > 127) {
             throw new IllegalArgumentException(
-                    "max Ascii must greater than 0 and lesser than 127 and was: "
-                    + minAscii
-                    + ".");
+                    "max Ascii must greater than 0 and lesser than 127 and was: " + minAscii + ".");
         }
 
         StringBuilder sb = new StringBuilder(maxLength);
@@ -64,13 +60,10 @@ public class RandomUtils {
     }
 
     public static void printRandomDebugInfo() {
-        ThreadLocalRandom.current()
-                         .ints(20, 75)
-                         .limit(100)
-                         .forEach(r -> {
-                             String msg = RandomUtils.generateRandomAsciiString(r);
-                             randomLog(msg, ThreadLocalRandom.current().nextInt(0, 4 + 1));
-                         });
+        ThreadLocalRandom.current().ints(20, 75).limit(100).forEach(r -> {
+            String msg = RandomUtils.generateRandomAsciiString(r);
+            randomLog(msg, ThreadLocalRandom.current().nextInt(0, 4 + 1));
+        });
     }
 
     private static void randomLog(String msg, int random) {

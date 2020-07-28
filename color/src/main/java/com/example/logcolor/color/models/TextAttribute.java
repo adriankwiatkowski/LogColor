@@ -30,10 +30,8 @@ public class TextAttribute {
 
     @Override
     public String toString() {
-        return "TextAttribute{" +
-               "textAlignment=" + textAlignment +
-               ", mTotalLength=" + mTotalLength +
-               '}';
+        return "TextAttribute{" + "textAlignment=" + textAlignment + ", mTotalLength=" +
+               mTotalLength + '}';
     }
 
     @Override
@@ -41,8 +39,7 @@ public class TextAttribute {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TextAttribute that = (TextAttribute) o;
-        return mTotalLength == that.mTotalLength &&
-               textAlignment == that.textAlignment;
+        return mTotalLength == that.mTotalLength && textAlignment == that.textAlignment;
     }
 
     @Override

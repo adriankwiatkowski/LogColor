@@ -6,7 +6,6 @@ import com.example.logcolor.color.models.TextAttribute;
 import com.example.logcolor.color.utils.TextUtils;
 import com.example.logcolor.colorbuilder.builders.AlignedColorBuilder;
 import com.example.logcolor.log.Log;
-import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
 
 import java.util.ArrayList;
@@ -43,29 +42,23 @@ public class DebugTextUtils {
         Log.d("Debug tag", "Something not working here.");
         Log.w("Warning tag", "Warning, take care!");
         Log.e("Error tag", "Behold almighty error...");
-        Log.w("Warning tag that will exceed max character limit.",
-              "Friendly warning message.");
+        Log.w("Warning tag that will exceed max character limit.", "Friendly warning message.");
     }
 
     public static void printColorDebugInfo(TextAlignment textAlignment, int extraSpace) {
         int maxTextLength = 0;
         for (AnsiColor fg : AnsiColor.FOREGROUNDS) {
             for (AnsiColor bg : AnsiColor.BACKGROUNDS) {
-                maxTextLength = Math.max(
-                        Math.max(
-                                maxTextLength,
-                                fg.toString().length()),
-                        bg.toString().length());
+                maxTextLength = Math.max(Math.max(maxTextLength, fg.toString().length()),
+                                         bg.toString().length());
             }
         }
 
-        TextAttribute textAttribute =
-                new TextAttribute(textAlignment, maxTextLength + extraSpace);
+        TextAttribute textAttribute = new TextAttribute(textAlignment, maxTextLength + extraSpace);
         int textAttributeDuplicateCount = 2;
 
-        AlignedColorBuilder alignedColorBuilder = new AlignedColorBuilder
-                .Builder(textAttribute, textAttributeDuplicateCount)
-                .build();
+        AlignedColorBuilder alignedColorBuilder =
+                new AlignedColorBuilder.Builder(textAttribute, textAttributeDuplicateCount).build();
 
         for (AnsiColor fg : AnsiColor.FOREGROUNDS) {
             for (AnsiColor bg : AnsiColor.BACKGROUNDS) {
@@ -74,23 +67,19 @@ public class DebugTextUtils {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        PrintableManager.getInstance().logThread(() ->
-                                                         Printer.println(alignedColorBuilder.getText_Flush()));
+        Printer.println(alignedColorBuilder.getText_Flush());
     }
 
     public static void printAllColorsIndexed(TextAlignment textAlignment, int extraSpace) {
-        int maxTextLength = Math.max(
-                TextUtils.getTextLength(AnsiColor.FOREGROUNDS),
-                TextUtils.getTextLength(AnsiColor.BACKGROUNDS));
+        int maxTextLength = Math.max(TextUtils.getTextLength(AnsiColor.FOREGROUNDS),
+                                     TextUtils.getTextLength(AnsiColor.BACKGROUNDS));
 
-        TextAttribute textAttribute =
-                new TextAttribute(textAlignment, maxTextLength + extraSpace);
+        TextAttribute textAttribute = new TextAttribute(textAlignment, maxTextLength + extraSpace);
 
         int textAttributeDuplicateCount = 2;
 
-        AlignedColorBuilder alignedColorBuilder = new AlignedColorBuilder
-                .Builder(textAttribute, textAttributeDuplicateCount)
-                .build();
+        AlignedColorBuilder alignedColorBuilder =
+                new AlignedColorBuilder.Builder(textAttribute, textAttributeDuplicateCount).build();
 
         for (int i = 0; i < AnsiColor.FOREGROUNDS.length; ++i) {
             AnsiColor fg = AnsiColor.FOREGROUNDS[i];
@@ -101,8 +90,7 @@ public class DebugTextUtils {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        PrintableManager.getInstance().logThread(() ->
-                                                         Printer.println(alignedColorBuilder.getText_Flush()));
+        Printer.println(alignedColorBuilder.getText_Flush());
     }
 
     public static void printIncrementalNumbers(TextAlignment textAlignment,
@@ -113,9 +101,8 @@ public class DebugTextUtils {
 
         TextAttribute textAttribute =
                 new TextAttribute(textAlignment, maxNumberLength + extraSpace);
-        AlignedColorBuilder alignedColorBuilder = new AlignedColorBuilder
-                .Builder(textAttribute)
-                .build();
+        AlignedColorBuilder alignedColorBuilder =
+                new AlignedColorBuilder.Builder(textAttribute).build();
 
         final int maxFgIndex = AnsiColor.FOREGROUNDS.length;
         final int maxBgIndex = AnsiColor.BACKGROUNDS.length;
@@ -138,8 +125,7 @@ public class DebugTextUtils {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        PrintableManager.getInstance().logThread(() ->
-                                                         Printer.println(alignedColorBuilder.getText_Flush()));
+        Printer.println(alignedColorBuilder.getText_Flush());
     }
 
     public static void printAllColorsText(TextAlignment textAlignment,
@@ -159,8 +145,7 @@ public class DebugTextUtils {
         while (columnCount-- > 0) {
             List<TextAttribute> textAttributeList = new ArrayList<>();
             for (int i = 0; i < textCountInColumn; ++i) {
-                int maxTextLength =
-                        RandomUtils.generateRandomNumber(1, maxBoundTextLength);
+                int maxTextLength = RandomUtils.generateRandomNumber(1, maxBoundTextLength);
                 TextAttribute textAttribute1 =
                         new TextAttribute(textAlignment, maxTextLength + extraSpace);
                 textAttributeList.add(textAttribute1);
@@ -168,9 +153,8 @@ public class DebugTextUtils {
             randomTextAttributesList.add(textAttributeList);
         }
 
-        AlignedColorBuilder alignedColorBuilder = new AlignedColorBuilder
-                .Builder(randomTextAttributesList.get(0))
-                .build();
+        AlignedColorBuilder alignedColorBuilder =
+                new AlignedColorBuilder.Builder(randomTextAttributesList.get(0)).build();
 
         randomTextAttributesList = new ArrayList<>(randomTextAttributesList);
 
@@ -181,8 +165,7 @@ public class DebugTextUtils {
 
                 List<String> textList = new ArrayList<>();
                 for (TextAttribute textAttribute : randomTextAttributesList.get(i)) {
-                    textList.add(RandomUtils
-                                         .generateRandomAsciiString(textAttribute.getTotalLength()));
+                    textList.add(RandomUtils.generateRandomAsciiString(textAttribute.getTotalLength()));
                 }
 
                 alignedColorBuilder.appendTextColor(fg, bg, textList);
@@ -197,7 +180,6 @@ public class DebugTextUtils {
             alignedColorBuilder.appendColorReset_NewLine();
         }
 
-        PrintableManager.getInstance().logThread(() ->
-                                                         Printer.println(alignedColorBuilder.getText_Flush()));
+        Printer.println(alignedColorBuilder.getText_Flush());
     }
 }

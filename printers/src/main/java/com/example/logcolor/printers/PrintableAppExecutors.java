@@ -23,8 +23,7 @@ class PrintableAppExecutors {
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {
-                    sInstance = new PrintableAppExecutors(
-                            Executors.newSingleThreadExecutor());
+                    sInstance = new PrintableAppExecutors(Executors.newSingleThreadExecutor());
                 }
             }
         }
@@ -45,11 +44,10 @@ class PrintableAppExecutors {
     private void shutdownAndAwaitTermination(ExecutorService executorService) {
         executorService.shutdown();
         try {
-            if (!executorService.awaitTermination(
-                    TIMEOUT_TERMINATION_SECONDS, TimeUnit.SECONDS)) {
+            if (!executorService.awaitTermination(TIMEOUT_TERMINATION_SECONDS, TimeUnit.SECONDS)) {
                 executorService.shutdownNow();
-                if (!executorService.awaitTermination(
-                        TIMEOUT_TERMINATION_SECONDS, TimeUnit.SECONDS)) {
+                if (!executorService.awaitTermination(TIMEOUT_TERMINATION_SECONDS,
+                                                      TimeUnit.SECONDS)) {
                     // Error terminating thread.
                     System.err.println("ExecutorService did not terminate.");
                 }

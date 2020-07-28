@@ -1,7 +1,7 @@
 [![](https://jitpack.io/v/adriankwiatkowski/LogColor.svg)](https://jitpack.io/#adriankwiatkowski/LogColor)
 
 # What is LogColor?
-LogColor is a customizable logging library.
+LogColor is a highly customizable logging library.
 
 # Why LogColor?
 - Easy to use
@@ -31,8 +31,8 @@ Step 2. Add the dependency
 ```groovy
 dependencies {
     // You can look up version in a badge.
-    // implementation 'com.github.adriankwiatkowski:LogColor:Version'
-    // You can use latest version that has not been released by using branch-SNAPSHOT
+    // implementation 'com.github.adriankwiatkowski:LogColor:ReleaseVersion'
+    // You can use latest version that has not been released by using branch-SNAPSHOT.
     implementation 'com.github.adriankwiatkowski:LogColor:master-SNAPSHOT'
 }
 ```
@@ -58,6 +58,7 @@ def urlFile = { url, name ->
 } as Object
 
 dependencies {
+    // You have to replace version number in path as well as file name.
     compile urlFile('https://github.com/adriankwiatkowski/LogColor/releases/download/v1.0/LogColor-1.0.jar', "LogColor")
 }
 ```
@@ -65,7 +66,28 @@ dependencies {
 # How do I use LogColor?
 Simple use cases will look something like this:
 
-Printing:
+Setting up Printer:
+```java
+PrintableManager printableManager = PrintableManager.getInstance();
+printableManager.setPrintable(PrintableType.CONSOLE);
+printableManager.setPrintable(PrintableType.WINDOW);
+printableManager.setPrintable(new Printable(outputStream) { ... });
+```
+
+Setting up Printer default configuration:
+```java
+// Applies to current and further Printable instances in PrintableManager.
+PrintableManager.getInstance()
+    .setDefaultFormat(AnsiColor.ANSI_BLACK,
+        AnsiColor.ANSI_BRIGHT_BG_BLUE,
+        TextAlignment.CENTER);
+
+// Applies only to current Printable instance.
+Printable printable = PrintableManager.getInstance().getPrintable();
+printable.setDefaultFormat(AnsiColor.ANSI_BLACK, AnsiColor.ANSI_BRIGHT_BG_BLUE); 
+```
+
+Printing using Printer (recommended way, because it uses multithreading by default):
 ```java
 AnsiColor fg = AnsiColor.ANSI_BRIGHT_BLUE;
 AnsiColor bg = AnsiColor.ANSI_BRIGHT_BG_WHITE;
@@ -86,13 +108,59 @@ Printer.print(fg, center, space, msg);
 Printer.print(fg, bg, center, space, msg);
 ```
 
-Logging:
+Printing using directly Printable instance:
 ```java
-Log.v("Verbose tag", "Useless verbose message.");
-Log.i("Info tag", "Informative message.");
-Log.d("Debug tag", "Something not working here.");
-Log.w("Warning tag", "Warning, take care!");
-Log.e("Error tag", "Behold almighty error...");
+Printable printable = PrintableManager.getInstance().getPrintable();
+// Although, using this method you cannot specify colors and text alignment
+// you can set default format for future prints on this Printable like this.
+// Remember this format will only be used in this particular instance of Printable.
+printable.setDefaultFormat(AnsiColor.ANSI_BLACK,
+    AnsiColor.ANSI_BRIGHT_BG_BLUE,
+    TextAlignment.LEFT);
+
+// If you want to format current and all future instances of Printable you have to set it globally
+// using PrintableManager class.
+PrintableManager.getInstance().setDefaultFormat(AnsiColor.ANSI_BLACK,
+    AnsiColor.ANSI_BRIGHT_BG_BLUE,
+    TextAlignment.CENTER);
+
+// Now our prints will be formatted using specified format, that we set earlier.
+printable.println("3");
+printable.println();
+printable.print("10");
+```
+
+Printing using System.out:
+```java
+// We can set our own out PrintStream like this.
+PrintableManager printableManager = PrintableManager.getInstance();
+printableManager.setPrintable(PrintableType.CONSOLE);
+// This line of code will redirect output of System.out.
+System.setOut(printableManager.getPrintable());
+
+// No we can use System.out directly, as well as all of its methods.
+System.out.print("Default text");
+System.out.println(" And another one that will appear on the same line.");
+
+// Although, using this method you cannot specify colors and text alignment
+// you can set default format for future prints on this Printable like this.
+// Remember this format will only be used in this particular instance of Printable.
+printableManager.getPrintable()
+    .setDefaultFormat(AnsiColor.ANSI_BLACK,
+        AnsiColor.ANSI_BRIGHT_BG_BLUE,
+        TextAlignment.LEFT);
+
+// If you want to format current and all future instances of Printable
+// you have to set it globally using PrintableManager class.
+PrintableManager.getInstance().setDefaultFormat(AnsiColor.ANSI_BLACK,
+    AnsiColor.ANSI_BRIGHT_BG_BLUE,
+    TextAlignment.CENTER);
+
+// Now our prints will be formatted using specified format, that we set earlier.
+System.out.print("Formatted text");
+System.out.println(" And another one that will appear on the same line.");
+System.out.println(
+    "And you don't have to format every line of code, just good old System.out!");
 ```
 
 #### Using Printable Manager class to customize logger
@@ -104,21 +172,14 @@ printableManager.setNightTheme();
 printableManager.setDayTheme();
 
 printableManager.setPrintable(PrintableType.WINDOW);
-```
 
-##### Set your own printable implementation to suit your needs
-```java
-printableManager.setPrintable(new Printable() {
+// You can even set your on Printable implementation to suit your needs.
+// You can look at the source code on github to see
+// how I implemented PrintableWindow, if you need an inspiration.
+OutputStream outputStream;
+PrintableManager.getInstance().setPrintable(new Printable(outputStream) {
     @Override
-    public void print(String string) {
-    }
-
-    @Override
-    public void print(ColorBuilder colorBuilder) {
-    }
-
-    @Override
-    public void print_flush(ColorBuilder colorBuilder) {
+    protected void write(String s) {
     }
 
     @Override
@@ -128,17 +189,23 @@ printableManager.setPrintable(new Printable() {
     @Override
     public void setNightTheme() {
     }
-
-    @Override
-    public void onClose() {
-    }
 });
+```
+
+Logging:
+```java
+Log.v("Verbose tag", "Useless verbose message.");
+Log.i("Info tag", "Informative message.");
+Log.d("Debug tag", "Something not working here.");
+Log.w("Warning tag", "Warning, take care!");
+Log.e("Error tag", "Behold almighty error...");
 ```
 
 #### Using Log Manager class
 ```java
 LogManager.getInstance().setMinLogLevel(LogLevel.INFO);
 ...
+// Although you don't need to implicitly check if LogLevel you want to print is loggable, it is a good practice.
 if (LogManager.getInstance().isLoggable(LogLevel.DEBUG)) {
     Log.d("Class tag", "Important debug message!");
 }
@@ -188,8 +255,8 @@ for (int i = 0; i < AnsiColor.FOREGROUNDS.length; ++i) {
     alignedColorBuilder.appendColorReset_NewLine();
 }
 
-PrintableManager.getInstance().logThread(() ->
-    Printer.println(alignedColorBuilder.getText_Flush()));
+
+Printer.println(alignedColorBuilder.getText_Flush()));
 ```
 
 # Colored random generated text

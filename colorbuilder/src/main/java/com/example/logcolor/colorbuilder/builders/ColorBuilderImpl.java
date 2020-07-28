@@ -80,8 +80,10 @@ public class ColorBuilderImpl extends AbstractColorBuilder {
     }
 
     @Override
-    public void appendTextColor(AnsiColor fg, AnsiColor bg,
-                                String text, TextAlignment textAlignment) {
+    public void appendTextColor(AnsiColor fg,
+                                AnsiColor bg,
+                                String text,
+                                TextAlignment textAlignment) {
         appendColor(fg, bg);
         appendTextAlign(text, getTextLength(text), textAlignment);
     }
@@ -113,6 +115,11 @@ public class ColorBuilderImpl extends AbstractColorBuilder {
         }
 
         textAlignment.appendAligned(getStringBuilder(), text, maxTextLength);
+    }
+
+    @Override
+    public String toString() {
+        return getStringBuilder().toString();
     }
 
     protected void onInvalidTextLength(String tag, String msg) {

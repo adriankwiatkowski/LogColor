@@ -5,10 +5,13 @@ import com.example.logcolor.printers.models.PrintableType;
 import com.example.logcolor.printers.printables.PrintableConsole;
 import com.example.logcolor.printers.printables.PrintableWindow;
 
+import java.io.OutputStream;
+
 class PrintableFactory {
 
-    static Printable createPrintable(PrintableType printableType,
-                                     boolean nightTheme) {
+    private static final OutputStream CONSOLE_OUTPUT_STREAM = System.out;
+
+    static Printable createPrintable(PrintableType printableType, boolean nightTheme) {
         switch (printableType) {
             case CONSOLE:
                 return createPrintableConsole();
@@ -49,12 +52,10 @@ class PrintableFactory {
     }
 
     private static Printable createPrintableConsole() {
-        return new PrintableConsole();
+        return new PrintableConsole(CONSOLE_OUTPUT_STREAM, true);
     }
 
     private static Printable createPrintableWindow(boolean nightTheme) {
-        return new PrintableWindow.Builder()
-                .setNightTheme(nightTheme)
-                .build();
+        return new PrintableWindow(nightTheme);
     }
 }

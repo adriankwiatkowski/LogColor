@@ -1,5 +1,9 @@
 package com.example.logcolor;
 
+import com.example.logcolor.printers.PrintableManager;
+import com.example.logcolor.utils.AppExecutors;
+import com.example.logcolor.utils.WindowLookUtils;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -7,27 +11,12 @@ public class Main {
     }
 
     private void start() {
-        /*
+
         AppExecutors.getInstance().mainThread().execute(() -> {
             WindowLookUtils.setLookAndFeel();
-
-            PrintableManager printableManager = PrintableManager.getInstance();
-            printableManager.setNightTheme();
-            printableManager.setPrintable(PrintableType.WINDOW);
-            DebugTextUtils.printSampleText();
-            DebugTextUtils.printAllLevelLogsTest();
-            DebugTextUtils.printAllColorsIndexed(TextAlignment.CENTER, 4);
-            RandomUtils.printRandomDebugInfo();
-
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             PrintableManager.getInstance().shutdownThreads();
             AppExecutors.getInstance().shutdownExecutors();
         });
-         */
     }
 }

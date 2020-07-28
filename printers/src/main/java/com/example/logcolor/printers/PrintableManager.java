@@ -1,5 +1,7 @@
 package com.example.logcolor.printers;
 
+import com.example.logcolor.color.models.AnsiColor;
+import com.example.logcolor.color.models.TextAlignment;
 import com.example.logcolor.printers.interfaces.Printable;
 import com.example.logcolor.printers.models.PrintableType;
 
@@ -12,15 +14,16 @@ public class PrintableManager {
     private Printable mPrintable;
 
     private boolean mIsNightTheme = false;
+    private AnsiColor defaultFg = null;
+    private AnsiColor defaultBg = null;
+    private TextAlignment defaultTextAlignment = TextAlignment.NONE;
 
     private PrintableManager() {
-        mPrintable = PrintableFactory.createPrintable(
-                PrintableType.CONSOLE,
-                mIsNightTheme);
+        mPrintable = PrintableFactory.createPrintable(PrintableType.CONSOLE, mIsNightTheme);
 
         PrintableThreads.addCloseTask(() -> {
             if (mPrintable != null) {
-                mPrintable.onClose();
+                mPrintable.close();
                 mPrintable = null;
             }
         });
@@ -52,20 +55,24 @@ public class PrintableManager {
         }
 
         if (mPrintable != null && mPrintable != printable) {
-            mPrintable.onClose();
+            mPrintable.close();
         }
+
+        printable.setDefaultFormat(defaultFg, defaultBg, defaultTextAlignment);
+
         mPrintable = printable;
     }
 
     public synchronized void setPrintable(PrintableType printableType) {
-        Printable printable = PrintableFactory.setPrintable(
-                printableType,
-                mPrintable,
-                mIsNightTheme);
+        Printable printable =
+                PrintableFactory.setPrintable(printableType, mPrintable, mIsNightTheme);
 
         if (mPrintable != null && mPrintable != printable) {
-            mPrintable.onClose();
+            mPrintable.close();
         }
+
+        printable.setDefaultFormat(defaultFg, defaultBg, defaultTextAlignment);
+
         mPrintable = printable;
     }
 
@@ -97,5 +104,24 @@ public class PrintableManager {
 
         mIsNightTheme = false;
         mPrintable.setDayTheme();
+    }
+
+    public synchronized void setDefaultFormat(AnsiColor fg, AnsiColor bg) {
+        this.defaultFg = fg;
+        this.defaultBg = bg;
+        if (mPrintable != null) {
+            mPrintable.setDefaultFormat(defaultFg, defaultBg);
+        }
+    }
+
+    public synchronized void setDefaultFormat(AnsiColor fg,
+                                              AnsiColor bg,
+                                              TextAlignment textAlignment) {
+        this.defaultFg = fg;
+        this.defaultBg = bg;
+        this.defaultTextAlignment = textAlignment;
+        if (mPrintable != null) {
+            mPrintable.setDefaultFormat(defaultFg, defaultBg, defaultTextAlignment);
+        }
     }
 }

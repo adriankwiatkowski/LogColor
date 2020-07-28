@@ -104,9 +104,7 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
             String text = textList.get(i);
             TextAttribute textAttribute = mTextAttributeList.get(i);
 
-            appendTextAlign(text,
-                            textAttribute.getTotalLength(),
-                            textAttribute.getTextAlignment());
+            appendTextAlign(text, textAttribute.getTotalLength(), textAttribute.getTextAlignment());
         }
     }
 
@@ -126,9 +124,7 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
 
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
-        appendTextAlign(text1,
-                        textAttribute.getTotalLength(),
-                        textAttribute.getTextAlignment());
+        appendTextAlign(text1, textAttribute.getTotalLength(), textAttribute.getTextAlignment());
     }
 
     /**
@@ -147,15 +143,11 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
 
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
-        appendTextAlign(text1,
-                        textAttribute.getTotalLength(),
-                        textAttribute.getTextAlignment());
+        appendTextAlign(text1, textAttribute.getTotalLength(), textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(1);
 
-        appendTextAlign(text2,
-                        textAttribute.getTotalLength(),
-                        textAttribute.getTextAlignment());
+        appendTextAlign(text2, textAttribute.getTotalLength(), textAttribute.getTextAlignment());
     }
 
     /**
@@ -175,21 +167,15 @@ public class AlignedColorBuilder extends ColorBuilderImpl {
 
         TextAttribute textAttribute = mTextAttributeList.get(0);
 
-        appendTextAlign(text1,
-                        textAttribute.getTotalLength(),
-                        textAttribute.getTextAlignment());
+        appendTextAlign(text1, textAttribute.getTotalLength(), textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(1);
 
-        appendTextAlign(text2,
-                        textAttribute.getTotalLength(),
-                        textAttribute.getTextAlignment());
+        appendTextAlign(text2, textAttribute.getTotalLength(), textAttribute.getTextAlignment());
 
         textAttribute = mTextAttributeList.get(2);
 
-        appendTextAlign(text3,
-                        textAttribute.getTotalLength(),
-                        textAttribute.getTextAlignment());
+        appendTextAlign(text3, textAttribute.getTotalLength(), textAttribute.getTextAlignment());
     }
 
     /**

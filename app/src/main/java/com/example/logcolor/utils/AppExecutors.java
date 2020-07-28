@@ -17,9 +17,7 @@ public class AppExecutors {
     private final Executor mIOExecutor;
     private final Executor mNetworkExecutor;
 
-    private AppExecutors(Executor mainExecutor,
-                         Executor ioExecutor,
-                         Executor networkExecutor) {
+    private AppExecutors(Executor mainExecutor, Executor ioExecutor, Executor networkExecutor) {
         this.mMainExecutor = mainExecutor;
         this.mIOExecutor = ioExecutor;
         this.mNetworkExecutor = networkExecutor;
@@ -29,10 +27,9 @@ public class AppExecutors {
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {
-                    sInstance = new AppExecutors(
-                            Executors.newSingleThreadExecutor(),
-                            Executors.newSingleThreadExecutor(),
-                            Executors.newSingleThreadExecutor());
+                    sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),
+                                                 Executors.newSingleThreadExecutor(),
+                                                 Executors.newSingleThreadExecutor());
                 }
             }
         }
@@ -59,11 +56,10 @@ public class AppExecutors {
     private void shutdownAndAwaitTermination(ExecutorService executorService) {
         executorService.shutdown();
         try {
-            if (!executorService.awaitTermination(
-                    TIMEOUT_TERMINATION_SECONDS, TimeUnit.SECONDS)) {
+            if (!executorService.awaitTermination(TIMEOUT_TERMINATION_SECONDS, TimeUnit.SECONDS)) {
                 executorService.shutdownNow();
-                if (!executorService.awaitTermination(
-                        TIMEOUT_TERMINATION_SECONDS, TimeUnit.SECONDS)) {
+                if (!executorService.awaitTermination(TIMEOUT_TERMINATION_SECONDS,
+                                                      TimeUnit.SECONDS)) {
                     // Error terminating thread.
                     System.err.println("ExecutorService did not terminate.");
                 }
@@ -71,7 +67,7 @@ public class AppExecutors {
         } catch (InterruptedException e) {
             executorService.shutdownNow();
             Thread.currentThread().interrupt();
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 }

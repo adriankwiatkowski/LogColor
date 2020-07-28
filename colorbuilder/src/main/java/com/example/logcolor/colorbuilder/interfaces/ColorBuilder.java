@@ -18,20 +18,17 @@ public interface ColorBuilder {
 
     void appendTextColor(AnsiColor color, String text);
 
-    void appendTextColor(AnsiColor color, String text,
-                         TextAlignment textAlignment);
+    void appendTextColor(AnsiColor color, String text, TextAlignment textAlignment);
 
     void appendTextColor(AnsiColor fg, AnsiColor bg, String text);
 
-    void appendTextColor(AnsiColor fg, AnsiColor bg,
-                         String text, TextAlignment textAlignment);
+    void appendTextColor(AnsiColor fg, AnsiColor bg, String text, TextAlignment textAlignment);
 
     void appendTextAlign(String text);
 
     void appendTextAlign(String text, TextAttribute textAttribute);
 
-    void appendTextAlign(String text, int maxTextLength,
-                         TextAlignment textAlignment);
+    void appendTextAlign(String text, int maxTextLength, TextAlignment textAlignment);
 
     void appendColorReset();
 
@@ -57,8 +54,7 @@ public interface ColorBuilder {
         appendColorReset();
     }
 
-    default void appendTextColor_Reset(AnsiColor color, String text,
-                                       TextAlignment textAlignment) {
+    default void appendTextColor_Reset(AnsiColor color, String text, TextAlignment textAlignment) {
         appendTextColor(color, text, textAlignment);
     }
 
@@ -67,8 +63,10 @@ public interface ColorBuilder {
         appendColorReset();
     }
 
-    default void appendTextColor_Reset(AnsiColor fg, AnsiColor bg,
-                                       String text, TextAlignment textAlignment) {
+    default void appendTextColor_Reset(AnsiColor fg,
+                                       AnsiColor bg,
+                                       String text,
+                                       TextAlignment textAlignment) {
         appendTextColor(fg, bg, text, textAlignment);
         appendColorReset();
     }
@@ -78,7 +76,8 @@ public interface ColorBuilder {
         appendColorReset_NewLine();
     }
 
-    default void appendTextColor_Reset_NewLine(AnsiColor color, String text,
+    default void appendTextColor_Reset_NewLine(AnsiColor color,
+                                               String text,
                                                TextAlignment textAlignment) {
         appendTextColor(color, text, textAlignment);
         appendColorReset_NewLine();
@@ -89,8 +88,10 @@ public interface ColorBuilder {
         appendColorReset_NewLine();
     }
 
-    default void appendTextColor_Reset_NewLine(AnsiColor fg, AnsiColor bg,
-                                               String text, TextAlignment textAlignment) {
+    default void appendTextColor_Reset_NewLine(AnsiColor fg,
+                                               AnsiColor bg,
+                                               String text,
+                                               TextAlignment textAlignment) {
         appendTextColor(fg, bg, text, textAlignment);
         appendColorReset_NewLine();
     }

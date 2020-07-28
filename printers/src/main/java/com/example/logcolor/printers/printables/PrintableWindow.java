@@ -1,15 +1,16 @@
 package com.example.logcolor.printers.printables;
 
-import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 import com.example.logcolor.printers.interfaces.Printable;
 import com.example.logcolor.printers.utils.HtmlUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class PrintableWindow implements Printable {
+public class PrintableWindow extends Printable {
 
     private static final String BLACK_COLOR = "#1F1B24";
     private static final String WHITE_COLOR = "#FFFFFF";
@@ -17,25 +18,27 @@ public class PrintableWindow implements Printable {
     private JFrame mMainFrame;
     private JList<String> mMessageList;
     private DefaultListModel<String> mListModel = new DefaultListModel<>();
+    private boolean mIsNewLine = false;
 
-    private boolean mIsThemeSet = false;
-    private boolean mIsDayTheme;
-
-    // Not safe to use, may produce Null Exception.
+    // Not safe to use, may produce Null Pointer Exception.
     private Queue<Runnable> mPendingRequestQueue = new LinkedList<>();
     private boolean mIsPendingRequest = true;
 
-    public PrintableWindow(Builder builder) {
+    public PrintableWindow(boolean nightTheme) {
+        super(new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+                // Not implemented.
+            }
+        });
+
         SwingUtilities.invokeLater(() -> {
             mMainFrame = new JFrame("Printable Window");
             mMainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
             Color backgroundColor;
-            if (mIsThemeSet) {
-                backgroundColor = mIsDayTheme ? Color.WHITE : Color.BLACK;
-            } else {
-                backgroundColor = builder.dayTheme ? Color.WHITE : Color.BLACK;
-            }
+
+            backgroundColor = nightTheme ? Color.BLACK : Color.WHITE;
 
             mMessageList = new JList<>(mListModel);
             mMessageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -66,60 +69,10 @@ public class PrintableWindow implements Printable {
         });
     }
 
-    public static class Builder extends AbsBuilder {
-
-        private boolean dayTheme = true;
-
-        public Builder() {
-        }
-
-        public Builder setNightTheme(boolean nightTheme) {
-            dayTheme = !nightTheme;
-            return this;
-        }
-
-        public Builder setDayTheme() {
-            dayTheme = true;
-            return this;
-        }
-
-        public Builder setNightTheme() {
-            dayTheme = false;
-            return this;
-        }
-
-        @Override
-        public PrintableWindow build() {
-            return new PrintableWindow(this);
-        }
-
-        @Override
-        protected Builder self() {
-            return this;
-        }
-    }
-
-    private abstract static class AbsBuilder<T extends AbsBuilder<T>> {
-
-        public abstract PrintableWindow build();
-
-        protected abstract T self();
-    }
-
     @Override
-    public void print(String string) {
-        addTextToList(string);
-    }
-
-    @Override
-    public void print(ColorBuilder colorBuilder) {
-        addTextToList(colorBuilder.getText());
-    }
-
-    @Override
-    public void print_flush(ColorBuilder colorBuilder) {
-        print(colorBuilder);
-        colorBuilder.flush();
+    protected void write(String s) {
+        s = setDefaultColorIfNotOverridden(s);
+        addTextToList(s);
     }
 
     @Override
@@ -149,7 +102,8 @@ public class PrintableWindow implements Printable {
     }
 
     @Override
-    public void onClose() {
+    public void close() {
+        super.close();
         if (mIsPendingRequest) {
             mPendingRequestQueue.add(() -> {
                 mMainFrame.setVisible(false);
@@ -162,31 +116,40 @@ public class PrintableWindow implements Printable {
     }
 
     private void addTextToList(String string) {
-        if (!string.contains("\n") && mListModel.size() > 0) {
-            String htmlText = HtmlUtils.buildHtmlFromAnsi(string);
-            htmlText = HtmlUtils.removeTextWrapperHtml(htmlText);
-            String originalHtmlText = mListModel.get(mListModel.size() - 1);
-            String concatHtmlText = HtmlUtils.appendTextToHtml(originalHtmlText, htmlText);
-            mListModel.set(mListModel.size() - 1, concatHtmlText);
-        } else {
-            mListModel.addElement(HtmlUtils.buildHtmlFromAnsi(string));
+        if (string == null) {
+            throw new IllegalArgumentException("String cannot be null.");
         }
+
+        String[] splitLines = string.split("\n");
+
+        for (String splitLine : splitLines) {
+            String htmlText = HtmlUtils.buildHtmlFromAnsi(splitLine);
+            if (mIsNewLine || mListModel.isEmpty()) {
+                mListModel.addElement(htmlText);
+            } else {
+                htmlText = HtmlUtils.removeTextWrapperHtml(htmlText);
+                String originalHtmlText = mListModel.get(mListModel.size() - 1);
+                String concatHtmlText = HtmlUtils.appendTextToHtml(originalHtmlText, htmlText);
+                mListModel.set(mListModel.size() - 1, concatHtmlText);
+                mListModel.set(mListModel.size() - 1, concatHtmlText);
+            }
+        }
+
+        mIsNewLine = string.endsWith("\n");
     }
 
     private ListCellRenderer<String> createCallRenderer() {
         return new ListRenderer();
     }
 
-    private static class ListRenderer extends JLabel
-            implements ListCellRenderer<String> {
+    private static class ListRenderer extends JLabel implements ListCellRenderer<String> {
 
         @Override
-        public Component getListCellRendererComponent(
-                JList<? extends String> list,
-                String value,
-                int index,
-                boolean isSelected,
-                boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<? extends String> list,
+                                                      String value,
+                                                      int index,
+                                                      boolean isSelected,
+                                                      boolean cellHasFocus) {
 
             if (isSelected) {
                 setBackground(list.getSelectionBackground());

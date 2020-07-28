@@ -6,6 +6,7 @@ import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
 import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 import com.example.logcolor.log.models.LogLevel;
 import com.example.logcolor.printers.PrintableManager;
+import com.example.logcolor.printers.Printer;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -19,12 +20,11 @@ public class Log {
 
     private static final int DATE_TAG_EXTRA_CHAR_LIMIT = 8;
     private static final int TAG_CHAR_LIMIT = 30;
-    private static final int LEVEL_INFO_CHAR_LIMIT =
-            Arrays.stream(LogLevel.values())
-                  .map(LogLevel::getLevelTag)
-                  .max(Comparator.comparingInt(String::length))
-                  .get()
-                  .length();
+    private static final int LEVEL_INFO_CHAR_LIMIT = Arrays.stream(LogLevel.values())
+                                                           .map(LogLevel::getLevelTag)
+                                                           .max(Comparator.comparingInt(String::length))
+                                                           .get()
+                                                           .length();
 
     private static final String ERROR_MESSAGE_EMPTY = "Log message cannot be null or empty.";
 
@@ -167,22 +167,23 @@ public class Log {
         addLog(fg, bg, LogLevel.ERROR.getLevelTag(), tag, msg);
     }
 
-    private static void addLog(AnsiColor color,
-                               String debugLevelInfo,
-                               String tag, String msg) {
+    private static void addLog(AnsiColor color, String debugLevelInfo, String tag, String msg) {
         addLog(color, color, debugLevelInfo, tag, msg);
     }
 
-    private static void addLog(AnsiColor fg, AnsiColor bg,
+    private static void addLog(AnsiColor fg,
+                               AnsiColor bg,
                                String debugLevelInfo,
-                               String tag, String msg) {
-        PrintableManager.getInstance().logThread(() ->
-                                                         print(fg, bg, debugLevelInfo, tag, msg));
+                               String tag,
+                               String msg) {
+        PrintableManager.getInstance().logThread(() -> print(fg, bg, debugLevelInfo, tag, msg));
     }
 
-    private static void print(AnsiColor fg, AnsiColor bg,
+    private static void print(AnsiColor fg,
+                              AnsiColor bg,
                               String debugLevelInfo,
-                              String tag, String msg) {
+                              String tag,
+                              String msg) {
         if (msg == null || msg.isEmpty()) {
             throw new IllegalArgumentException(ERROR_MESSAGE_EMPTY);
         }
@@ -207,7 +208,7 @@ public class Log {
         simpleColorBuilder.setTextAlignment(TEXT_ALIGNMENT_MSG);
         appendMsg(simpleColorBuilder, fg, bg, msg);
 
-        PrintableManager.getInstance().getPrintable().print_flush(simpleColorBuilder);
+        Printer.print(simpleColorBuilder.getText_Flush());
     }
 
     private static void appendLevelInfo(ColorBuilder colorBuilder,
