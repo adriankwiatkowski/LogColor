@@ -55,6 +55,11 @@ public abstract class AbstractColorBuilder implements ColorBuilder {
         return mStringBuilder.toString();
     }
 
+    @Override
+    public String toString() {
+        return getText();
+    }
+
     /**
      * Creates new <c>StringBuilder</c>.
      */

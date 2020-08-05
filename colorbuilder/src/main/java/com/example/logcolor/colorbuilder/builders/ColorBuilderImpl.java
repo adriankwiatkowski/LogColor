@@ -119,7 +119,7 @@ public class ColorBuilderImpl extends AbstractColorBuilder {
 
     @Override
     public String toString() {
-        return getStringBuilder().toString();
+        return getText();
     }
 
     protected void onInvalidTextLength(String tag, String msg) {
