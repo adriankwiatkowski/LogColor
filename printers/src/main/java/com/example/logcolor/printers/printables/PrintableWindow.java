@@ -13,6 +13,7 @@ public class PrintableWindow extends Printable {
 
     private static final String BLACK_COLOR = "0x000000";
     private static final String WHITE_COLOR = "0xFFFFFF";
+    private static final int MAX_MESSAGE_COUNT = 1000;
 
     private JFrame mMainFrame;
     private JList<String> mMessageList;
@@ -136,6 +137,9 @@ public class PrintableWindow extends Printable {
         for (String splitLine : splitLines) {
             String htmlText = HtmlUtils.buildHtmlFromAnsi(splitLine);
             if (mIsNextPrintNewLine || mListModel.isEmpty() || mIsForceOnNewLine) {
+                if (mListModel.size() >= MAX_MESSAGE_COUNT) {
+                    mListModel.remove(0);
+                }
                 mListModel.addElement(htmlText);
             } else {
                 htmlText = HtmlUtils.removeTextWrapperHtml(htmlText);
