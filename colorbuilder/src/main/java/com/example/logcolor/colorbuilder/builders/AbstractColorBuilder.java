@@ -11,7 +11,10 @@ public abstract class AbstractColorBuilder implements ColorBuilder {
     private StringBuilder mStringBuilder;
 
     public AbstractColorBuilder(Builder<?> builder) {
-        mStringBuilder = Objects.requireNonNullElseGet(builder.stringBuilder, StringBuilder::new);
+        mStringBuilder = builder.stringBuilder;
+        if (mStringBuilder == null) {
+            mStringBuilder = new StringBuilder();
+        }
     }
 
     public abstract static class Builder<T extends Builder<T>> {
