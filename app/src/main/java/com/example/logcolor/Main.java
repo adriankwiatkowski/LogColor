@@ -1,13 +1,15 @@
 package com.example.logcolor;
 
-import com.example.logcolor.colorbuilder.utils.AnsiColor;
 import com.example.logcolor.colorbuilder.text.TextAlignment;
 import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.colorbuilder.text.TextStyle;
+import com.example.logcolor.colorbuilder.utils.AnsiColor;
+import com.example.logcolor.log.Log;
 import com.example.logcolor.log.LogManager;
 import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
 import com.example.logcolor.printers.models.PrintableType;
+import com.example.logcolor.test.LeetPrintableConsole;
 import com.example.logcolor.utils.AppExecutors;
 import com.example.logcolor.utils.DebugTextUtils;
 import com.example.logcolor.utils.WindowLookUtils;
@@ -39,9 +41,17 @@ public class Main {
                                                                         TextStyle.UNDERLINE))
                                                .build();
 //            PrintableManager.getInstance().setDefaultFormat(textAttribute);
+
+            PrintableManager.getInstance().setPrintable(new LeetPrintableConsole(System.out, true));
+
             LogManager.getInstance().setShowLogLevel(false);
             LogManager.getInstance().setShowDate(false);
-            //LogManager.getInstance().setShowTag(false);
+//            LogManager.getInstance().setShowTag(false);
+            LogManager.getInstance().setColorTagBackgroundDay(AnsiColor.ANSI_BG_BLACK.getColor());
+            LogManager.getInstance()
+                      .setColorTagForegroundDay(AnsiColor.ANSI_BRIGHT_GREEN.getColor());
+            Log.d("a'gwo4");
+            Log.d("a'gwo4");
             System.setOut(PrintableManager.getInstance().getPrintable());
 
             System.out.println();

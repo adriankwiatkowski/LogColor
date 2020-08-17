@@ -6,7 +6,7 @@ LogColor is a highly customizable logging library.
 # Why LogColor?
 - Easy to use
 - Customizable
-- Logging and printing are done using multithreading
+- Multithreaded logging and printing
 - Built-in support for colors
 - Built-in implementation for console and java window
 - Supports day/night theme.
