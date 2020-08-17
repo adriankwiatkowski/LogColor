@@ -3,74 +3,64 @@ package com.example.logcolor.color.models;
 public enum TextAlignment {
     NONE {
         @Override
-        public void appendAligned(StringBuilder sb, String text, int totalSpace) {
-            invalidate(text, totalSpace);
-            LEFT.appendAligned(sb, text, totalSpace);
+        public String writeAligned(String text, int extraSpace) {
+            return LEFT.writeAligned(text, extraSpace);
         }
     },
     LEFT {
         @Override
-        public void appendAligned(StringBuilder sb, String text, int totalSpace) {
-            invalidate(text, totalSpace);
+        public String writeAligned(String text, int extraSpace) {
+            invalidate(extraSpace);
+            StringBuilder sb = new StringBuilder();
             // Append text on left side.
             sb.append(text);
             // Append white spaces to right to align text to left.
-            appendWhiteSpace_numToTextLength(sb, getTextLength(text), totalSpace);
+            appendWhiteSpace(sb, extraSpace);
+            return sb.toString();
         }
     },
     RIGHT {
         @Override
-        public void appendAligned(StringBuilder sb, String text, int totalSpace) {
-            invalidate(text, totalSpace);
+        public String writeAligned(String text, int extraSpace) {
+            invalidate(extraSpace);
+            StringBuilder sb = new StringBuilder();
             // Append white spaces to left to align text to right.
-            appendWhiteSpace_numToTextLength(sb, getTextLength(text), totalSpace);
+            appendWhiteSpace(sb, extraSpace);
             // Append text on right side.
             sb.append(text);
+            return sb.toString();
         }
     },
     CENTER {
         @Override
-        public void appendAligned(StringBuilder sb, String text, int totalSpace) {
-            invalidate(text, totalSpace);
-
+        public String writeAligned(String text, int extraSpace) {
+            invalidate(extraSpace);
+            StringBuilder sb = new StringBuilder();
             // Calculate count on left and right side
             // simply by dividing by 2.
-            int diff = totalSpace - getTextLength(text);
-            int leftSpaceCount = diff / 2;
+            int leftSpaceCount = extraSpace / 2;
             int rightSpaceCount = leftSpaceCount;
 
             // If number is not even add extra space to left side.
-            if (diff % 2 == 1) {
+            if (extraSpace % 2 == 1) {
                 ++leftSpaceCount;
             }
 
             // Append white spaces to left side.
-            appendWhiteSpace_count(sb, leftSpaceCount);
+            appendWhiteSpace(sb, leftSpaceCount);
             // Append text to center.
             sb.append(text);
             // Append white spaces to right side.
-            appendWhiteSpace_count(sb, rightSpaceCount);
+            appendWhiteSpace(sb, rightSpaceCount);
+            return sb.toString();
         }
     };
 
-    /**
-     * Appends aligned text on <c>StringBuilder</c>.
-     *
-     * @param sb         StringBuilder used to append text.
-     * @param text       text.
-     * @param totalSpace max text length.
-     */
-    public abstract void appendAligned(StringBuilder sb, String text, int totalSpace);
+    public abstract String writeAligned(String text, int extraSpace);
 
-    /**
-     * Checks if text length does not exceed max length.
-     *
-     * @param text      text to append.
-     * @param maxLength max text length.
-     */
-    public void invalidate(String text, int maxLength) {
-        if (text.length() > maxLength) {
-            throw new IllegalArgumentException("Text length grater than max length.");
+    private static void invalidate(int extraSpace) {
+        if (extraSpace < 0) {
+            throw new IllegalArgumentException("Extra space length cannot be lesser than 0.");
         }
     }
 
@@ -78,32 +68,16 @@ public enum TextAlignment {
      * Appends white spaces on <c>StringBuilder</c>.
      * Used to align text.
      *
-     * @param length        number od digits or letters.
-     * @param maxTextLength number of max digits or letters in text.
-     * @throws IllegalArgumentException if length is grater than max length.
+     * @param extraSpace extra length filled with spaces.
+     * @throws IllegalArgumentException if length is lesser than 0.
      */
-    public void appendWhiteSpace_numToTextLength(StringBuilder sb, int length, int maxTextLength) {
-        int diff = maxTextLength - length;
-        if (diff < 0) {
-            throw new IllegalArgumentException("Length cannot be grater than max length.");
+    private static void appendWhiteSpace(StringBuilder sb, int extraSpace) {
+        if (extraSpace < 0) {
+            throw new IllegalArgumentException("Extra space length cannot be lesser than 0.");
         }
 
-        appendWhiteSpace_count(sb, diff);
-    }
-
-    public void appendWhiteSpace_count(StringBuilder sb, int count) {
-        while (count-- > 0) {
+        while (extraSpace-- > 0) {
             sb.append(' ');
         }
-    }
-
-    /**
-     * Uses String built in method to return length.
-     *
-     * @param text String text.
-     * @return Returns length of text.
-     */
-    public int getTextLength(String text) {
-        return text.length();
     }
 }

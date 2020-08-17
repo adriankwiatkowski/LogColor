@@ -1,8 +1,14 @@
 package com.example.logcolor.printers.printables;
 
+import com.example.logcolor.colorbuilder.AnsiTextConverter;
+import com.example.logcolor.colorbuilder.TextConverter;
+import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
+
 import java.io.*;
 
 public class PrintableConsole extends Printable {
+
+    private static final AnsiTextConverter ANSI_TEXT_CONVERTER = new AnsiTextConverter();
 
     private OutputStream outputStream;
     private boolean mIsNextPrintNewLine = false;
@@ -48,7 +54,8 @@ public class PrintableConsole extends Printable {
     }
 
     @Override
-    protected void write(String s) {
+    protected void write(ColorBuilder colorBuilder) {
+        String s = colorBuilder.convertText(getTextConverter());
         if (mIsForceOnNewLine && !mIsNextPrintNewLine) {
             mIsForceOnNewLine = false;
             mIsNextPrintNewLine = true;
@@ -60,13 +67,11 @@ public class PrintableConsole extends Printable {
             }
         }
 
-        s = setDefaultColorIfNotOverridden(s);
-
-        mIsNextPrintNewLine = s.endsWith("\n");
+        mIsNextPrintNewLine = s.endsWith("\n") || s.endsWith("\n\u001B[0m");
         mIsForceOnNewLine = false;
 
-        byte[] bytes = s.getBytes();
         try {
+            byte[] bytes = s.getBytes();
             outputStream.write(bytes, 0, bytes.length);
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,9 +79,14 @@ public class PrintableConsole extends Printable {
     }
 
     @Override
-    public void printForceOnNewLine(String msg) {
+    public void printForceOnNewLine(ColorBuilder colorBuilder) {
         mIsNextPrintNewLine = true;
-        write(msg);
+        write(colorBuilder);
+    }
+
+    @Override
+    public TextConverter getTextConverter() {
+        return ANSI_TEXT_CONVERTER;
     }
 
     @Override

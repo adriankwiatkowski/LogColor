@@ -1,20 +1,19 @@
 package com.example.logcolor.printers.printables;
 
-import com.example.logcolor.color.models.AnsiColor;
 import com.example.logcolor.color.models.TextAlignment;
+import com.example.logcolor.color.models.TextAttribute;
+import com.example.logcolor.colorbuilder.TextConverter;
 import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
 import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 
+import java.awt.*;
 import java.io.*;
 import java.util.Formatter;
 import java.util.Locale;
 
 public abstract class Printable extends PrintStream {
 
-    private Formatter formatter;
-    protected AnsiColor defaultFg = null;
-    protected AnsiColor defaultBg = null;
-    protected TextAlignment defaultTextAlignment = TextAlignment.NONE;
+    protected TextAttribute defaultTextAttribute = null;
 
     public Printable(OutputStream out) {
         super(out);
@@ -49,11 +48,12 @@ public abstract class Printable extends PrintStream {
     }
 
     public void print(ColorBuilder colorBuilder) {
-        print(colorBuilder.getText());
+        write(colorBuilder);
     }
 
     public void print_flush(ColorBuilder colorBuilder) {
-        print(colorBuilder.getText_Flush());
+        print(colorBuilder);
+        colorBuilder.flush();
     }
 
     @Override
@@ -165,34 +165,25 @@ public abstract class Printable extends PrintStream {
 
     @Override
     public PrintStream printf(String format, Object... args) {
-        return format(format, args);
+        write(new Formatter().format(format, args).toString());
+        return this;
     }
 
     @Override
     public PrintStream printf(Locale l, String format, Object... args) {
-        return format(l, format, args);
+        write(new Formatter().format(l, format, args).toString());
+        return this;
     }
 
     @Override
     public PrintStream format(String format, Object... args) {
-        synchronized (this) {
-            if ((formatter == null) ||
-                (formatter.locale() != Locale.getDefault(Locale.Category.FORMAT))) {
-                formatter = new Formatter((Appendable) this);
-            }
-            formatter.format(Locale.getDefault(Locale.Category.FORMAT), format, args);
-        }
+        write(new Formatter().format(format, args).toString());
         return this;
     }
 
     @Override
     public PrintStream format(Locale l, String format, Object... args) {
-        synchronized (this) {
-            if ((formatter == null) || (formatter.locale() != l)) {
-                formatter = new Formatter(this, l);
-            }
-            formatter.format(l, format, args);
-        }
+        write(new Formatter().format(l, format, args).toString());
         return this;
     }
 
@@ -219,64 +210,43 @@ public abstract class Printable extends PrintStream {
         write(buf, 0, buf.length);
     }
 
-    public void setDefaultFormat(AnsiColor fg, AnsiColor bg) {
-        this.defaultFg = fg;
-        this.defaultBg = bg;
+    public void setDefaultFormat(Color foreground, Color background) {
+        if (this.defaultTextAttribute == null) {
+            this.defaultTextAttribute = new TextAttribute.Builder().build();
+        }
+        this.defaultTextAttribute.setForeground(foreground);
+        this.defaultTextAttribute.setBackground(background);
     }
 
-    public void setDefaultFormat(AnsiColor fg, AnsiColor bg, TextAlignment textAlignment) {
-        this.defaultFg = fg;
-        this.defaultBg = bg;
-        this.defaultTextAlignment = textAlignment;
+    public void setDefaultFormat(Color foreground, Color background, TextAlignment textAlignment) {
+        if (this.defaultTextAttribute == null) {
+            this.defaultTextAttribute = new TextAttribute.Builder().build();
+        }
+        this.defaultTextAttribute.setForeground(foreground);
+        this.defaultTextAttribute.setBackground(background);
+        this.defaultTextAttribute.setTextAlignment(textAlignment);
     }
 
-    protected String setDefaultColorIfNotOverridden(String ansiText) {
-        AnsiColor fg = defaultFg;
-        AnsiColor bg = defaultBg;
-        TextAlignment textAlignment = defaultTextAlignment;
-        if (ansiText.startsWith(" ") || ansiText.endsWith(" ") || ansiText.matches("[ ]{2,}")) {
-            textAlignment = TextAlignment.NONE;
-        }
-        if (ansiText.contains(AnsiColor.ANSI_RESET.getAnsi())) {
-            fg = null;
-            bg = null;
-        }
-
-        String[] splitLines = ansiText.split("\n");
-
-        SimpleColorBuilder colorBuilder =
-                new SimpleColorBuilder.Builder().addTextAlignment(textAlignment).build();
-
-        for (int i = 0; i < splitLines.length; ++i) {
-            String splitLine = splitLines[i];
-            if (fg != null) {
-                colorBuilder.appendColor(fg);
-            }
-            if (bg != null) {
-                colorBuilder.appendColor(bg);
-            }
-            colorBuilder.appendTextAlign(splitLine);
-            colorBuilder.appendColorReset();
-
-            if (i == 0) {
-                int index = ansiText.indexOf("\n");
-                if ((index) != splitLine.length()) {
-                    continue;
-                }
-            }
-            if (i == splitLines.length - 1 && !ansiText.endsWith("\n")) {
-                continue;
-            }
-
-            colorBuilder.appendNewLine();
-        }
-
-        return colorBuilder.getText_Flush();
+    public void setDefaultFormat(TextAttribute textAttribute) {
+        this.defaultTextAttribute = textAttribute;
     }
 
-    protected abstract void write(String s);
+    protected ColorBuilder convertTextToDefaultFormat(String s) {
+        ColorBuilder colorBuilder = new SimpleColorBuilder.Builder().build();
+        colorBuilder.append(s, this.defaultTextAttribute);
+        return colorBuilder;
+    }
 
-    public abstract void printForceOnNewLine(String msg);
+    protected void write(String s) {
+        ColorBuilder colorBuilder = convertTextToDefaultFormat(s);
+        write(colorBuilder);
+    }
+
+    protected abstract void write(ColorBuilder colorBuilder);
+
+    public abstract TextConverter getTextConverter();
+
+    public abstract void printForceOnNewLine(ColorBuilder colorBuilder);
 
     public abstract void setDayTheme();
 

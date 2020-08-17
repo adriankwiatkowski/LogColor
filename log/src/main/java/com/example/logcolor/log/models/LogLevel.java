@@ -1,7 +1,6 @@
 package com.example.logcolor.log.models;
 
-import com.example.logcolor.color.models.AnsiColor;
-
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -11,34 +10,54 @@ public enum LogLevel {
 
     INTERNAL_ERROR(0,
                    "INTERNAL_ERROR",
-                   ANSI_BLUE,
-                   ANSI_BRIGHT_BG_CYAN,
-                   ANSI_BRIGHT_WHITE,
-                   ANSI_BG_BLACK),
-    VERBOSE(1, "VERBOSE", ANSI_BLACK, ANSI_BG_WHITE, ANSI_BRIGHT_WHITE, ANSI_BG_WHITE),
-    INFO(2, "INFO", ANSI_BLACK, ANSI_BRIGHT_BG_BLACK, ANSI_BRIGHT_WHITE, ANSI_BG_BLUE),
-    DEBUG(3, "DEBUG", ANSI_GREEN, ANSI_BRIGHT_BG_BLACK, ANSI_BRIGHT_GREEN, ANSI_BRIGHT_BG_BLACK),
+                   ANSI_BLUE.getColor(),
+                   ANSI_BRIGHT_BG_CYAN.getColor(),
+                   ANSI_BRIGHT_WHITE.getColor(),
+                   ANSI_BG_BLACK.getColor()),
+    VERBOSE(1,
+            "VERBOSE",
+            ANSI_BLACK.getColor(),
+            ANSI_BRIGHT_BG_WHITE.getColor(),
+            ANSI_BLACK.getColor(),
+            ANSI_BG_WHITE.getColor()),
+    INFO(2,
+         "INFO",
+         ANSI_BLACK.getColor(),
+         ANSI_BRIGHT_BG_BLACK.getColor(),
+         ANSI_BLACK.getColor(),
+         ANSI_BRIGHT_BG_BLUE.getColor()),
+    DEBUG(3,
+          "DEBUG",
+          ANSI_BRIGHT_GREEN.getColor(),
+          ANSI_BG_BLACK.getColor(),
+          ANSI_BRIGHT_GREEN.getColor(),
+          ANSI_BG_BLACK.getColor()),
     WARNING(4,
             "WARNING",
-            ANSI_BRIGHT_YELLOW,
-            ANSI_BG_BLACK,
-            ANSI_BRIGHT_WHITE,
-            ANSI_BRIGHT_BG_YELLOW),
-    ERROR(5, "ERROR", ANSI_BLACK, ANSI_BRIGHT_BG_RED, ANSI_RED, ANSI_BRIGHT_BG_WHITE);
+            ANSI_BRIGHT_YELLOW.getColor(),
+            ANSI_BG_BLACK.getColor(),
+            ANSI_BLACK.getColor(),
+            ANSI_BRIGHT_BG_YELLOW.getColor()),
+    ERROR(5,
+          "ERROR",
+          ANSI_WHITE.getColor(),
+          ANSI_BG_RED.getColor(),
+          ANSI_RED.getColor(),
+          ANSI_BG_WHITE.getColor());
 
     private final int level;
     private final String levelTag;
-    private final AnsiColor dayThemeFg;
-    private final AnsiColor dayThemeBg;
-    private final AnsiColor nightThemeFg;
-    private final AnsiColor nightThemeBg;
+    private final Color dayThemeFg;
+    private final Color dayThemeBg;
+    private final Color nightThemeFg;
+    private final Color nightThemeBg;
 
     LogLevel(int level,
              String levelTag,
-             AnsiColor dayThemeFg,
-             AnsiColor dayThemeBg,
-             AnsiColor nightThemeFg,
-             AnsiColor nightThemeBg) {
+             Color dayThemeFg,
+             Color dayThemeBg,
+             Color nightThemeFg,
+             Color nightThemeBg) {
         this.level = level;
         this.levelTag = levelTag;
         this.dayThemeFg = dayThemeFg;
@@ -55,19 +74,19 @@ public enum LogLevel {
         return levelTag;
     }
 
-    public AnsiColor getDayThemeFg() {
+    public Color getDayThemeFg() {
         return dayThemeFg;
     }
 
-    public AnsiColor getDayThemeBg() {
+    public Color getDayThemeBg() {
         return dayThemeBg;
     }
 
-    public AnsiColor getNightThemeFg() {
+    public Color getNightThemeFg() {
         return nightThemeFg;
     }
 
-    public AnsiColor getNightThemeBg() {
+    public Color getNightThemeBg() {
         return nightThemeBg;
     }
 

@@ -13,11 +13,13 @@ public class AppExecutors {
 
     private static AppExecutors sInstance;
 
-    private final Executor mMainExecutor;
-    private final Executor mIOExecutor;
-    private final Executor mNetworkExecutor;
+    private final ExecutorService mMainExecutor;
+    private final ExecutorService mIOExecutor;
+    private final ExecutorService mNetworkExecutor;
 
-    private AppExecutors(Executor mainExecutor, Executor ioExecutor, Executor networkExecutor) {
+    private AppExecutors(ExecutorService mainExecutor,
+                         ExecutorService ioExecutor,
+                         ExecutorService networkExecutor) {
         this.mMainExecutor = mainExecutor;
         this.mIOExecutor = ioExecutor;
         this.mNetworkExecutor = networkExecutor;
@@ -50,7 +52,9 @@ public class AppExecutors {
     }
 
     public void shutdownExecutors() {
-        shutdownAndAwaitTermination((ExecutorService) mMainExecutor);
+        shutdownAndAwaitTermination(mMainExecutor);
+        shutdownAndAwaitTermination(mIOExecutor);
+        shutdownAndAwaitTermination(mNetworkExecutor);
     }
 
     private void shutdownAndAwaitTermination(ExecutorService executorService) {

@@ -41,28 +41,6 @@ More info on https://jitpack.io/
 
 ------------
 
-Not Recommended: alternative without using jitpack.io.
-
-```groovy
-def urlFile = { url, name ->
-    File file = new File("$buildDir/download/${name}.jar")
-    file.parentFile.mkdirs()
-    if (!file.exists()) {
-        new URL(url).withInputStream { downloadStream ->
-            file.withOutputStream { fileOut ->
-                fileOut << downloadStream
-            }
-        }
-    }
-    files(file.absolutePath)
-} as Object
-
-dependencies {
-    // You have to replace version number in path as well as file name.
-    compile urlFile('https://github.com/adriankwiatkowski/LogColor/releases/download/v1.0/LogColor-1.0.jar', "LogColor")
-}
-```
-
 # How do I use LogColor?
 Simple use cases will look something like this:
 
@@ -89,23 +67,20 @@ printable.setDefaultFormat(AnsiColor.ANSI_BLACK, AnsiColor.ANSI_BRIGHT_BG_BLUE);
 
 Printing using Printer (recommended way, because it uses multithreading by default):
 ```java
-AnsiColor fg = AnsiColor.ANSI_BRIGHT_BLUE;
-AnsiColor bg = AnsiColor.ANSI_BRIGHT_BG_WHITE;
+Color foreground = AnsiColor.ANSI_BRIGHT_BLUE.getColor();
+Color background = AnsiColor.ANSI_BRIGHT_BG_WHITE.getColor();
 TextAlignment center = TextAlignment.CENTER;
 int space = 10;
 String msg = "Message.";
+Printer.println();
 Printer.println(msg);
-Printer.println(fg, msg);
-Printer.println(fg, bg, msg);
-Printer.println(center, space, msg);
-Printer.println(fg, center, space, msg);
-Printer.println(fg, bg, center, space, msg);
+Printer.println(msg, foreground, background);
+Printer.println(msg, center, space);
+Printer.println(msg, foreground, background, center, space);
 Printer.print(msg);
-Printer.print(fg, msg);
-Printer.print(fg, bg, msg);
-Printer.print(center, space, msg);
-Printer.print(fg, center, space, msg);
-Printer.print(fg, bg, center, space, msg);
+Printer.print(msg, foreground, background);
+Printer.print(msg, center, space);
+Printer.print(msg, foreground, background, center, space);
 ```
 
 Printing using directly Printable instance:
@@ -231,37 +206,3 @@ Log.e("Error tag", "Behold almighty error...");
 Log.w("Warning tag that will exceed max character limit.",
     "Friendly warning message.");   
 ```
-
-# Colored indexes
-<img src="https://cdn.discordapp.com/attachments/667466573640105995/734020388954308668/unknown.png"/>
-
-##### Code used for image above:
-```java
-int maxTextLength = Math.max(
-    TextUtils.getTextLength(AnsiColor.FOREGROUNDS),
-    TextUtils.getTextLength(AnsiColor.BACKGROUNDS));
-
-TextAttribute textAttribute =
-    new TextAttribute(textAlignment, maxTextLength + extraSpace);
-
-int textAttributeDuplicateCount = 2;
-
-AlignedColorBuilder alignedColorBuilder = new AlignedColorBuilder
-    .Builder(textAttribute, textAttributeDuplicateCount)
-    .build();
-
-for (int i = 0; i < AnsiColor.FOREGROUNDS.length; ++i) {
-    AnsiColor fg = AnsiColor.FOREGROUNDS[i];
-    for (int j = 0; j < AnsiColor.BACKGROUNDS.length; ++j) {
-        AnsiColor bg = AnsiColor.BACKGROUNDS[j];
-        alignedColorBuilder.appendTextColor(fg, bg, String.valueOf(i), String.valueOf(j));
-    }
-    alignedColorBuilder.appendColorReset_NewLine();
-}
-
-
-Printer.println(alignedColorBuilder.getText_Flush()));
-```
-
-# Colored random generated text
-<img src="https://cdn.discordapp.com/attachments/667466573640105995/734020655477162034/unknown.png"/>

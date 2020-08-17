@@ -1,6 +1,8 @@
 package com.example.logcolor.printers.printables;
 
-import com.example.logcolor.printers.utils.HtmlUtils;
+import com.example.logcolor.colorbuilder.HtmlTextConverter;
+import com.example.logcolor.colorbuilder.TextConverter;
+import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +12,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class PrintableWindow extends Printable {
+
+    private static final HtmlTextConverter HTML_TEXT_CONVERTER = new HtmlTextConverter();
 
     private static final String BLACK_COLOR = "0x000000";
     private static final String WHITE_COLOR = "0xFFFFFF";
@@ -68,15 +72,19 @@ public class PrintableWindow extends Printable {
     }
 
     @Override
-    protected void write(String s) {
-        s = setDefaultColorIfNotOverridden(s);
-        addTextToList(s);
+    protected void write(ColorBuilder colorBuilder) {
+        addTextToList(colorBuilder.convertText(getTextConverter()));
     }
 
     @Override
-    public void printForceOnNewLine(String msg) {
+    public TextConverter getTextConverter() {
+        return HTML_TEXT_CONVERTER;
+    }
+
+    @Override
+    public void printForceOnNewLine(ColorBuilder colorBuilder) {
         mIsForceOnNewLine = true;
-        write(msg);
+        write(colorBuilder);
     }
 
     @Override
@@ -132,25 +140,11 @@ public class PrintableWindow extends Printable {
             throw new IllegalArgumentException("String cannot be null.");
         }
 
-        String[] splitLines = string.split("\n");
+        mListModel.addElement(string);
 
-        for (String splitLine : splitLines) {
-            String htmlText = HtmlUtils.buildHtmlFromAnsi(splitLine);
-            if (mIsNextPrintNewLine || mListModel.isEmpty() || mIsForceOnNewLine) {
-                if (mListModel.size() >= MAX_MESSAGE_COUNT) {
-                    mListModel.remove(0);
-                }
-                mListModel.addElement(htmlText);
-            } else {
-                htmlText = HtmlUtils.removeTextWrapperHtml(htmlText);
-                String originalHtmlText = mListModel.get(mListModel.size() - 1);
-                String concatHtmlText = HtmlUtils.appendTextToHtml(originalHtmlText, htmlText);
-                mListModel.set(mListModel.size() - 1, concatHtmlText);
-                mListModel.set(mListModel.size() - 1, concatHtmlText);
-            }
+        if (mListModel.size() >= MAX_MESSAGE_COUNT) {
+            mListModel.remove(0);
         }
-
-        mIsNextPrintNewLine = string.endsWith("\n");
     }
 
     private Color decodeColor(String hex) {

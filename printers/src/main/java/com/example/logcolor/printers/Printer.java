@@ -1,12 +1,16 @@
 package com.example.logcolor.printers;
 
-import com.example.logcolor.color.models.AnsiColor;
 import com.example.logcolor.color.models.TextAlignment;
-import com.example.logcolor.color.utils.TextUtils;
+import com.example.logcolor.color.models.TextAttribute;
+import com.example.logcolor.color.models.TextStyle;
 import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
+import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 import com.example.logcolor.printers.printables.Printable;
 
-public class Printer {
+import java.awt.*;
+import java.util.EnumSet;
+
+public final class Printer {
 
     private static final boolean NEW_LINE = true;
     private static final boolean NO_LINE = false;
@@ -19,7 +23,11 @@ public class Printer {
     }
 
     public static void printForceOnNewLine(String msg) {
-        addPrintToQueue(null, null, DEFAULT_TEXT_ALIGNMENT, DEFAULT_EXTRA_SPACE, msg, false, true);
+        addPrintToQueue(msg, null, null, DEFAULT_TEXT_ALIGNMENT, DEFAULT_EXTRA_SPACE, false, true);
+    }
+
+    public static void printForceOnNewLine(ColorBuilder colorBuilder) {
+        addPrintToQueue(colorBuilder, true);
     }
 
     public static void println() {
@@ -30,105 +38,90 @@ public class Printer {
         print(msg, NEW_LINE);
     }
 
-    public static void println(TextAlignment textAlignment, int extraSpace, String msg) {
-        print(textAlignment, extraSpace, msg, NEW_LINE);
+    public static void println(String msg, TextAttribute textAttribute) {
+        print(msg, textAttribute, NEW_LINE);
     }
 
-    public static void println(AnsiColor color, String msg) {
-        print(color, msg, NEW_LINE);
+    public static void println(String msg, TextAlignment textAlignment, int extraSpace) {
+        print(msg, textAlignment, extraSpace, NEW_LINE);
     }
 
-    public static void println(AnsiColor color,
+    public static void println(String msg, Color fg, Color bg) {
+        print(msg, fg, bg, NEW_LINE);
+    }
+
+    public static void println(String msg,
+                               Color fg,
+                               Color bg,
                                TextAlignment textAlignment,
-                               int extraSpace,
-                               String msg) {
-        print(color, textAlignment, extraSpace, msg, NEW_LINE);
-    }
-
-    public static void println(AnsiColor fg, AnsiColor bg, String msg) {
-        print(fg, bg, msg, NEW_LINE);
-    }
-
-    public static void println(AnsiColor fg,
-                               AnsiColor bg,
-                               TextAlignment textAlignment,
-                               int extraSpace,
-                               String msg) {
-        print(fg, bg, textAlignment, extraSpace, msg, NEW_LINE);
+                               int extraSpace) {
+        print(msg, fg, bg, textAlignment, extraSpace, NEW_LINE);
     }
 
     public static void print(String msg) {
         print(msg, NO_LINE);
     }
 
-    public static void print(TextAlignment textAlignment, int extraSpace, String msg) {
-        print(textAlignment, extraSpace, msg, NO_LINE);
+    public static void print(String msg, TextAttribute textAttribute) {
+        print(msg, textAttribute, NO_LINE);
     }
 
-    public static void print(AnsiColor color, String msg) {
-        print(color, msg, NO_LINE);
+    public static void print(String msg, TextAlignment textAlignment, int extraSpace) {
+        print(msg, textAlignment, extraSpace, NO_LINE);
     }
 
-    public static void print(AnsiColor color,
+    public static void print(String msg, Color foreground, Color background) {
+        print(msg, foreground, background, NO_LINE);
+    }
+
+    public static void print(String msg,
+                             Color foreground,
+                             Color background,
                              TextAlignment textAlignment,
-                             int extraSpace,
-                             String msg) {
-        print(color, textAlignment, extraSpace, msg, NO_LINE);
-    }
-
-    public static void print(AnsiColor fg, AnsiColor bg, String msg) {
-        print(fg, bg, msg, NO_LINE);
-    }
-
-    public static void print(AnsiColor fg,
-                             AnsiColor bg,
-                             TextAlignment textAlignment,
-                             int extraSpace,
-                             String msg) {
-        print(fg, bg, textAlignment, extraSpace, msg, NO_LINE);
+                             int extraSpace) {
+        print(msg, foreground, background, textAlignment, extraSpace, NO_LINE);
     }
 
     private static void print(String msg, boolean newLine) {
-        print(null, msg, newLine);
+        print(msg, null, null, newLine);
     }
 
-    private static void print(TextAlignment textAlignment,
-                              int extraSpace,
-                              String msg,
-                              boolean newLine) {
-        print(null, null, textAlignment, extraSpace, msg, newLine);
+    private static void print(String msg, TextAttribute textAttribute, boolean newLine) {
+        ColorBuilder colorBuilder = new SimpleColorBuilder.Builder().build();
+        colorBuilder.append(msg, textAttribute);
+        addPrintToQueue(colorBuilder, newLine);
     }
 
-    private static void print(AnsiColor color, String msg, boolean newLine) {
-        print(null, color, msg, newLine);
-    }
-
-    private static void print(AnsiColor color,
+    private static void print(String msg,
                               TextAlignment textAlignment,
                               int extraSpace,
-                              String msg,
                               boolean newLine) {
-        print(null, color, textAlignment, extraSpace, msg, newLine);
+        print(msg, null, null, textAlignment, extraSpace, newLine);
     }
 
-    private static void print(AnsiColor fg, AnsiColor bg, String msg, boolean newLine) {
-        print(fg, bg, DEFAULT_TEXT_ALIGNMENT, DEFAULT_EXTRA_SPACE, msg, newLine);
+    private static void print(String msg, Color foreground, Color background, boolean newLine) {
+        print(msg, foreground, background, DEFAULT_TEXT_ALIGNMENT, DEFAULT_EXTRA_SPACE, newLine);
     }
 
-    private static void print(AnsiColor fg,
-                              AnsiColor bg,
+    private static void print(String msg,
+                              Color foreground,
+                              Color background,
                               TextAlignment textAlignment,
                               int extraSpace,
-                              String msg,
                               boolean newLine) {
-        addPrintToQueue(fg, bg, textAlignment, extraSpace, msg, newLine, false);
+        addPrintToQueue(msg, foreground, background, textAlignment, extraSpace, newLine, false);
     }
 
-    private static void addPrintToQueue(AnsiColor fg,
-                                        AnsiColor bg,
+    private static void addPrintToQueue(ColorBuilder colorBuilder, boolean forceOnNewLine) {
+        PrintableManager.getInstance()
+                        .logThread(() -> printScheduled(colorBuilder, forceOnNewLine));
+    }
+
+    private static void addPrintToQueue(String msg,
+                                        Color foreground,
+                                        Color background,
                                         TextAlignment textAlignment,
                                         int extraSpace,
-                                        String msg,
                                         boolean newLine,
                                         boolean forceOnNewLine) {
         if (msg == null) {
@@ -136,52 +129,65 @@ public class Printer {
         }
 
         PrintableManager.getInstance()
-                        .logThread(() -> printScheduled(fg,
-                                                        bg,
+                        .logThread(() -> printScheduled(msg,
+                                                        foreground,
+                                                        background,
                                                         textAlignment,
                                                         extraSpace,
-                                                        msg,
                                                         newLine,
                                                         forceOnNewLine));
     }
 
-    private static void printScheduled(AnsiColor fg,
-                                       AnsiColor bg,
+    private static void printScheduled(String text,
+                                       Color foreground,
+                                       Color background,
                                        TextAlignment textAlignment,
                                        int extraSpace,
-                                       String text,
                                        boolean newLine,
                                        boolean forceOnNewLine) {
         Printable printable = PrintableManager.getInstance().getPrintable();
-        if (forceOnNewLine) {
-            printable.printForceOnNewLine(text);
-            return;
-        }
-
-        SimpleColorBuilder colorBuilder = new SimpleColorBuilder.Builder().build();
-
-        if (fg != null) {
-            colorBuilder.appendColor(fg);
-        }
-        if (bg != null) {
-            colorBuilder.appendColor(bg);
-        }
 
         if (text.isEmpty() && !newLine) {
             text = EMPTY_MSG;
         }
 
-        StringBuilder sb = new StringBuilder();
-        int totalSpace = TextUtils.getTextLength(text) + extraSpace;
-        textAlignment.appendAligned(sb, text, totalSpace);
+        if (textAlignment == null) {
+            textAlignment = TextAlignment.NONE;
+        }
 
-        colorBuilder.append(sb.toString());
-        colorBuilder.appendColorReset();
+        SimpleColorBuilder colorBuilder = new SimpleColorBuilder.Builder().build();
+
+        TextAttribute textAttribute = new TextAttribute.Builder().setTextAlignment(textAlignment)
+                                                                 .setTextStyle(EnumSet.of(TextStyle.NORMAL))
+                                                                 .setExtraSpace(extraSpace)
+                                                                 .build();
+
+        if (foreground != null) {
+            textAttribute.setForeground(foreground);
+        }
+        if (background != null) {
+            textAttribute.setBackground(background);
+        }
+
+        colorBuilder.append(text, textAttribute);
 
         if (newLine) {
             colorBuilder.appendNewLine();
         }
 
-        printable.print_flush(colorBuilder);
+        if (forceOnNewLine) {
+            printable.printForceOnNewLine(colorBuilder);
+        } else {
+            printable.print_flush(colorBuilder);
+        }
+    }
+
+    private static void printScheduled(ColorBuilder colorBuilder, boolean forceOnNewLine) {
+        Printable printable = PrintableManager.getInstance().getPrintable();
+        if (forceOnNewLine) {
+            printable.printForceOnNewLine(colorBuilder);
+        } else {
+            printable.print_flush(colorBuilder);
+        }
     }
 }

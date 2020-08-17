@@ -13,7 +13,7 @@ class PrintableThreads {
     private static List<Runnable> mCloseTaskQueue = new ArrayList<>();
     private static boolean mIsDeinitialized = false;
 
-    public static void logThread(Runnable runnable) {
+    public static void printableInvoke(Runnable runnable) {
         if (mIsDeinitialized) {
             System.err.println(ERROR_GET_DEINITALIZED_INSTANCE);
         }

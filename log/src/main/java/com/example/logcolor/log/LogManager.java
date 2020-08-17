@@ -29,6 +29,8 @@ public class LogManager {
         return mMinLogLevel <= logLevel.getLevel();
     }
 
+    // TODO: Add customizable colors for logging.
+
     public void setMinLogLevel(LogLevel mMinLogLevel) {
         setMinLogLevel(mMinLogLevel.getLevel());
     }

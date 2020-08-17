@@ -1,11 +1,13 @@
 package com.example.logcolor.printers;
 
-import com.example.logcolor.color.models.AnsiColor;
 import com.example.logcolor.color.models.TextAlignment;
-import com.example.logcolor.printers.printables.Printable;
+import com.example.logcolor.color.models.TextAttribute;
 import com.example.logcolor.printers.models.PrintableType;
+import com.example.logcolor.printers.printables.Printable;
 
-public class PrintableManager {
+import java.awt.*;
+
+public final class PrintableManager {
 
     private static PrintableManager sInstance;
 
@@ -14,9 +16,7 @@ public class PrintableManager {
     private Printable mPrintable;
 
     private boolean mIsNightTheme = false;
-    private AnsiColor defaultFg = null;
-    private AnsiColor defaultBg = null;
-    private TextAlignment defaultTextAlignment = TextAlignment.NONE;
+    private TextAttribute defaultTextAttribute = null;
 
     private PrintableManager() {
         mPrintable = PrintableFactory.createPrintable(PrintableType.CONSOLE, mIsNightTheme);
@@ -42,7 +42,7 @@ public class PrintableManager {
     }
 
     public void logThread(Runnable runnable) {
-        PrintableThreads.logThread(runnable);
+        PrintableThreads.printableInvoke(runnable);
     }
 
     public void shutdownThreads() {
@@ -58,7 +58,7 @@ public class PrintableManager {
             mPrintable.close();
         }
 
-        printable.setDefaultFormat(defaultFg, defaultBg, defaultTextAlignment);
+        printable.setDefaultFormat(this.defaultTextAttribute);
 
         mPrintable = printable;
     }
@@ -71,7 +71,7 @@ public class PrintableManager {
             mPrintable.close();
         }
 
-        printable.setDefaultFormat(defaultFg, defaultBg, defaultTextAlignment);
+        printable.setDefaultFormat(this.defaultTextAttribute);
 
         mPrintable = printable;
     }
@@ -106,22 +106,38 @@ public class PrintableManager {
         mPrintable.setDayTheme();
     }
 
-    public synchronized void setDefaultFormat(AnsiColor fg, AnsiColor bg) {
-        this.defaultFg = fg;
-        this.defaultBg = bg;
+    public synchronized void setDefaultFormat(Color foreground, Color background) {
+        if (this.defaultTextAttribute == null) {
+            this.defaultTextAttribute = new TextAttribute.Builder().build();
+        }
+        this.defaultTextAttribute.setForeground(foreground);
+        this.defaultTextAttribute.setBackground(background);
         if (mPrintable != null) {
-            mPrintable.setDefaultFormat(defaultFg, defaultBg);
+            mPrintable.setDefaultFormat(this.defaultTextAttribute.getForeground(),
+                                        this.defaultTextAttribute.getBackground());
         }
     }
 
-    public synchronized void setDefaultFormat(AnsiColor fg,
-                                              AnsiColor bg,
+    public synchronized void setDefaultFormat(Color foreground,
+                                              Color background,
                                               TextAlignment textAlignment) {
-        this.defaultFg = fg;
-        this.defaultBg = bg;
-        this.defaultTextAlignment = textAlignment;
+        if (this.defaultTextAttribute == null) {
+            this.defaultTextAttribute = new TextAttribute.Builder().build();
+        }
+        this.defaultTextAttribute.setForeground(foreground);
+        this.defaultTextAttribute.setBackground(background);
+        this.defaultTextAttribute.setTextAlignment(textAlignment);
         if (mPrintable != null) {
-            mPrintable.setDefaultFormat(defaultFg, defaultBg, defaultTextAlignment);
+            mPrintable.setDefaultFormat(this.defaultTextAttribute.getForeground(),
+                                        this.defaultTextAttribute.getBackground(),
+                                        this.defaultTextAttribute.getTextAlignment());
+        }
+    }
+
+    public synchronized void setDefaultFormat(TextAttribute textAttribute) {
+        this.defaultTextAttribute = textAttribute;
+        if (mPrintable != null) {
+            mPrintable.setDefaultFormat(this.defaultTextAttribute);
         }
     }
 }

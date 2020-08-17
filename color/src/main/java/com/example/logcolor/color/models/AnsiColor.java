@@ -1,5 +1,7 @@
 package com.example.logcolor.color.models;
 
+import java.awt.*;
+
 public enum AnsiColor {
     ANSI_RESET("\u001B[0m", "", ""),
     ANSI_BLACK("\u001B[30m", "Black", "#000000"),
@@ -85,6 +87,12 @@ public enum AnsiColor {
 
     public String getHex() {
         return hex;
+    }
+
+    public Color getColor() {
+        return new Color(Integer.valueOf(this.hex.substring(1, 3), 16),
+                         Integer.valueOf(this.hex.substring(3, 5), 16),
+                         Integer.valueOf(this.hex.substring(5, 7), 16));
     }
 
     AnsiColor(String ansi, String html, String hex) {

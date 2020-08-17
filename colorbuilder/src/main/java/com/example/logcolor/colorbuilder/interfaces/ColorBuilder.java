@@ -1,98 +1,34 @@
 package com.example.logcolor.colorbuilder.interfaces;
 
-import com.example.logcolor.color.models.AnsiColor;
-import com.example.logcolor.color.models.TextAlignment;
 import com.example.logcolor.color.models.TextAttribute;
+import com.example.logcolor.colorbuilder.TextConverter;
+import com.example.logcolor.colorbuilder.builders.Text;
+
+import java.util.List;
 
 public interface ColorBuilder {
 
-    void append(String text);
+    void append(String s);
 
-    void append(int i);
-
-    void append(char c);
-
-    void appendColor(AnsiColor color);
-
-    void appendColor(AnsiColor fg, AnsiColor bg);
-
-    void appendTextColor(AnsiColor color, String text);
-
-    void appendTextColor(AnsiColor color, String text, TextAlignment textAlignment);
-
-    void appendTextColor(AnsiColor fg, AnsiColor bg, String text);
-
-    void appendTextColor(AnsiColor fg, AnsiColor bg, String text, TextAlignment textAlignment);
-
-    void appendTextAlign(String text);
-
-    void appendTextAlign(String text, TextAttribute textAttribute);
-
-    void appendTextAlign(String text, int maxTextLength, TextAlignment textAlignment);
-
-    void appendColorReset();
-
-    void appendNewLine();
+    void append(String text, TextAttribute textAttribute);
 
     void flush();
 
-    String getText();
+    List<Text> getTextList();
 
-    default String getText_Flush() {
-        String text = getText();
-        flush();
-        return text;
+    default String convertText(TextConverter textConverter) {
+        return textConverter.convertText(getTextList());
     }
 
-    default void appendColorReset_NewLine() {
-        appendColorReset();
-        appendNewLine();
+    default void append(int i) {
+        append(String.valueOf(i));
     }
 
-    default void appendTextColor_Reset(AnsiColor color, String text) {
-        appendTextColor(color, text);
-        appendColorReset();
+    default void append(char c) {
+        append(String.valueOf(c));
     }
 
-    default void appendTextColor_Reset(AnsiColor color, String text, TextAlignment textAlignment) {
-        appendTextColor(color, text, textAlignment);
-    }
-
-    default void appendTextColor_Reset(AnsiColor fg, AnsiColor bg, String text) {
-        appendTextColor(fg, bg, text);
-        appendColorReset();
-    }
-
-    default void appendTextColor_Reset(AnsiColor fg,
-                                       AnsiColor bg,
-                                       String text,
-                                       TextAlignment textAlignment) {
-        appendTextColor(fg, bg, text, textAlignment);
-        appendColorReset();
-    }
-
-    default void appendTextColor_Reset_NewLine(AnsiColor color, String text) {
-        appendTextColor(color, text);
-        appendColorReset_NewLine();
-    }
-
-    default void appendTextColor_Reset_NewLine(AnsiColor color,
-                                               String text,
-                                               TextAlignment textAlignment) {
-        appendTextColor(color, text, textAlignment);
-        appendColorReset_NewLine();
-    }
-
-    default void appendTextColor_Reset_NewLine(AnsiColor fg, AnsiColor bg, String text) {
-        appendTextColor(fg, bg, text);
-        appendColorReset_NewLine();
-    }
-
-    default void appendTextColor_Reset_NewLine(AnsiColor fg,
-                                               AnsiColor bg,
-                                               String text,
-                                               TextAlignment textAlignment) {
-        appendTextColor(fg, bg, text, textAlignment);
-        appendColorReset_NewLine();
+    default void appendNewLine() {
+        append("\n");
     }
 }

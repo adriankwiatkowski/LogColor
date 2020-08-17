@@ -1,4 +1,4 @@
-package com.example.logcolor.color.utils;
+package com.example.logcolor.colorbuilder.utils;
 
 public class TextUtils {
 
