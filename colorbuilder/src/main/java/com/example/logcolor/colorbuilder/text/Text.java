@@ -1,7 +1,4 @@
-package com.example.logcolor.colorbuilder.builders;
-
-import com.example.logcolor.color.models.TextAlignment;
-import com.example.logcolor.color.models.TextAttribute;
+package com.example.logcolor.colorbuilder.text;
 
 import java.util.Objects;
 

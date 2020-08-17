@@ -1,9 +1,9 @@
 package com.example.logcolor;
 
-import com.example.logcolor.color.models.AnsiColor;
-import com.example.logcolor.color.models.TextAlignment;
-import com.example.logcolor.color.models.TextAttribute;
-import com.example.logcolor.color.models.TextStyle;
+import com.example.logcolor.colorbuilder.utils.AnsiColor;
+import com.example.logcolor.colorbuilder.text.TextAlignment;
+import com.example.logcolor.colorbuilder.text.TextAttribute;
+import com.example.logcolor.colorbuilder.text.TextStyle;
 import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
 import com.example.logcolor.printers.models.PrintableType;

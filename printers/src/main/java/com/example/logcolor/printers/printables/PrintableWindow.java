@@ -1,7 +1,7 @@
 package com.example.logcolor.printers.printables;
 
-import com.example.logcolor.colorbuilder.HtmlTextConverter;
-import com.example.logcolor.colorbuilder.TextConverter;
+import com.example.logcolor.colorbuilder.converters.HtmlTextConverter;
+import com.example.logcolor.colorbuilder.converters.TextConverter;
 import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 
 import javax.swing.*;

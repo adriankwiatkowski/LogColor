@@ -1,6 +1,7 @@
 package com.example.logcolor.colorbuilder.builders;
 
-import com.example.logcolor.color.models.TextAttribute;
+import com.example.logcolor.colorbuilder.text.TextAttribute;
+import com.example.logcolor.colorbuilder.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;

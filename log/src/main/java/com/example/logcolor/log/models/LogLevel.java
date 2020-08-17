@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import static com.example.logcolor.color.models.AnsiColor.*;
+import static com.example.logcolor.colorbuilder.utils.AnsiColor.*;
 
 public enum LogLevel {
 

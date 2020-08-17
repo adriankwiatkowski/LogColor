@@ -1,4 +1,4 @@
-package com.example.logcolor.color.models;
+package com.example.logcolor.colorbuilder.utils;
 
 import java.awt.*;
 

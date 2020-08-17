@@ -1,7 +1,7 @@
 package com.example.logcolor.colorbuilder.builders;
 
-import com.example.logcolor.color.models.TextAlignment;
-import com.example.logcolor.color.models.TextAttribute;
+import com.example.logcolor.colorbuilder.text.TextAlignment;
+import com.example.logcolor.colorbuilder.text.TextAttribute;
 
 public class SimpleColorBuilder extends ColorBuilderImpl {
 

@@ -1,8 +1,8 @@
 package com.example.logcolor.printers.printables;
 
-import com.example.logcolor.color.models.TextAlignment;
-import com.example.logcolor.color.models.TextAttribute;
-import com.example.logcolor.colorbuilder.TextConverter;
+import com.example.logcolor.colorbuilder.text.TextAlignment;
+import com.example.logcolor.colorbuilder.text.TextAttribute;
+import com.example.logcolor.colorbuilder.converters.TextConverter;
 import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
 import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 

@@ -1,7 +1,7 @@
 package com.example.logcolor.log;
 
-import com.example.logcolor.color.models.TextAlignment;
-import com.example.logcolor.color.models.TextAttribute;
+import com.example.logcolor.colorbuilder.text.TextAlignment;
+import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
 import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 import com.example.logcolor.log.models.LogLevel;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 
-import static com.example.logcolor.color.models.AnsiColor.*;
+import static com.example.logcolor.colorbuilder.utils.AnsiColor.*;
 
 public final class Log {
 
