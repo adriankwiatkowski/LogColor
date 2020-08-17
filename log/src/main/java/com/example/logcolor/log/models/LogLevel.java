@@ -47,23 +47,23 @@ public enum LogLevel {
 
     private final int level;
     private final String levelTag;
-    private final Color dayThemeFg;
-    private final Color dayThemeBg;
-    private final Color nightThemeFg;
-    private final Color nightThemeBg;
+    private final Color dayThemeForeground;
+    private final Color dayThemeBackground;
+    private final Color nightThemeForeground;
+    private final Color nightThemeBackground;
 
     LogLevel(int level,
              String levelTag,
-             Color dayThemeFg,
-             Color dayThemeBg,
-             Color nightThemeFg,
-             Color nightThemeBg) {
+             Color dayThemeForeground,
+             Color dayThemeBackground,
+             Color nightThemeForeground,
+             Color nightThemeBackground) {
         this.level = level;
         this.levelTag = levelTag;
-        this.dayThemeFg = dayThemeFg;
-        this.dayThemeBg = dayThemeBg;
-        this.nightThemeFg = nightThemeFg;
-        this.nightThemeBg = nightThemeBg;
+        this.dayThemeForeground = dayThemeForeground;
+        this.dayThemeBackground = dayThemeBackground;
+        this.nightThemeForeground = nightThemeForeground;
+        this.nightThemeBackground = nightThemeBackground;
     }
 
     public int getLevel() {
@@ -74,20 +74,20 @@ public enum LogLevel {
         return levelTag;
     }
 
-    public Color getDayThemeFg() {
-        return dayThemeFg;
+    public Color getDayThemeForeground() {
+        return dayThemeForeground;
     }
 
-    public Color getDayThemeBg() {
-        return dayThemeBg;
+    public Color getDayThemeBackground() {
+        return dayThemeBackground;
     }
 
-    public Color getNightThemeFg() {
-        return nightThemeFg;
+    public Color getNightThemeForeground() {
+        return nightThemeForeground;
     }
 
-    public Color getNightThemeBg() {
-        return nightThemeBg;
+    public Color getNightThemeBackground() {
+        return nightThemeBackground;
     }
 
     public static final int MIN_LOG_LEVEL = Arrays.stream(LogLevel.values())

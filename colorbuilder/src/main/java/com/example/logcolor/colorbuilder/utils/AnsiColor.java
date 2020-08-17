@@ -3,6 +3,7 @@ package com.example.logcolor.colorbuilder.utils;
 import java.awt.*;
 
 public enum AnsiColor {
+
     ANSI_RESET("\u001B[0m", "", ""),
     ANSI_BLACK("\u001B[30m", "Black", "#000000"),
     ANSI_RED("\u001B[31m", "Red", "#FF0000"),

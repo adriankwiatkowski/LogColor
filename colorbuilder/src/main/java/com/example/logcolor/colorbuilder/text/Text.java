@@ -4,20 +4,20 @@ import java.util.Objects;
 
 public class Text {
 
-    private String text;
+    private String message;
     private TextAttribute textAttribute;
 
-    public Text(String text) {
-        this.text = text;
+    public Text(String message) {
+        this.message = message;
     }
 
-    public Text(String text, TextAttribute textAttribute) {
-        this.text = text;
+    public Text(String message, TextAttribute textAttribute) {
+        this.message = message;
         this.textAttribute = textAttribute;
     }
 
     public String getMessage() {
-        return text;
+        return message;
     }
 
     public TextAttribute getTextAttribute() {
@@ -26,7 +26,7 @@ public class Text {
 
     @Override
     public String toString() {
-        return "Text{" + "text='" + text + '\'' + ", textAttribute=" + textAttribute + '}';
+        return "Text{" + "text='" + message + '\'' + ", textAttribute=" + textAttribute + '}';
     }
 
     @Override
@@ -34,12 +34,12 @@ public class Text {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Text text1 = (Text) o;
-        return Objects.equals(text, text1.text) &&
+        return Objects.equals(message, text1.message) &&
                Objects.equals(textAttribute, text1.textAttribute);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(text, textAttribute);
+        return Objects.hash(message, textAttribute);
     }
 }

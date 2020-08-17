@@ -4,6 +4,7 @@ import com.example.logcolor.colorbuilder.utils.AnsiColor;
 import com.example.logcolor.colorbuilder.text.TextAlignment;
 import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.colorbuilder.text.TextStyle;
+import com.example.logcolor.log.LogManager;
 import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
 import com.example.logcolor.printers.models.PrintableType;
@@ -38,6 +39,9 @@ public class Main {
                                                                         TextStyle.UNDERLINE))
                                                .build();
 //            PrintableManager.getInstance().setDefaultFormat(textAttribute);
+            LogManager.getInstance().setShowLogLevel(false);
+            LogManager.getInstance().setShowDate(false);
+            //LogManager.getInstance().setShowTag(false);
             System.setOut(PrintableManager.getInstance().getPrintable());
 
             System.out.println();

@@ -1,9 +1,9 @@
 package com.example.logcolor.log;
 
-import com.example.logcolor.colorbuilder.text.TextAlignment;
-import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
 import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
+import com.example.logcolor.colorbuilder.text.TextAlignment;
+import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.log.models.LogLevel;
 import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
@@ -14,8 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
-
-import static com.example.logcolor.colorbuilder.utils.AnsiColor.*;
 
 public final class Log {
 
@@ -31,22 +29,8 @@ public final class Log {
 
     private static final String DEFAULT_TAG = createDefaultTag();
     private static final String TAG_MSG_SEPARATOR = ": ";
-    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final Format FORMATTER_DEFAULT = new SimpleDateFormat(DATE_FORMAT);
-
-    private static final Color DATE_TAG_COLOR_FOREGROUND_DAY = ANSI_BLACK.getColor();
-    private static final Color DATE_TAG_COLOR_BACKGROUND_DAY = ANSI_BRIGHT_BG_WHITE.getColor();
-    private static final Color DATE_TAG_COLOR_FOREGROUND_NIGHT = ANSI_WHITE.getColor();
-    private static final Color DATE_TAG_COLOR_BACKGROUND_NIGHT = ANSI_BRIGHT_BG_BLACK.getColor();
-    private static final Color TAG_COLOR_FOREGROUND_DAY = ANSI_BLACK.getColor();
-    private static final Color TAG_COLOR_BACKGROUND_DAY = ANSI_BRIGHT_BG_WHITE.getColor();
-    private static final Color TAG_COLOR_FOREGROUND_NIGHT = ANSI_WHITE.getColor();
-    private static final Color TAG_COLOR_BACKGROUND_NIGHT = ANSI_BRIGHT_BG_BLACK.getColor();
-
-    private static final TextAlignment TEXT_ALIGNMENT_LEVEL_LOG_INFO = TextAlignment.CENTER;
-    private static final TextAlignment TEXT_ALIGNMENT_DATE_TAG = TextAlignment.RIGHT;
-    private static final TextAlignment TEXT_ALIGNMENT_TAG = TextAlignment.CENTER;
-    private static final TextAlignment TEXT_ALIGNMENT_MSG = TextAlignment.NONE;
+    private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final Format DEFAULT_FORMATTER = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
 
     private Log() {
     }
@@ -56,19 +40,13 @@ public final class Log {
     }
 
     private static void internal_err(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.INTERNAL_ERROR)) {
+        LogManager logManager = LogManager.getInstance();
+        if (!logManager.isLoggable(LogLevel.INTERNAL_ERROR)) {
             return;
         }
+        Color foreground = logManager.getColorInternalErrorForeground();
+        Color background = logManager.getColorInternalErrorBackground();
         // Print log directly instead of scheduling.
-        Color foreground;
-        Color background;
-        if (PrintableManager.getInstance().isDayTheme()) {
-            foreground = LogLevel.INTERNAL_ERROR.getDayThemeFg();
-            background = LogLevel.INTERNAL_ERROR.getDayThemeBg();
-        } else {
-            foreground = LogLevel.INTERNAL_ERROR.getNightThemeFg();
-            background = LogLevel.INTERNAL_ERROR.getNightThemeBg();
-        }
         print(LogLevel.INTERNAL_ERROR.getLevelTag(), tag, msg, foreground, background);
     }
 
@@ -77,18 +55,12 @@ public final class Log {
     }
 
     public static void v(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.VERBOSE)) {
+        LogManager logManager = LogManager.getInstance();
+        if (!logManager.isLoggable(LogLevel.VERBOSE)) {
             return;
         }
-        Color foreground;
-        Color background;
-        if (PrintableManager.getInstance().isDayTheme()) {
-            foreground = LogLevel.VERBOSE.getDayThemeFg();
-            background = LogLevel.VERBOSE.getDayThemeBg();
-        } else {
-            foreground = LogLevel.VERBOSE.getNightThemeFg();
-            background = LogLevel.VERBOSE.getNightThemeBg();
-        }
+        Color foreground = logManager.getColorVerboseForeground();
+        Color background = logManager.getColorVerboseBackground();
         addLog(LogLevel.VERBOSE.getLevelTag(), tag, msg, foreground, background);
     }
 
@@ -97,18 +69,12 @@ public final class Log {
     }
 
     public static void i(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.INFO)) {
+        LogManager logManager = LogManager.getInstance();
+        if (!logManager.isLoggable(LogLevel.INFO)) {
             return;
         }
-        Color foreground;
-        Color background;
-        if (PrintableManager.getInstance().isDayTheme()) {
-            foreground = LogLevel.INFO.getDayThemeFg();
-            background = LogLevel.INFO.getDayThemeBg();
-        } else {
-            foreground = LogLevel.INFO.getNightThemeFg();
-            background = LogLevel.INFO.getNightThemeBg();
-        }
+        Color foreground = logManager.getColorInfoForeground();
+        Color background = logManager.getColorInfoBackground();
         addLog(LogLevel.INFO.getLevelTag(), tag, msg, foreground, background);
     }
 
@@ -117,18 +83,12 @@ public final class Log {
     }
 
     public static void d(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.DEBUG)) {
+        LogManager logManager = LogManager.getInstance();
+        if (!logManager.isLoggable(LogLevel.DEBUG)) {
             return;
         }
-        Color foreground;
-        Color background;
-        if (PrintableManager.getInstance().isDayTheme()) {
-            foreground = LogLevel.DEBUG.getDayThemeFg();
-            background = LogLevel.DEBUG.getDayThemeBg();
-        } else {
-            foreground = LogLevel.DEBUG.getNightThemeFg();
-            background = LogLevel.DEBUG.getNightThemeBg();
-        }
+        Color foreground = logManager.getColorDebugForeground();
+        Color background = logManager.getColorDebugBackground();
         addLog(LogLevel.DEBUG.getLevelTag(), tag, msg, foreground, background);
     }
 
@@ -137,18 +97,12 @@ public final class Log {
     }
 
     public static void w(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.WARNING)) {
+        LogManager logManager = LogManager.getInstance();
+        if (!logManager.isLoggable(LogLevel.WARNING)) {
             return;
         }
-        Color foreground;
-        Color background;
-        if (PrintableManager.getInstance().isDayTheme()) {
-            foreground = LogLevel.WARNING.getDayThemeFg();
-            background = LogLevel.WARNING.getDayThemeBg();
-        } else {
-            foreground = LogLevel.WARNING.getNightThemeFg();
-            background = LogLevel.WARNING.getNightThemeBg();
-        }
+        Color foreground = logManager.getColorWarningForeground();
+        Color background = logManager.getColorWarningBackground();
         addLog(LogLevel.WARNING.getLevelTag(), tag, msg, foreground, background);
     }
 
@@ -157,18 +111,12 @@ public final class Log {
     }
 
     public static void e(String tag, String msg) {
-        if (!LogManager.getInstance().isLoggable(LogLevel.ERROR)) {
+        LogManager logManager = LogManager.getInstance();
+        if (!logManager.isLoggable(LogLevel.ERROR)) {
             return;
         }
-        Color foreground;
-        Color background;
-        if (PrintableManager.getInstance().isDayTheme()) {
-            foreground = LogLevel.ERROR.getDayThemeFg();
-            background = LogLevel.ERROR.getDayThemeBg();
-        } else {
-            foreground = LogLevel.ERROR.getNightThemeFg();
-            background = LogLevel.ERROR.getNightThemeBg();
-        }
+        Color foreground = logManager.getColorErrorForeground();
+        Color background = logManager.getColorErrorBackground();
         addLog(LogLevel.ERROR.getLevelTag(), tag, msg, foreground, background);
     }
 
@@ -191,13 +139,21 @@ public final class Log {
             return;
         }
 
+        LogManager logManager = LogManager.getInstance();
+
         SimpleColorBuilder simpleColorBuilder = new SimpleColorBuilder.Builder().build();
 
-        appendLevelInfo(simpleColorBuilder, debugLevelInfo, foreground, background);
+        if (logManager.isShowLogLevel()) {
+            appendLevelInfo(simpleColorBuilder, debugLevelInfo, foreground, background);
+        }
 
-        appendDateTag(simpleColorBuilder);
+        if (logManager.isShowDate()) {
+            appendDateTag(simpleColorBuilder);
+        }
 
-        appendTag(simpleColorBuilder, tag);
+        if (logManager.isShowTag()) {
+            appendTag(simpleColorBuilder, tag);
+        }
 
         appendMsg(simpleColorBuilder, msg, foreground, background);
 
@@ -209,11 +165,12 @@ public final class Log {
                                         Color foreground,
                                         Color background) {
         int extraSpace = LEVEL_INFO_CHAR_LIMIT - debugLevelInfo.length();
+        LogManager logManager = LogManager.getInstance();
+        TextAlignment textAlignment = logManager.getTextAlignmentLevelLogInfo();
         TextAttribute textAttribute = new TextAttribute.Builder().setForeground(foreground)
                                                                  .setBackground(background)
                                                                  .setExtraSpace(extraSpace)
-                                                                 .setTextAlignment(
-                                                                         TEXT_ALIGNMENT_LEVEL_LOG_INFO)
+                                                                 .setTextAlignment(textAlignment)
                                                                  .build();
         colorBuilder.append(debugLevelInfo, textAttribute);
         colorBuilder.append(TAG_MSG_SEPARATOR);
@@ -222,20 +179,14 @@ public final class Log {
     private static void appendDateTag(ColorBuilder colorBuilder) {
         String dateTag = createCurrentDateTag();
         int extraSpace = DATE_TAG_CHAR_LIMIT - dateTag.length();
-        Color foreground;
-        Color background;
-        if (PrintableManager.getInstance().isDayTheme()) {
-            foreground = DATE_TAG_COLOR_FOREGROUND_DAY;
-            background = DATE_TAG_COLOR_BACKGROUND_DAY;
-        } else {
-            foreground = DATE_TAG_COLOR_FOREGROUND_NIGHT;
-            background = DATE_TAG_COLOR_BACKGROUND_NIGHT;
-        }
+        LogManager logManager = LogManager.getInstance();
+        Color foreground = logManager.getColorDateTagForeground();
+        Color background = logManager.getColorDateTagBackground();
+        TextAlignment textAlignment = logManager.getTextAlignmentDateTag();
         TextAttribute textAttribute = new TextAttribute.Builder().setForeground(foreground)
                                                                  .setBackground(background)
                                                                  .setExtraSpace(extraSpace)
-                                                                 .setTextAlignment(
-                                                                         TEXT_ALIGNMENT_DATE_TAG)
+                                                                 .setTextAlignment(textAlignment)
                                                                  .build();
         colorBuilder.append(dateTag, textAttribute);
         colorBuilder.append(TAG_MSG_SEPARATOR);
@@ -245,37 +196,32 @@ public final class Log {
         tag = (tag == null || tag.isEmpty()) ? DEFAULT_TAG : tag;
         tag = (tag.length() > TAG_CHAR_LIMIT) ? tag.substring(0, TAG_CHAR_LIMIT) : tag;
         int extraSpace = TAG_CHAR_LIMIT - tag.length();
-        Color foreground;
-        Color background;
-        if (PrintableManager.getInstance().isDayTheme()) {
-            foreground = TAG_COLOR_FOREGROUND_DAY;
-            background = TAG_COLOR_BACKGROUND_DAY;
-        } else {
-            foreground = TAG_COLOR_FOREGROUND_NIGHT;
-            background = TAG_COLOR_BACKGROUND_NIGHT;
-        }
+        LogManager logManager = LogManager.getInstance();
+        Color foreground = logManager.getColorTagForeground();
+        Color background = logManager.getColorTagBackground();
+        TextAlignment textAlignment = logManager.getTextAlignmentTag();
         TextAttribute textAttribute = new TextAttribute.Builder().setForeground(foreground)
                                                                  .setBackground(background)
                                                                  .setExtraSpace(extraSpace)
-                                                                 .setTextAlignment(
-                                                                         TEXT_ALIGNMENT_TAG)
+                                                                 .setTextAlignment(textAlignment)
                                                                  .build();
         colorBuilder.append(tag, textAttribute);
         colorBuilder.append(TAG_MSG_SEPARATOR);
     }
 
     private static void appendMsg(ColorBuilder colorBuilder, String msg, Color fg, Color bg) {
+        LogManager logManager = LogManager.getInstance();
+        TextAlignment textAlignment = logManager.getTextAlignmentMessage();
         TextAttribute textAttribute = new TextAttribute.Builder().setForeground(fg)
                                                                  .setBackground(bg)
-                                                                 .setTextAlignment(
-                                                                         TEXT_ALIGNMENT_MSG)
+                                                                 .setTextAlignment(textAlignment)
                                                                  .build();
         colorBuilder.append(msg, textAttribute);
         colorBuilder.appendNewLine();
     }
 
     private static String createCurrentDateTag() {
-        return FORMATTER_DEFAULT.format(new Date());
+        return DEFAULT_FORMATTER.format(new Date());
     }
 
     private static String createDefaultTag() {
