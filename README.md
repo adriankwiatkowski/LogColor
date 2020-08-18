@@ -218,9 +218,7 @@ Color bakcrgound = AnsiColor.ANSI_BG_BLACK.getColor();
 ```
 
 # Example logs in window
-Day theme:
 <img src="https://cdn.discordapp.com/attachments/667466573640105995/745244988379758612/unknown.png"/>
-Night theme:
 <img src="https://cdn.discordapp.com/attachments/667466573640105995/745245153522090034/unknown.png"/>
 
 # Example logs in console
