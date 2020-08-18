@@ -1,11 +1,14 @@
 package com.example.logcolor.utils;
 
 import com.example.logcolor.colorbuilder.text.TextAlignment;
+import com.example.logcolor.colorbuilder.text.TextAttribute;
+import com.example.logcolor.colorbuilder.text.TextStyle;
 import com.example.logcolor.colorbuilder.utils.AnsiColor;
 import com.example.logcolor.log.Log;
 import com.example.logcolor.printers.Printer;
 
 import java.awt.*;
+import java.util.EnumSet;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DebugTextUtils {
@@ -16,6 +19,7 @@ public class DebugTextUtils {
         TextAlignment center = TextAlignment.CENTER;
         int space = 10;
         String msg = "Message.";
+        Printer.println();
         Printer.println(msg);
         Printer.println(msg, foreground, background);
         Printer.println(msg, center, space);
@@ -25,8 +29,16 @@ public class DebugTextUtils {
         Printer.print(msg, center, space);
         Printer.print(msg, foreground, background, center, space);
 
-        Printer.println();
-        Printer.println();
+        TextAttribute textAttribute = new TextAttribute.Builder().setForeground(foreground)
+                                                                 .setBackground(background)
+                                                                 .setTextAlignment(center)
+                                                                 .setExtraSpace(4)
+                                                                 .setTextStyle(EnumSet.of(TextStyle.BOLD,
+                                                                                          TextStyle.ITALIC,
+                                                                                          TextStyle.UNDERLINE))
+                                                                 .build();
+        Printer.print(msg, textAttribute);
+        Printer.println(msg, textAttribute);
     }
 
     public static void printAllLevelLogsTest() {
@@ -35,7 +47,7 @@ public class DebugTextUtils {
         Log.d("Debug tag", "Something not working here.");
         Log.w("Warning tag", "Warning, take care!");
         Log.e("Error tag", "Behold almighty error...");
-        Log.w("Warning tag that will exceed max character limit.", "Friendly warning message.");
+        Log.i("Informative message without tag!");
     }
 
     public static void printRandomDebugInfo() {

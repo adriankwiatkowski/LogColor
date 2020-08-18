@@ -76,7 +76,7 @@ public class PrintableWindow extends Printable {
     }
 
     @Override
-    public TextConverter getTextConverter() {
+    public HtmlTextConverter getTextConverter() {
         return HTML_TEXT_CONVERTER;
     }
 
@@ -139,7 +139,7 @@ public class PrintableWindow extends Printable {
             throw new IllegalArgumentException("String cannot be null.");
         }
 
-        if (mIsForceOnNewLine && !HTML_TEXT_CONVERTER.isConvertedTextEndsWithNewLine(string)) {
+        if (mIsForceOnNewLine && !getTextConverter().isConvertedTextEndsWithNewLine(string)) {
             mListModel.addElement(string);
         } else {
             // Same action, because currently we are adding all new message as new item.

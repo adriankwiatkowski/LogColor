@@ -5,7 +5,7 @@ LogColor is a highly customizable logging library.
 
 # Why LogColor?
 - Easy to use
-- Customizable
+- Highly customizable
 - Multithreaded logging and printing
 - Built-in support for colors
 - Built-in implementation for console and java window
@@ -44,27 +44,6 @@ More info on https://jitpack.io/
 # How do I use LogColor?
 Simple use cases will look something like this:
 
-Setting up Printer:
-```java
-PrintableManager printableManager = PrintableManager.getInstance();
-printableManager.setPrintable(PrintableType.CONSOLE);
-printableManager.setPrintable(PrintableType.WINDOW);
-printableManager.setPrintable(new Printable(outputStream) { ... });
-```
-
-Setting up Printer default configuration:
-```java
-// Applies to current and further Printable instances in PrintableManager.
-PrintableManager.getInstance()
-    .setDefaultFormat(AnsiColor.ANSI_BLACK,
-        AnsiColor.ANSI_BRIGHT_BG_BLUE,
-        TextAlignment.CENTER);
-
-// Applies only to current Printable instance.
-Printable printable = PrintableManager.getInstance().getPrintable();
-printable.setDefaultFormat(AnsiColor.ANSI_BLACK, AnsiColor.ANSI_BRIGHT_BG_BLUE); 
-```
-
 Printing using Printer (recommended way, because it uses multithreading by default):
 ```java
 Color foreground = AnsiColor.ANSI_BRIGHT_BLUE.getColor();
@@ -81,25 +60,45 @@ Printer.print(msg);
 Printer.print(msg, foreground, background);
 Printer.print(msg, center, space);
 Printer.print(msg, foreground, background, center, space);
+
+TextAttribute textAttribute = new TextAttribute.Builder().setForeground(foreground).setBackground(background).setTextAlignment(center).setExtraSpace(4).setTextStyle(EnumSet.of(TextStyle.BOLD, TextStyle.ITALIC, TextStyle.UNDERLINE)).build();
+Printer.print(msg, textAttribute);
+Printer.println(msg, textAttribute);
+```
+
+Setting up Printer:
+```java
+PrintableManager printableManager = PrintableManager.getInstance();
+printableManager.setPrintable(PrintableType.CONSOLE);
+printableManager.setPrintable(PrintableType.WINDOW);
+printableManager.setPrintable(new Printable(outputStream) { ... });
+```
+
+Setting up Printer default configuration:
+```java
+// Applies to current and further Printable instances in PrintableManager.
+TextAttribute textAttribute =
+	new TextAttribute.Builder().setForeground(AnsiColor.ANSI_BRIGHT_GREEN.getColor())
+	.setBackground(AnsiColor.ANSI_BG_BLACK.getColor())
+	.setTextAlignment(TextAlignment.CENTER)
+	.setExtraSpace(26)
+	.setTextStyle(EnumSet.of(TextStyle.BOLD,
+		TextStyle.ITALIC,
+		TextStyle.UNDERLINE))
+	.build();
+
+PrintableManager.getInstance().setDefaultFormat(AnsiColor.ANSI_BLACK, AnsiColor.ANSI_BRIGHT_BG_BLUE); 
+PrintableManager.getInstance().setDefaultFormat(textAttribute);
+
+// Applies only to current Printable instance.
+Printable printable = PrintableManager.getInstance().getPrintable();
+printable.setDefaultFormat(AnsiColor.ANSI_BLACK, AnsiColor.ANSI_BRIGHT_BG_BLUE); 
+printable.setDefaultFormat(textAttribute);
 ```
 
 Printing using directly Printable instance:
 ```java
 Printable printable = PrintableManager.getInstance().getPrintable();
-// Although, using this method you cannot specify colors and text alignment
-// you can set default format for future prints on this Printable like this.
-// Remember this format will only be used in this particular instance of Printable.
-printable.setDefaultFormat(AnsiColor.ANSI_BLACK,
-    AnsiColor.ANSI_BRIGHT_BG_BLUE,
-    TextAlignment.LEFT);
-
-// If you want to format current and all future instances of Printable you have to set it globally
-// using PrintableManager class.
-PrintableManager.getInstance().setDefaultFormat(AnsiColor.ANSI_BLACK,
-    AnsiColor.ANSI_BRIGHT_BG_BLUE,
-    TextAlignment.CENTER);
-
-// Now our prints will be formatted using specified format, that we set earlier.
 printable.println("3");
 printable.println();
 printable.print("10");
@@ -151,14 +150,24 @@ printableManager.setPrintable(PrintableType.WINDOW);
 // You can even set your on Printable implementation to suit your needs.
 // You can look at the source code on github to see
 // how I implemented PrintableWindow, if you need an inspiration.
-OutputStream outputStream;
+OutputStream outputStream = System.out;
+TextConverter textConverter = new HtmlTextConverter();
 PrintableManager.getInstance().setPrintable(new Printable(outputStream) {
     @Override
-    protected void write(String s) {
+    protected void write(ColorBuilder colorBuilder) {
+        String convertedText = colorBuilder.convertText(getTextConverter());
+        // Now just write converted text.
     }
 
     @Override
-    public void printForceOnNewLine(String msg) {
+    public TextConverter getTextConverter() {
+        return textConverter;
+    }
+
+    @Override
+    public void printForceOnNewLine(ColorBuilder colorBuilder) {
+        String convertedText = colorBuilder.convertText(getTextConverter());
+        // Now just write converted text on new line. 
     }
 
     @Override
@@ -178,23 +187,44 @@ Log.i("Info tag", "Informative message.");
 Log.d("Debug tag", "Something not working here.");
 Log.w("Warning tag", "Warning, take care!");
 Log.e("Error tag", "Behold almighty error...");
+Log.i("Informative message without tag!");
 ```
 
 #### Using Log Manager class
 ```java
 LogManager.getInstance().setMinLogLevel(LogLevel.INFO);
 ...
-// Although you don't need to implicitly check if LogLevel you want to print is loggable, it is a good practice.
+// Although you don't need to check if LogLevel you want to print is loggable,
+// it is considered a good practice.
 if (LogManager.getInstance().isLoggable(LogLevel.DEBUG)) {
     Log.d("Class tag", "Important debug message!");
 }
+
+// You can hide elements from logs. 
+LogManager.getInstance().setShowLogLevel(false);
+LogManager.getInstance().setShowDate(false);
+LogManager.getInstance().setShowTag(false);
+
+// You can customize colors for all log levels.
+java.awt.Color color;
+LogManager.getInstance().setColorTagBackgroundDay(color);
+LogManager.getInstance().setColorTagBackgroundDay(AnsiColor.ANSI_BG_BLACK.getColor());
+```
+
+#### Using AnsiColor helper class
+```java
+Color foreground = AnsiColor.ANSI_WHITE.getColor();
+Color bakcrgound = AnsiColor.ANSI_BG_BLACK.getColor();
 ```
 
 # Example logs in window
-<img src="https://cdn.discordapp.com/attachments/667466573640105995/734017507786227782/unknown.png"/>
+Day theme:
+<img src="https://cdn.discordapp.com/attachments/667466573640105995/745244988379758612/unknown.png"/>
+Night theme:
+<img src="https://cdn.discordapp.com/attachments/667466573640105995/745245153522090034/unknown.png"/>
 
 # Example logs in console
-<img src="https://cdn.discordapp.com/attachments/667466573640105995/734019940759109693/unknown.png"/>
+<img src="https://cdn.discordapp.com/attachments/667466573640105995/745244699278966824/unknown.png"/>
 
 ##### Code used for example logs:
 ```java
@@ -204,5 +234,6 @@ Log.d("Debug tag", "Something not working here.");
 Log.w("Warning tag", "Warning, take care!");
 Log.e("Error tag", "Behold almighty error...");
 Log.w("Warning tag that will exceed max character limit.",
-    "Friendly warning message.");   
+    "Friendly warning message.");
+Log.i("Informative message without tag!");
 ```
