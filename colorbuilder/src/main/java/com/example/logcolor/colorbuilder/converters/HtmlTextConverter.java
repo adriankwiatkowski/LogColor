@@ -11,6 +11,21 @@ import java.util.List;
 
 public class HtmlTextConverter extends TextConverter {
 
+    private static final String TAG_HTML_BEGIN = "<html>";
+    private static final String TAG_HTML_END = "</html>";
+    private static final String TAG_BODY_BEGIN = "<body>";
+    private static final String TAG_BODY_END = "</body>";
+    private static final String TAG_PRE_BEGIN = "<pre>";
+    private static final String TAG_PRE_END = "</pre>";
+    private static final String TAG_NEW_LINE = "<br>";
+    private static final String TAG_ITALIC_BEGIN = "<i>";
+    private static final String TAG_ITALIC_END = "</i>";
+    private static final String TAG_BOLD_BEGIN = "<B>";
+    private static final String TAG_BOLD_END = "</B>";
+    private static final String TAG_UNDERLINE_BEGIN = "<U>";
+    private static final String TAG_UNDERLINE_END = "</U>";
+    private static final String SEMICOLON = ";";
+
     @Override
     public String convertText(List<Text> textList) {
         return super.convertText(textList);
@@ -23,7 +38,8 @@ public class HtmlTextConverter extends TextConverter {
 
     @Override
     protected String convertTextList(List<Text> textList) {
-        StringBuilder sb = new StringBuilder("<html><body><pre>");
+        StringBuilder sb = new StringBuilder();
+        sb.append(TAG_HTML_BEGIN).append(TAG_BODY_BEGIN).append(TAG_PRE_BEGIN);
 
         for (int i = 0; i < textList.size(); ++i) {
             Text text = textList.get(i);
@@ -31,9 +47,19 @@ public class HtmlTextConverter extends TextConverter {
             appendText(sb, text, isLastText);
         }
 
-        sb.append("</pre></body></html>");
+        sb.append(TAG_PRE_END).append(TAG_BODY_END).append(TAG_HTML_END);
 
         return sb.toString();
+    }
+
+    public boolean isConvertedTextEndsWithNewLine(String message) {
+        int index = message.indexOf(TAG_PRE_END);
+        if (index < 0) {
+            return  false;
+        }
+
+        String s = message.substring(0, index);
+        return s.endsWith(TAG_NEW_LINE);
     }
 
     private void appendText(StringBuilder sb, Text text, boolean ignoreLastEmptyNewLine) {
@@ -45,7 +71,7 @@ public class HtmlTextConverter extends TextConverter {
         }
 
         // Replace new lines with equivalent <br> tag in html.
-        s = s.replace("\n", "<br>");
+        s = s.replace("\n", TAG_NEW_LINE);
 
         if (textAttribute != null) {
             TextAlignment textAlignment = textAttribute.getTextAlignment();
@@ -67,32 +93,29 @@ public class HtmlTextConverter extends TextConverter {
         } else {
             sb.append(s);
         }
-
-        // <font style="color:FFFFFF;background-color:000000;">
-        // </font>
     }
 
     private void appendTextStyleStart(StringBuilder sb, EnumSet<TextStyle> textStyles) {
         if (textStyles.contains(TextStyle.ITALIC)) {
-            sb.append("<i>");
+            sb.append(TAG_ITALIC_BEGIN);
         }
         if (textStyles.contains(TextStyle.BOLD)) {
-            sb.append("<B>");
+            sb.append(TAG_BOLD_BEGIN);
         }
         if (textStyles.contains(TextStyle.UNDERLINE)) {
-            sb.append("<U>");
+            sb.append(TAG_UNDERLINE_BEGIN);
         }
     }
 
     private void appendTextStyleEnd(StringBuilder sb, EnumSet<TextStyle> textStyles) {
         if (textStyles.contains(TextStyle.UNDERLINE)) {
-            sb.append("</U>");
+            sb.append(TAG_UNDERLINE_END);
         }
         if (textStyles.contains(TextStyle.BOLD)) {
-            sb.append("</B>");
+            sb.append(TAG_BOLD_END);
         }
         if (textStyles.contains(TextStyle.ITALIC)) {
-            sb.append("</i>");
+            sb.append(TAG_ITALIC_END);
         }
     }
 
@@ -112,10 +135,10 @@ public class HtmlTextConverter extends TextConverter {
         if (hexBackground != null || hexForeground != null) {
             sb.append("<font style=\"");
             if (hexForeground != null) {
-                sb.append("color:").append(hexForeground).append(";");
+                sb.append("color:").append(hexForeground).append(SEMICOLON);
             }
             if (hexBackground != null) {
-                sb.append("background-color:").append(hexBackground).append(";");
+                sb.append("background-color:").append(hexBackground).append(SEMICOLON);
             }
             sb.append("\">");
         }

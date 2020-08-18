@@ -22,7 +22,6 @@ public class PrintableWindow extends Printable {
     private JFrame mMainFrame;
     private JList<String> mMessageList;
     private DefaultListModel<String> mListModel = new DefaultListModel<>();
-    private boolean mIsNextPrintNewLine = false;
     private boolean mIsForceOnNewLine = false;
 
     // Not safe to use, may produce Null Pointer Exception.
@@ -140,7 +139,12 @@ public class PrintableWindow extends Printable {
             throw new IllegalArgumentException("String cannot be null.");
         }
 
-        mListModel.addElement(string);
+        if (mIsForceOnNewLine && !HTML_TEXT_CONVERTER.isConvertedTextEndsWithNewLine(string)) {
+            mListModel.addElement(string);
+        } else {
+            // Same action, because currently we are adding all new message as new item.
+            mListModel.addElement(string);
+        }
 
         if (mListModel.size() >= MAX_MESSAGE_COUNT) {
             mListModel.remove(0);
