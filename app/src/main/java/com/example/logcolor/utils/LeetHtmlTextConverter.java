@@ -1,8 +1,8 @@
 package com.example.logcolor.utils;
 
-import com.example.logcolor.colorbuilder.converters.AnsiTextConverter;
+import com.example.logcolor.colorbuilder.converters.HtmlTextConverter;
 
-public class LeetTextConverter extends AnsiTextConverter {
+public class LeetHtmlTextConverter extends HtmlTextConverter {
 
     @Override
     protected String convertMessage(String message) {
@@ -20,7 +20,6 @@ public class LeetTextConverter extends AnsiTextConverter {
                 .replace('E', '3')
                 .replace('A', '4')
                 .replace('T', '7')
-                .replaceAll("s(?=\\s|$)", "Z")
-                .replaceAll("\\S+", "($0)");
+                .replaceAll("s(?=\\s|$)", "Z");
     }
 }

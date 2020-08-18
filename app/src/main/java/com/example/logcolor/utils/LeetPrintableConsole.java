@@ -10,7 +10,7 @@ import java.io.UnsupportedEncodingException;
 
 public class LeetPrintableConsole extends PrintableConsole {
 
-    private static final LeetTextConverter LEET_TEXT_CONVERTER = new LeetTextConverter();
+    private static final LeetAnsiTextConverter LEET_TEXT_CONVERTER = new LeetAnsiTextConverter();
 
     public LeetPrintableConsole(OutputStream out) {
         super(out);

@@ -56,6 +56,7 @@ public class PrintableConsole extends Printable {
     @Override
     protected void write(ColorBuilder colorBuilder) {
         String s = colorBuilder.convertText(getTextConverter());
+
         if (mIsForceOnNewLine && !mIsNextPrintNewLine) {
             mIsForceOnNewLine = false;
             mIsNextPrintNewLine = true;

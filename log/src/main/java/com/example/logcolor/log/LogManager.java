@@ -38,9 +38,9 @@ public class LogManager {
     private static final Color DEFAULT_INFO_COLOR_BACKGROUND_DAY =
             LogLevel.INFO.getDayThemeBackground();
     private static final Color DEFAULT_INFO_COLOR_FOREGROUND_NIGHT =
-            LogLevel.INFO.getDayThemeForeground();
+            LogLevel.INFO.getNightThemeForeground();
     private static final Color DEFAULT_INFO_COLOR_BACKGROUND_NIGHT =
-            LogLevel.INFO.getDayThemeBackground();
+            LogLevel.INFO.getNightThemeBackground();
     private static final Color DEFAULT_DEBUG_COLOR_FOREGROUND_DAY =
             LogLevel.DEBUG.getDayThemeForeground();
     private static final Color DEFAULT_DEBUG_COLOR_BACKGROUND_DAY =
@@ -73,12 +73,12 @@ public class LogManager {
             AnsiColor.ANSI_WHITE.getColor();
     private static final Color DEFAULT_DATE_TAG_COLOR_BACKGROUND_NIGHT =
             AnsiColor.ANSI_BRIGHT_BG_BLACK.getColor();
-    private static final Color DEFAULT_TAG_COLOR_FOREGROUND_DAY = AnsiColor.ANSI_BLACK.getColor();
+    private static final Color DEFAULT_TAG_COLOR_FOREGROUND_DAY = AnsiColor.ANSI_BRIGHT_BLACK.getColor();
     private static final Color DEFAULT_TAG_COLOR_BACKGROUND_DAY =
-            AnsiColor.ANSI_BRIGHT_BG_WHITE.getColor();
-    private static final Color DEFAULT_TAG_COLOR_FOREGROUND_NIGHT = AnsiColor.ANSI_WHITE.getColor();
+            AnsiColor.ANSI_BG_WHITE.getColor();
+    private static final Color DEFAULT_TAG_COLOR_FOREGROUND_NIGHT = AnsiColor.ANSI_BRIGHT_WHITE.getColor();
     private static final Color DEFAULT_TAG_COLOR_BACKGROUND_NIGHT =
-            AnsiColor.ANSI_BRIGHT_BG_BLACK.getColor();
+            AnsiColor.ANSI_BG_BLACK.getColor();
     private static final TextAlignment DEFAULT_TEXT_ALIGNMENT_LEVEL_LOG_INFO = TextAlignment.CENTER;
     private static final TextAlignment DEFAULT_TEXT_ALIGNMENT_DATE_TAG = TextAlignment.RIGHT;
     private static final TextAlignment DEFAULT_TEXT_ALIGNMENT_TAG = TextAlignment.CENTER;

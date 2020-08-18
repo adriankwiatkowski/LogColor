@@ -9,10 +9,7 @@ import com.example.logcolor.log.LogManager;
 import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
 import com.example.logcolor.printers.models.PrintableType;
-import com.example.logcolor.utils.AppExecutors;
-import com.example.logcolor.utils.DebugTextUtils;
-import com.example.logcolor.utils.LeetPrintableConsole;
-import com.example.logcolor.utils.WindowLookUtils;
+import com.example.logcolor.utils.*;
 
 import java.util.EnumSet;
 
@@ -40,12 +37,13 @@ public class Main {
                                                                         TextStyle.ITALIC,
                                                                         TextStyle.UNDERLINE))
                                                .build();
-//            PrintableManager.getInstance().setDefaultFormat(textAttribute);
+            PrintableManager.getInstance().setDefaultFormat(textAttribute);
 
 //            PrintableManager.getInstance().setPrintable(new LeetPrintableConsole(System.out, true));
+//            PrintableManager.getInstance().setPrintable(new LeetPrintableWindow(PrintableManager.getInstance().isNightTheme()));
 
-            LogManager.getInstance().setShowLogLevel(false);
-            LogManager.getInstance().setShowDate(false);
+//            LogManager.getInstance().setShowLogLevel(false);
+//            LogManager.getInstance().setShowDate(false);
 //            LogManager.getInstance().setShowTag(false);
             LogManager.getInstance().setColorTagBackgroundDay(AnsiColor.ANSI_BG_BLACK.getColor());
             LogManager.getInstance()

@@ -134,7 +134,7 @@ public class PrintableWindow extends Printable {
         }
     }
 
-    private void addTextToList(String string) {
+    private synchronized void addTextToList(String string) {
         if (string == null) {
             throw new IllegalArgumentException("String cannot be null.");
         }
