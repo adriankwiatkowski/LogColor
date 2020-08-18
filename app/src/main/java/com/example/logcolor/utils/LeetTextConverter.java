@@ -1,4 +1,4 @@
-package com.example.logcolor.test;
+package com.example.logcolor.utils;
 
 import com.example.logcolor.colorbuilder.converters.AnsiTextConverter;
 

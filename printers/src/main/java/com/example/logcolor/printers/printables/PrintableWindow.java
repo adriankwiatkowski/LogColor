@@ -15,8 +15,8 @@ public class PrintableWindow extends Printable {
 
     private static final HtmlTextConverter HTML_TEXT_CONVERTER = new HtmlTextConverter();
 
-    private static final String BLACK_COLOR = "0x000000";
-    private static final String WHITE_COLOR = "0xFFFFFF";
+    private static final String BLACK_COLOR = "0x121212";
+    private static final String WHITE_COLOR = "0xFFFAFA";
     private static final int MAX_MESSAGE_COUNT = 1000;
 
     private JFrame mMainFrame;

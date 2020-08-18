@@ -9,9 +9,9 @@ import com.example.logcolor.log.LogManager;
 import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
 import com.example.logcolor.printers.models.PrintableType;
-import com.example.logcolor.test.LeetPrintableConsole;
 import com.example.logcolor.utils.AppExecutors;
 import com.example.logcolor.utils.DebugTextUtils;
+import com.example.logcolor.utils.LeetPrintableConsole;
 import com.example.logcolor.utils.WindowLookUtils;
 
 import java.util.EnumSet;
@@ -26,7 +26,7 @@ public class Main {
         AppExecutors.getInstance().mainThread().execute(() -> {
             WindowLookUtils.setLookAndFeel();
 
-            PrintableManager.getInstance().setDayTheme();
+            PrintableManager.getInstance().setNightTheme();
             PrintableManager.getInstance().setPrintable(PrintableType.WINDOW);
             PrintableManager.getInstance()
                             .setDefaultFormat(AnsiColor.ANSI_BRIGHT_GREEN.getColor(),
@@ -42,7 +42,7 @@ public class Main {
                                                .build();
 //            PrintableManager.getInstance().setDefaultFormat(textAttribute);
 
-            PrintableManager.getInstance().setPrintable(new LeetPrintableConsole(System.out, true));
+//            PrintableManager.getInstance().setPrintable(new LeetPrintableConsole(System.out, true));
 
             LogManager.getInstance().setShowLogLevel(false);
             LogManager.getInstance().setShowDate(false);
