@@ -6,6 +6,18 @@ import java.util.List;
 
 public abstract class TextConverter {
 
-    public abstract String convertText(List<Text> textList);
+    public String convertText(List<Text> textList) {
+        for (Text text : textList) {
+            text.setMessage(convertMessage(text.getMessage()));
+        }
+
+        return convertTextList(textList);
+    }
+
+    protected String convertMessage(String message) {
+        return message;
+    }
+
+    protected abstract String convertTextList(List<Text> textList);
 
 }

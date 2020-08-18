@@ -20,6 +20,10 @@ public class Text {
         return message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public TextAttribute getTextAttribute() {
         return textAttribute;
     }

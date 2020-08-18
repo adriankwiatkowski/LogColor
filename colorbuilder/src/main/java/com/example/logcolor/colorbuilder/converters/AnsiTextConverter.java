@@ -273,6 +273,16 @@ public class AnsiTextConverter extends TextConverter {
 
     @Override
     public String convertText(List<Text> textList) {
+        return super.convertText(textList);
+    }
+
+    @Override
+    protected String convertMessage(String message) {
+        return super.convertMessage(message);
+    }
+
+    @Override
+    protected String convertTextList(List<Text> textList) {
         StringBuilder sb = new StringBuilder();
 
         for (Text text : textList) {

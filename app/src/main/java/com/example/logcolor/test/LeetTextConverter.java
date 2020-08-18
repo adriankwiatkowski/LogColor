@@ -1,19 +1,12 @@
 package com.example.logcolor.test;
 
 import com.example.logcolor.colorbuilder.converters.AnsiTextConverter;
-import com.example.logcolor.colorbuilder.text.Text;
-
-import java.util.List;
 
 public class LeetTextConverter extends AnsiTextConverter {
 
     @Override
-    public String convertText(List<Text> textList) {
-        String s = super.convertText(textList);
-
-        s = convertToLeet(s);
-
-        return s;
+    protected String convertMessage(String message) {
+        return convertToLeet(message);
     }
 
     private String convertToLeet(String s) {

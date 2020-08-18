@@ -13,6 +13,16 @@ public class HtmlTextConverter extends TextConverter {
 
     @Override
     public String convertText(List<Text> textList) {
+        return super.convertText(textList);
+    }
+
+    @Override
+    protected String convertMessage(String message) {
+        return super.convertMessage(message);
+    }
+
+    @Override
+    protected String convertTextList(List<Text> textList) {
         StringBuilder sb = new StringBuilder("<html><body><pre>");
 
         for (int i = 0; i < textList.size(); ++i) {
@@ -20,7 +30,6 @@ public class HtmlTextConverter extends TextConverter {
             boolean isLastText = i == textList.size() - 1;
             appendText(sb, text, isLastText);
         }
-
 
         sb.append("</pre></body></html>");
 
