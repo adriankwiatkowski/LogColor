@@ -1,7 +1,7 @@
 package com.example.logcolor.utils;
 
-import com.example.logcolor.colorbuilder.utils.AnsiColor;
 import com.example.logcolor.colorbuilder.text.TextAlignment;
+import com.example.logcolor.colorbuilder.utils.AnsiColor;
 import com.example.logcolor.log.Log;
 import com.example.logcolor.printers.Printer;
 

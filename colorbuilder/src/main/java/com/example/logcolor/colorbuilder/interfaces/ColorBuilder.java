@@ -1,8 +1,8 @@
 package com.example.logcolor.colorbuilder.interfaces;
 
-import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.colorbuilder.converters.TextConverter;
 import com.example.logcolor.colorbuilder.text.Text;
+import com.example.logcolor.colorbuilder.text.TextAttribute;
 
 import java.util.List;
 

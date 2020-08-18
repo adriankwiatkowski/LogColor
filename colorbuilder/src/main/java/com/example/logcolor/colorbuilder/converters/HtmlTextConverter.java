@@ -1,9 +1,9 @@
 package com.example.logcolor.colorbuilder.converters;
 
+import com.example.logcolor.colorbuilder.text.Text;
 import com.example.logcolor.colorbuilder.text.TextAlignment;
 import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.colorbuilder.text.TextStyle;
-import com.example.logcolor.colorbuilder.text.Text;
 
 import java.awt.*;
 import java.util.EnumSet;

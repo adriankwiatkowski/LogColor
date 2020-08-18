@@ -1,8 +1,8 @@
 package com.example.logcolor.colorbuilder.converters;
 
+import com.example.logcolor.colorbuilder.text.Text;
 import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.colorbuilder.text.TextStyle;
-import com.example.logcolor.colorbuilder.text.Text;
 import javafx.util.Pair;
 
 import java.awt.*;

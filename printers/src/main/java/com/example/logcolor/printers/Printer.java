@@ -1,10 +1,10 @@
 package com.example.logcolor.printers;
 
+import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
+import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 import com.example.logcolor.colorbuilder.text.TextAlignment;
 import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.colorbuilder.text.TextStyle;
-import com.example.logcolor.colorbuilder.builders.SimpleColorBuilder;
-import com.example.logcolor.colorbuilder.interfaces.ColorBuilder;
 import com.example.logcolor.printers.printables.Printable;
 
 import java.awt.*;

@@ -1,7 +1,7 @@
 package com.example.logcolor.printers;
 
-import com.example.logcolor.printers.printables.Printable;
 import com.example.logcolor.printers.models.PrintableType;
+import com.example.logcolor.printers.printables.Printable;
 import com.example.logcolor.printers.printables.PrintableConsole;
 import com.example.logcolor.printers.printables.PrintableWindow;
 
