@@ -3,9 +3,9 @@ version '1.0'
 sourceCompatibility = 1.8
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 
-    compile project(':colorbuilder')
-    compile project(':printers')
-    compile project(':log')
+    implementation project(':colorbuilder')
+    implementation project(':printers')
+    implementation project(':log')
 }

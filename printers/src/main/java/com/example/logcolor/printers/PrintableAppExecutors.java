@@ -1,7 +1,10 @@
 package com.example.logcolor.printers;
 
+import com.google.common.util.concurrent.MoreExecutors;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 class PrintableAppExecutors {
@@ -9,6 +12,9 @@ class PrintableAppExecutors {
     private static final int TIMEOUT_TERMINATION_SECONDS = 60;
 
     private static final Object LOCK = new Object();
+
+    private static final long TERMINATION_TIMEOUT = 4L;
+    private static final TimeUnit TERMINATION_TIMEOUT_TIME_UNIT = TimeUnit.SECONDS;
 
     private static PrintableAppExecutors sInstance;
 
@@ -22,7 +28,13 @@ class PrintableAppExecutors {
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {
-                    sInstance = new PrintableAppExecutors(Executors.newSingleThreadExecutor());
+                    ThreadPoolExecutor threadPoolExecutor =
+                            (ThreadPoolExecutor) Executors.newSingleThreadExecutor();
+                    ExecutorService executorService = MoreExecutors.getExitingExecutorService(
+                            threadPoolExecutor,
+                            TERMINATION_TIMEOUT,
+                            TERMINATION_TIMEOUT_TIME_UNIT);
+                    sInstance = new PrintableAppExecutors(executorService);
                 }
             }
         }
