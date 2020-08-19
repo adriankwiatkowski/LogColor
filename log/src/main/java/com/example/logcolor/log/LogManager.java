@@ -6,17 +6,22 @@ import com.example.logcolor.log.models.LogLevel;
 import com.example.logcolor.printers.PrintableManager;
 
 import java.awt.*;
+import java.text.SimpleDateFormat;
 
 public class LogManager {
 
     private static LogManager sInstance;
 
     private static final Object LOCK = new Object();
+    private static final Object DATE_LOCK = new Object();
 
     private static final int DEFAULT_MIN_LOG_LEVEL = LogLevel.INTERNAL_ERROR.getLevel();
     private static final boolean DEFAULT_SHOW_LOG_LEVEL = true;
     private static final boolean DEFAULT_SHOW_DATE = true;
     private static final boolean DEFAULT_SHOW_TAG = true;
+    private static final String DEFAULT_DATE_PATTERN = "yyyy.MM.dd HH:mm:ss";
+    private static final SimpleDateFormat DEFAULT_DATE_FORMAT =
+            new SimpleDateFormat(DEFAULT_DATE_PATTERN);
     private static final Color DEFAULT_INTERNAL_ERROR_COLOR_FOREGROUND_DAY =
             LogLevel.INTERNAL_ERROR.getDayThemeForeground();
     private static final Color DEFAULT_INTERNAL_ERROR_COLOR_BACKGROUND_DAY =
@@ -73,10 +78,12 @@ public class LogManager {
             AnsiColor.ANSI_WHITE.getColor();
     private static final Color DEFAULT_DATE_TAG_COLOR_BACKGROUND_NIGHT =
             AnsiColor.ANSI_BRIGHT_BG_BLACK.getColor();
-    private static final Color DEFAULT_TAG_COLOR_FOREGROUND_DAY = AnsiColor.ANSI_BRIGHT_BLACK.getColor();
+    private static final Color DEFAULT_TAG_COLOR_FOREGROUND_DAY =
+            AnsiColor.ANSI_BRIGHT_BLACK.getColor();
     private static final Color DEFAULT_TAG_COLOR_BACKGROUND_DAY =
             AnsiColor.ANSI_BG_WHITE.getColor();
-    private static final Color DEFAULT_TAG_COLOR_FOREGROUND_NIGHT = AnsiColor.ANSI_BRIGHT_WHITE.getColor();
+    private static final Color DEFAULT_TAG_COLOR_FOREGROUND_NIGHT =
+            AnsiColor.ANSI_BRIGHT_WHITE.getColor();
     private static final Color DEFAULT_TAG_COLOR_BACKGROUND_NIGHT =
             AnsiColor.ANSI_BG_BLACK.getColor();
     private static final TextAlignment DEFAULT_TEXT_ALIGNMENT_LEVEL_LOG_INFO = TextAlignment.CENTER;
@@ -88,6 +95,8 @@ public class LogManager {
     private boolean mShowLogLevel = DEFAULT_SHOW_LOG_LEVEL;
     private boolean mShowDate = DEFAULT_SHOW_DATE;
     private boolean mShowTag = DEFAULT_SHOW_TAG;
+    private String mDatePattern = DEFAULT_DATE_PATTERN;
+    private SimpleDateFormat mDateFormat = DEFAULT_DATE_FORMAT;
     private Color mColorInternalErrorForegroundDay = DEFAULT_INTERNAL_ERROR_COLOR_FOREGROUND_DAY;
     private Color mColorInternalErrorBackgroundDay = DEFAULT_INTERNAL_ERROR_COLOR_BACKGROUND_DAY;
     private Color mColorInternalErrorForegroundNight =
@@ -156,6 +165,8 @@ public class LogManager {
         this.mShowLogLevel = DEFAULT_SHOW_LOG_LEVEL;
         this.mShowDate = DEFAULT_SHOW_DATE;
         this.mShowTag = DEFAULT_SHOW_TAG;
+        this.mDatePattern = DEFAULT_DATE_PATTERN;
+        this.mDateFormat = DEFAULT_DATE_FORMAT;
         this.mColorInternalErrorForegroundDay = DEFAULT_INTERNAL_ERROR_COLOR_FOREGROUND_DAY;
         this.mColorInternalErrorBackgroundDay = DEFAULT_INTERNAL_ERROR_COLOR_BACKGROUND_DAY;
         this.mColorInternalErrorForegroundNight = DEFAULT_INTERNAL_ERROR_COLOR_FOREGROUND_NIGHT;
@@ -233,6 +244,23 @@ public class LogManager {
 
     public void setShowTag(boolean showTag) {
         mShowTag = showTag;
+    }
+
+    public void setDatePattern(String pattern) {
+        synchronized (DATE_LOCK) {
+            mDatePattern = pattern;
+            mDateFormat.applyPattern(mDatePattern);
+        }
+    }
+
+    public String getDatePattern() {
+        return mDatePattern;
+    }
+
+    public String formatDate(Object date) {
+        synchronized (DATE_LOCK) {
+            return mDateFormat.format(date);
+        }
     }
 
     public Color getColorInternalErrorForeground() {

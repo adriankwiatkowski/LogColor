@@ -9,8 +9,6 @@ import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
 
 import java.awt.*;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
@@ -29,8 +27,6 @@ public final class Log {
 
     private static final String DEFAULT_TAG = createDefaultTag();
     private static final String TAG_MSG_SEPARATOR = ": ";
-    private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final Format DEFAULT_FORMATTER = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
 
     private Log() {
     }
@@ -126,7 +122,7 @@ public final class Log {
                                Color foreground,
                                Color background) {
         PrintableManager.getInstance()
-                        .logThread(() -> print(debugLevelInfo, tag, msg, foreground, background));
+                        .invokeLater(() -> print(debugLevelInfo, tag, msg, foreground, background));
     }
 
     private static void print(String debugLevelInfo,
@@ -221,7 +217,7 @@ public final class Log {
     }
 
     private static String createCurrentDateTag() {
-        return DEFAULT_FORMATTER.format(new Date());
+        return LogManager.getInstance().formatDate(new Date());
     }
 
     private static String createDefaultTag() {

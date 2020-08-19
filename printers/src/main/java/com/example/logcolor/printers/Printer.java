@@ -114,7 +114,7 @@ public final class Printer {
 
     private static void addPrintToQueue(ColorBuilder colorBuilder, boolean forceOnNewLine) {
         PrintableManager.getInstance()
-                        .logThread(() -> printScheduled(colorBuilder, forceOnNewLine));
+                        .invokeLater(() -> printScheduled(colorBuilder, forceOnNewLine));
     }
 
     private static void addPrintToQueue(String msg,
@@ -129,13 +129,13 @@ public final class Printer {
         }
 
         PrintableManager.getInstance()
-                        .logThread(() -> printScheduled(msg,
-                                                        foreground,
-                                                        background,
-                                                        textAlignment,
-                                                        extraSpace,
-                                                        newLine,
-                                                        forceOnNewLine));
+                        .invokeLater(() -> printScheduled(msg,
+                                                          foreground,
+                                                          background,
+                                                          textAlignment,
+                                                          extraSpace,
+                                                          newLine,
+                                                          forceOnNewLine));
     }
 
     private static void printScheduled(String text,

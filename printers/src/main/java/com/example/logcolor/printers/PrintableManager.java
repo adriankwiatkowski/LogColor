@@ -41,7 +41,7 @@ public final class PrintableManager {
         return sInstance;
     }
 
-    public void logThread(Runnable runnable) {
+    public void invokeLater(Runnable runnable) {
         PrintableThreads.printableInvoke(runnable);
     }
 
