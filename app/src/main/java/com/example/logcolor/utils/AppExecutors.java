@@ -1,9 +1,8 @@
 package com.example.logcolor.utils;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import com.google.common.util.concurrent.MoreExecutors;
+
+import java.util.concurrent.*;
 
 public class AppExecutors {
 
@@ -11,27 +10,28 @@ public class AppExecutors {
 
     private static final Object LOCK = new Object();
 
+    private static final long TERMINATION_TIMEOUT = 4L;
+    private static final TimeUnit TERMINATION_TIMEOUT_TIME_UNIT = TimeUnit.SECONDS;
+
     private static AppExecutors sInstance;
 
     private final ExecutorService mMainExecutor;
-    private final ExecutorService mIOExecutor;
-    private final ExecutorService mNetworkExecutor;
 
-    private AppExecutors(ExecutorService mainExecutor,
-                         ExecutorService ioExecutor,
-                         ExecutorService networkExecutor) {
+    private AppExecutors(ExecutorService mainExecutor) {
         this.mMainExecutor = mainExecutor;
-        this.mIOExecutor = ioExecutor;
-        this.mNetworkExecutor = networkExecutor;
     }
 
     public static AppExecutors getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {
-                    sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),
-                                                 Executors.newSingleThreadExecutor(),
-                                                 Executors.newSingleThreadExecutor());
+                    ThreadPoolExecutor mainThreadPoolExecutor =
+                            (ThreadPoolExecutor) Executors.newSingleThreadExecutor();
+                    ExecutorService mainExecutorService = MoreExecutors.getExitingExecutorService(
+                            mainThreadPoolExecutor,
+                            TERMINATION_TIMEOUT,
+                            TERMINATION_TIMEOUT_TIME_UNIT);
+                    sInstance = new AppExecutors(mainExecutorService);
                 }
             }
         }
@@ -43,18 +43,8 @@ public class AppExecutors {
         return mMainExecutor;
     }
 
-    public Executor diskThread() {
-        return mIOExecutor;
-    }
-
-    public Executor networkThread() {
-        return mNetworkExecutor;
-    }
-
     public void shutdownExecutors() {
         shutdownAndAwaitTermination(mMainExecutor);
-        shutdownAndAwaitTermination(mIOExecutor);
-        shutdownAndAwaitTermination(mNetworkExecutor);
     }
 
     private void shutdownAndAwaitTermination(ExecutorService executorService) {

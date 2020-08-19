@@ -8,4 +8,6 @@ dependencies {
     implementation project(':colorbuilder')
     implementation project(':printers')
     implementation project(':log')
+
+    implementation("com.google.guava:guava:29.0-jre")
 }
