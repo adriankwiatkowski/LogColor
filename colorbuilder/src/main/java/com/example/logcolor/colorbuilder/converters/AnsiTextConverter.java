@@ -3,7 +3,6 @@ package com.example.logcolor.colorbuilder.converters;
 import com.example.logcolor.colorbuilder.text.Text;
 import com.example.logcolor.colorbuilder.text.TextAttribute;
 import com.example.logcolor.colorbuilder.text.TextStyle;
-import javafx.util.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,6 +10,25 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class AnsiTextConverter extends TextConverter {
+
+    private static class Pair<K, V> {
+
+        private K key;
+        private V value;
+
+        private Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        K getKey() {
+            return key;
+        }
+
+        V getValue() {
+            return value;
+        }
+    }
 
     private static final List<Pair<Integer, String>> COLOR_TABLE = new ArrayList<>() {{
         add(new Pair<>(0, "000000"));
