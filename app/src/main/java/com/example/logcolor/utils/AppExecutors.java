@@ -10,8 +10,8 @@ public class AppExecutors {
 
     private static final Object LOCK = new Object();
 
-    private static final long TERMINATION_TIMEOUT = 4L;
-    private static final TimeUnit TERMINATION_TIMEOUT_TIME_UNIT = TimeUnit.SECONDS;
+    private static final long ALIVE_TIMEOUT = 4L;
+    private static final TimeUnit ALIVE_TIMEOUT_TIME_UNIT = TimeUnit.SECONDS;
 
     private static AppExecutors sInstance;
 
@@ -25,13 +25,16 @@ public class AppExecutors {
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {
-                    ThreadPoolExecutor mainThreadPoolExecutor =
-                            (ThreadPoolExecutor) Executors.newSingleThreadExecutor();
-                    ExecutorService mainExecutorService = MoreExecutors.getExitingExecutorService(
-                            mainThreadPoolExecutor,
-                            TERMINATION_TIMEOUT,
-                            TERMINATION_TIMEOUT_TIME_UNIT);
-                    sInstance = new AppExecutors(mainExecutorService);
+                    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(0,
+                                                                                   2,
+                                                                                   ALIVE_TIMEOUT,
+                                                                                   ALIVE_TIMEOUT_TIME_UNIT,
+                                                                                   new SynchronousQueue<>());
+                    ExecutorService executorService = MoreExecutors.getExitingExecutorService(
+                            threadPoolExecutor,
+                            ALIVE_TIMEOUT,
+                            ALIVE_TIMEOUT_TIME_UNIT);
+                    sInstance = new AppExecutors(executorService);
                 }
             }
         }
