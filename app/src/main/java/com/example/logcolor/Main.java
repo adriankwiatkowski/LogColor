@@ -9,7 +9,6 @@ import com.example.logcolor.log.LogManager;
 import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
 import com.example.logcolor.printers.models.PrintableType;
-import com.example.logcolor.utils.AppExecutors;
 import com.example.logcolor.utils.DebugTextUtils;
 import com.example.logcolor.utils.WindowLookUtils;
 
@@ -22,64 +21,47 @@ public class Main {
     }
 
     private void start() {
-        AppExecutors.getInstance().mainThread().execute(() -> {
-            WindowLookUtils.setLookAndFeel();
+        WindowLookUtils.setLookAndFeel();
 
-            PrintableManager.getInstance().setNightTheme();
-            PrintableManager.getInstance().setPrintable(PrintableType.WINDOW);
-            PrintableManager.getInstance()
-                            .setDefaultFormat(AnsiColor.ANSI_BRIGHT_GREEN.getColor(),
-                                              AnsiColor.ANSI_BG_BLACK.getColor());
-            TextAttribute textAttribute =
-                    new TextAttribute.Builder().setForeground(AnsiColor.ANSI_BRIGHT_GREEN.getColor())
-                                               .setBackground(AnsiColor.ANSI_BG_BLACK.getColor())
-                                               .setTextAlignment(TextAlignment.CENTER)
-                                               .setExtraSpace(26)
-                                               .setTextStyle(EnumSet.of(TextStyle.BOLD,
-                                                                        TextStyle.ITALIC,
-                                                                        TextStyle.UNDERLINE))
-                                               .build();
-            PrintableManager.getInstance().setDefaultFormat(textAttribute);
+        PrintableManager.getInstance().setNightTheme();
+        PrintableManager.getInstance().setPrintable(PrintableType.WINDOW);
+        PrintableManager.getInstance().setDefaultFormat(AnsiColor.ANSI_BRIGHT_GREEN.getColor(),
+                                                        AnsiColor.ANSI_BG_BLACK.getColor());
+        TextAttribute textAttribute =
+                new TextAttribute.Builder().setForeground(AnsiColor.ANSI_BRIGHT_GREEN.getColor())
+                                           .setBackground(AnsiColor.ANSI_BG_BLACK.getColor())
+                                           .setTextAlignment(TextAlignment.CENTER)
+                                           .setExtraSpace(26)
+                                           .setTextStyle(EnumSet.of(TextStyle.BOLD,
+                                                                    TextStyle.ITALIC,
+                                                                    TextStyle.UNDERLINE))
+                                           .build();
+        PrintableManager.getInstance().setDefaultFormat(textAttribute);
 
 //            PrintableManager.getInstance().setPrintable(new LeetPrintableConsole(System.out, true));
 //            PrintableManager.getInstance().setPrintable(new LeetPrintableWindow(PrintableManager.getInstance().isNightTheme()));
 
-            LogManager.getInstance().setDatePattern("yyyy.ss.MM mm::dd::ss");
+        LogManager.getInstance().setDatePattern("yyyy.ss.MM mm::dd::ss");
 
 //            LogManager.getInstance().setShowLogLevel(false);
 //            LogManager.getInstance().setShowDate(false);
 //            LogManager.getInstance().setShowTag(false);
-            LogManager.getInstance().setColorTagBackgroundDay(AnsiColor.ANSI_BG_BLACK.getColor());
-            LogManager.getInstance()
-                      .setColorTagForegroundDay(AnsiColor.ANSI_BRIGHT_GREEN.getColor());
-            Log.d("a'gwo4");
-            Log.d("a'gwo4");
-            System.setOut(PrintableManager.getInstance().getPrintable());
+        LogManager.getInstance().setColorTagBackgroundDay(AnsiColor.ANSI_BG_BLACK.getColor());
+        LogManager.getInstance().setColorTagForegroundDay(AnsiColor.ANSI_BRIGHT_GREEN.getColor());
+        Log.d("a'gwo4");
+        Log.d("a'gwo4");
+        System.setOut(PrintableManager.getInstance().getPrintable());
 
-            System.out.println();
-            System.out.print(String.format("Random %s\nqwe", "Text"));
-            System.out.printf("Random %s\nqwe", "Text");
+        System.out.println();
+        System.out.print(String.format("Random %s\nqwe", "Text"));
+        System.out.printf("Random %s\nqwe", "Text");
 
-            Printer.print("Some text.\n", textAttribute);
+        Printer.print("Some text.\n", textAttribute);
 
-            DebugTextUtils.printAllLevelLogsTest();
-            DebugTextUtils.printRandomDebugInfo();
-            DebugTextUtils.printSampleText();
+        DebugTextUtils.printAllLevelLogsTest();
+        DebugTextUtils.printRandomDebugInfo();
+        DebugTextUtils.printSampleText();
 
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                Thread.sleep(10035600);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            PrintableManager.getInstance().shutdownThreads();
-            AppExecutors.getInstance().shutdownExecutors();
-        });
+        PrintableManager.getInstance().getPrintable().close();
     }
 }

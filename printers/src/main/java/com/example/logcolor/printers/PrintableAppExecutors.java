@@ -1,20 +1,17 @@
 package com.example.logcolor.printers;
 
-import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 class PrintableAppExecutors {
 
-    private static final int TIMEOUT_TERMINATION_SECONDS = 60;
+    private static final int TIMEOUT_TERMINATION_SECONDS = 5;
+    private static final int N_THREADS = 1;
 
     private static final Object LOCK = new Object();
-
-    private static final long ALIVE_TIMEOUT = 8L;
-    private static final TimeUnit ALIVE_TIMEOUT_TIME_UNIT = TimeUnit.SECONDS;
 
     private static PrintableAppExecutors sInstance;
 
@@ -28,15 +25,11 @@ class PrintableAppExecutors {
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {
-                    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(0,
-                                                                                   2,
-                                                                                   ALIVE_TIMEOUT,
-                                                                                   ALIVE_TIMEOUT_TIME_UNIT,
-                                                                                   new SynchronousQueue<>());
-                    ExecutorService executorService = MoreExecutors.getExitingExecutorService(
-                            threadPoolExecutor,
-                            ALIVE_TIMEOUT,
-                            ALIVE_TIMEOUT_TIME_UNIT);
+                    ExecutorService executorService = Executors.newFixedThreadPool(N_THREADS,
+                                                                                   new ThreadFactoryBuilder()
+                                                                                           .setDaemon(
+                                                                                                   true)
+                                                                                           .build());
                     sInstance = new PrintableAppExecutors(executorService);
                 }
             }
