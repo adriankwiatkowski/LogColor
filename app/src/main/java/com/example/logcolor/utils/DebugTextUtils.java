@@ -51,8 +51,8 @@ public class DebugTextUtils {
     }
 
     public static void printRandomDebugInfo() {
-        ThreadLocalRandom.current().ints(20, 75).limit(100).forEach(r -> {
-            String msg = generateRandomAsciiString(r);
+        ThreadLocalRandom.current().ints(20, 75).limit(100).forEach(length -> {
+            String msg = generateRandomAsciiString(length);
             randomLog(msg, ThreadLocalRandom.current().nextInt(0, 4 + 1));
         });
     }
@@ -85,32 +85,34 @@ public class DebugTextUtils {
      * @return Returns random string.
      */
     private static String generateRandomAsciiString(int length) {
-        return generateRandomAsciiString(0x41, 0x5A + 1, length);
+        return generateRandomAsciiString(0x61, 0x7A, length);
     }
 
     /**
      * Generate random string.
      *
      * @param minAscii inclusive int min 0.
-     * @param maxAscii exclusive int max 127.
+     * @param maxAscii inclusive int max 127.
      * @return Returns random string.
      * @throws IllegalArgumentException if min or max is < 0 || > 127.
      */
     private static String generateRandomAsciiString(int minAscii, int maxAscii, int maxLength) {
         if (minAscii < 0 || minAscii > 127) {
             throw new IllegalArgumentException(
-                    "min ascii must greater than 0 and lesser than 127 and was: " + minAscii + ".");
+                    "Min ascii must be in range 0-127 (0x000000-0x00007F) (0000-0177) (0b00000000-0b01111111) and was: " +
+                    minAscii + ".");
         }
         if (maxAscii < 0 || maxAscii > 127) {
             throw new IllegalArgumentException(
-                    "max Ascii must greater than 0 and lesser than 127 and was: " + minAscii + ".");
+                    "Max ascii must be in range 0-127 (0x000000-0x00007F) (0000-0177) (0b00000000-0b01111111) and was: " +
+                    minAscii + ".");
         }
 
         StringBuilder sb = new StringBuilder(maxLength);
 
         int randomLength = ThreadLocalRandom.current().nextInt(maxLength, maxLength + 1);
         ThreadLocalRandom.current()
-                         .ints(minAscii, maxAscii)
+                         .ints(minAscii, maxAscii + 1)
                          .limit(randomLength)
                          .forEach(i -> sb.append((char) i));
 

@@ -1,4 +1,4 @@
-package com.example.logcolor.utils;
+package com.example.logcolor.utils.printables.leet;
 
 import com.example.logcolor.colorbuilder.converters.HtmlTextConverter;
 import com.example.logcolor.printers.printables.PrintableWindow;

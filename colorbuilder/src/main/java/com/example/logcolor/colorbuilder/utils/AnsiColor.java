@@ -78,6 +78,12 @@ public enum AnsiColor {
 
     private final String hex;
 
+    AnsiColor(String ansi, String html, String hex) {
+        this.ansi = ansi;
+        this.html = html;
+        this.hex = hex;
+    }
+
     public String getAnsi() {
         return ansi;
     }
@@ -94,11 +100,5 @@ public enum AnsiColor {
         return new Color(Integer.valueOf(this.hex.substring(1, 3), 16),
                          Integer.valueOf(this.hex.substring(3, 5), 16),
                          Integer.valueOf(this.hex.substring(5, 7), 16));
-    }
-
-    AnsiColor(String ansi, String html, String hex) {
-        this.ansi = ansi;
-        this.html = html;
-        this.hex = hex;
     }
 }

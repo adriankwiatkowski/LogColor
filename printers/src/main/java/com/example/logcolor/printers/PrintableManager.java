@@ -9,10 +9,8 @@ import java.awt.*;
 
 public final class PrintableManager {
 
-    private static PrintableManager sInstance;
-
     private static final Object LOCK = new Object();
-
+    private static PrintableManager sInstance;
     private Printable mPrintable;
 
     private boolean mIsNightTheme = false;
@@ -49,6 +47,10 @@ public final class PrintableManager {
         PrintableThreads.shutdownThreads();
     }
 
+    public Printable getPrintable() {
+        return mPrintable;
+    }
+
     public synchronized void setPrintable(Printable printable) {
         if (printable == null) {
             throw new IllegalArgumentException("Printable cannot be null.");
@@ -74,10 +76,6 @@ public final class PrintableManager {
         printable.setDefaultFormat(this.defaultTextAttribute);
 
         mPrintable = printable;
-    }
-
-    public Printable getPrintable() {
-        return mPrintable;
     }
 
     public boolean isNightTheme() {

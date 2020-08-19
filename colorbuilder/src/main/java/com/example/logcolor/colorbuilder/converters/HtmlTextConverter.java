@@ -55,7 +55,7 @@ public class HtmlTextConverter extends TextConverter {
     public boolean isConvertedTextEndsWithNewLine(String message) {
         int index = message.indexOf(TAG_PRE_END);
         if (index < 0) {
-            return  false;
+            return false;
         }
 
         String s = message.substring(0, index);

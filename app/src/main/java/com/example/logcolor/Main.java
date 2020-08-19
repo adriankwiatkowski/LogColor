@@ -9,7 +9,9 @@ import com.example.logcolor.log.LogManager;
 import com.example.logcolor.printers.PrintableManager;
 import com.example.logcolor.printers.Printer;
 import com.example.logcolor.printers.models.PrintableType;
-import com.example.logcolor.utils.*;
+import com.example.logcolor.utils.AppExecutors;
+import com.example.logcolor.utils.DebugTextUtils;
+import com.example.logcolor.utils.WindowLookUtils;
 
 import java.util.EnumSet;
 

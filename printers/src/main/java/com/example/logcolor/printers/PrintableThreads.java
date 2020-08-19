@@ -13,26 +13,30 @@ class PrintableThreads {
     private static List<Runnable> mCloseTaskQueue = new ArrayList<>();
     private static boolean mIsDeinitialized = false;
 
-    public static void printableInvoke(Runnable runnable) {
+    static void printableInvoke(Runnable runnable) {
         if (mIsDeinitialized) {
             System.err.println(ERROR_GET_DEINITALIZED_INSTANCE);
         }
 
-        PrintableAppExecutors.getInstance().logThread().execute(runnable);
+        PrintableAppExecutors.getInstance().execute(runnable);
     }
 
-    public static synchronized void shutdownThreads() {
+    static synchronized void shutdownThreads() {
         mIsDeinitialized = true;
+
         PrintableAppExecutors.getInstance().shutdownExecutors();
+
         executeCloseTasks(new ArrayList<>(mCloseTaskQueue));
+
+        mCloseTaskQueue = null;
     }
 
-    public static synchronized void addCloseTask(Runnable runnable) {
-        mCloseTaskQueue.add(runnable);
+    static synchronized boolean addCloseTask(Runnable runnable) {
+        return mCloseTaskQueue.add(runnable);
     }
 
-    public static synchronized void removeCloseTask(Runnable runnable) {
-        mCloseTaskQueue.remove(runnable);
+    static synchronized boolean removeCloseTask(Runnable runnable) {
+        return mCloseTaskQueue.remove(runnable);
     }
 
     private static void executeCloseTasks(List<Runnable> closeTaskQueue) {

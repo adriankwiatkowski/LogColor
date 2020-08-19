@@ -54,16 +54,16 @@ public class SimpleColorBuilder extends ColorBuilderImpl {
         this.mExtraSpace = extraSpace;
     }
 
+    public TextAlignment getTextAlignment() {
+        return mTextAlignment;
+    }
+
     public void setTextAlignment(TextAlignment textAlignment) {
         if (textAlignment == null) {
             throw new IllegalArgumentException("TextAlignment cannot be null.");
         }
 
         this.mTextAlignment = textAlignment;
-    }
-
-    public TextAlignment getTextAlignment() {
-        return mTextAlignment;
     }
 
     public static class Builder extends ColorBuilderImpl.Builder {

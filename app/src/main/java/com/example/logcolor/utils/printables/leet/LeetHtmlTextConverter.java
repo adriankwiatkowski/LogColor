@@ -1,8 +1,8 @@
-package com.example.logcolor.utils;
+package com.example.logcolor.utils.printables.leet;
 
-import com.example.logcolor.colorbuilder.converters.AnsiTextConverter;
+import com.example.logcolor.colorbuilder.converters.HtmlTextConverter;
 
-public class LeetAnsiTextConverter extends AnsiTextConverter {
+public class LeetHtmlTextConverter extends HtmlTextConverter {
 
     @Override
     protected String convertMessage(String message) {

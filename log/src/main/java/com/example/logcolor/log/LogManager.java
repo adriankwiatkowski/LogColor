@@ -10,8 +10,6 @@ import java.text.SimpleDateFormat;
 
 public class LogManager {
 
-    private static LogManager sInstance;
-
     private static final Object LOCK = new Object();
     private static final Object DATE_LOCK = new Object();
 
@@ -136,6 +134,8 @@ public class LogManager {
     private TextAlignment mTextAlignmentTag = DEFAULT_TEXT_ALIGNMENT_TAG;
     private TextAlignment mTextAlignmentMessage = DEFAULT_TEXT_ALIGNMENT_MESSAGE;
 
+    private static LogManager sInstance;
+
     private LogManager() {
         resetSettings();
     }
@@ -226,24 +226,28 @@ public class LogManager {
         return mShowLogLevel;
     }
 
-    public boolean isShowDate() {
-        return mShowDate;
-    }
-
-    public boolean isShowTag() {
-        return mShowTag;
-    }
-
     public void setShowLogLevel(boolean showLogLevel) {
         mShowLogLevel = showLogLevel;
+    }
+
+    public boolean isShowDate() {
+        return mShowDate;
     }
 
     public void setShowDate(boolean showDate) {
         mShowDate = showDate;
     }
 
+    public boolean isShowTag() {
+        return mShowTag;
+    }
+
     public void setShowTag(boolean showTag) {
         mShowTag = showTag;
+    }
+
+    public String getDatePattern() {
+        return mDatePattern;
     }
 
     public void setDatePattern(String pattern) {
@@ -251,10 +255,6 @@ public class LogManager {
             mDatePattern = pattern;
             mDateFormat.applyPattern(mDatePattern);
         }
-    }
-
-    public String getDatePattern() {
-        return mDatePattern;
     }
 
     public String formatDate(Object date) {

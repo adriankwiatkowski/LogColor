@@ -1,4 +1,4 @@
-package com.example.logcolor.utils;
+package com.example.logcolor.utils.printables.leet;
 
 import com.example.logcolor.colorbuilder.converters.TextConverter;
 import com.example.logcolor.printers.printables.PrintableConsole;
@@ -20,9 +20,8 @@ public class LeetPrintableConsole extends PrintableConsole {
         super(out, autoFlush);
     }
 
-    public LeetPrintableConsole(OutputStream out,
-                                boolean autoFlush,
-                                String encoding) throws UnsupportedEncodingException {
+    public LeetPrintableConsole(OutputStream out, boolean autoFlush, String encoding) throws
+                                                                                      UnsupportedEncodingException {
         super(out, autoFlush, encoding);
     }
 
@@ -30,8 +29,9 @@ public class LeetPrintableConsole extends PrintableConsole {
         super(fileName);
     }
 
-    public LeetPrintableConsole(String fileName,
-                                String csn) throws FileNotFoundException, UnsupportedEncodingException {
+    public LeetPrintableConsole(String fileName, String csn) throws
+                                                             FileNotFoundException,
+                                                             UnsupportedEncodingException {
         super(fileName, csn);
     }
 
@@ -39,8 +39,9 @@ public class LeetPrintableConsole extends PrintableConsole {
         super(file);
     }
 
-    public LeetPrintableConsole(File file,
-                                String csn) throws FileNotFoundException, UnsupportedEncodingException {
+    public LeetPrintableConsole(File file, String csn) throws
+                                                       FileNotFoundException,
+                                                       UnsupportedEncodingException {
         super(file, csn);
     }
 

@@ -56,11 +56,9 @@ public enum TextAlignment {
         }
     };
 
-    public abstract String writeAligned(String text, int extraSpace);
-
     private static void invalidate(int extraSpace) {
         if (extraSpace < 0) {
-            throw new IllegalArgumentException("Extra space length cannot be lesser than 0.");
+            throw new IllegalArgumentException("Extra space length cannot be less than 0.");
         }
     }
 
@@ -69,15 +67,17 @@ public enum TextAlignment {
      * Used to align text.
      *
      * @param extraSpace extra length filled with spaces.
-     * @throws IllegalArgumentException if length is lesser than 0.
+     * @throws IllegalArgumentException if length is less than 0.
      */
     private static void appendWhiteSpace(StringBuilder sb, int extraSpace) {
         if (extraSpace < 0) {
-            throw new IllegalArgumentException("Extra space length cannot be lesser than 0.");
+            throw new IllegalArgumentException("Extra space length cannot be less than 0.");
         }
 
         while (extraSpace-- > 0) {
             sb.append(' ');
         }
     }
+
+    public abstract String writeAligned(String text, int extraSpace);
 }

@@ -1,6 +1,5 @@
 package com.example.logcolor.printers;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -13,10 +12,10 @@ class PrintableAppExecutors {
 
     private static PrintableAppExecutors sInstance;
 
-    private final ExecutorService mLogExecutor;
+    private final ExecutorService mMainExecutor;
 
-    private PrintableAppExecutors(ExecutorService logExecutor) {
-        this.mLogExecutor = logExecutor;
+    private PrintableAppExecutors(ExecutorService mainExecutor) {
+        this.mMainExecutor = mainExecutor;
     }
 
     static PrintableAppExecutors getInstance() {
@@ -31,12 +30,12 @@ class PrintableAppExecutors {
         return sInstance;
     }
 
-    Executor logThread() {
-        return mLogExecutor;
+    void execute(Runnable runnable) {
+        mMainExecutor.execute(runnable);
     }
 
     void shutdownExecutors() {
-        shutdownAndAwaitTermination(mLogExecutor);
+        shutdownAndAwaitTermination(mMainExecutor);
 
         sInstance = null;
     }

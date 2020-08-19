@@ -22,43 +22,6 @@ public class TextAttribute {
         this.mForeground = builder.foreground;
     }
 
-    public static class Builder {
-        private EnumSet<TextStyle> textStyleEnumSet;
-        private TextAlignment textAlignment;
-        private int extraSpace = INVALID_EXTRA_SPACE;
-        private Color background;
-        private Color foreground;
-
-        public Builder setTextStyle(EnumSet<TextStyle> textStyleEnumSet) {
-            this.textStyleEnumSet = textStyleEnumSet;
-            return this;
-        }
-
-        public Builder setTextAlignment(TextAlignment textAlignment) {
-            this.textAlignment = textAlignment;
-            return this;
-        }
-
-        public Builder setExtraSpace(int extraSpace) {
-            this.extraSpace = extraSpace;
-            return this;
-        }
-
-        public Builder setBackground(Color background) {
-            this.background = background;
-            return this;
-        }
-
-        public Builder setForeground(Color foreground) {
-            this.foreground = foreground;
-            return this;
-        }
-
-        public TextAttribute build() {
-            return new TextAttribute(this);
-        }
-    }
-
     public EnumSet<TextStyle> getTextStyleEnumSet() {
         return mTextStyleEnumSet;
     }
@@ -120,5 +83,42 @@ public class TextAttribute {
     @Override
     public int hashCode() {
         return Objects.hash(mTextStyleEnumSet, mTextAlignment, mBackground, mForeground);
+    }
+
+    public static class Builder {
+        private EnumSet<TextStyle> textStyleEnumSet;
+        private TextAlignment textAlignment;
+        private int extraSpace = INVALID_EXTRA_SPACE;
+        private Color background;
+        private Color foreground;
+
+        public Builder setTextStyle(EnumSet<TextStyle> textStyleEnumSet) {
+            this.textStyleEnumSet = textStyleEnumSet;
+            return this;
+        }
+
+        public Builder setTextAlignment(TextAlignment textAlignment) {
+            this.textAlignment = textAlignment;
+            return this;
+        }
+
+        public Builder setExtraSpace(int extraSpace) {
+            this.extraSpace = extraSpace;
+            return this;
+        }
+
+        public Builder setBackground(Color background) {
+            this.background = background;
+            return this;
+        }
+
+        public Builder setForeground(Color foreground) {
+            this.foreground = foreground;
+            return this;
+        }
+
+        public TextAttribute build() {
+            return new TextAttribute(this);
+        }
     }
 }

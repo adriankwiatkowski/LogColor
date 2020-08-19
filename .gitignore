@@ -1,7 +1,13 @@
 /.idea
 /.idea/codeStyles
 *.iml
+*.class
+*.jar
+*.war
+*.ear
+*.MF
 .gradle
+/build/
 /local.properties
 /.idea/libraries
 /.idea/modules.xml

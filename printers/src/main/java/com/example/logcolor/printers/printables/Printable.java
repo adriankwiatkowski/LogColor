@@ -23,9 +23,8 @@ public abstract class Printable extends PrintStream {
         super(out, autoFlush);
     }
 
-    public Printable(OutputStream out,
-                     boolean autoFlush,
-                     String encoding) throws UnsupportedEncodingException {
+    public Printable(OutputStream out, boolean autoFlush, String encoding) throws
+                                                                           UnsupportedEncodingException {
         super(out, autoFlush, encoding);
     }
 
@@ -33,8 +32,9 @@ public abstract class Printable extends PrintStream {
         super(fileName);
     }
 
-    public Printable(String fileName,
-                     String csn) throws FileNotFoundException, UnsupportedEncodingException {
+    public Printable(String fileName, String csn) throws
+                                                  FileNotFoundException,
+                                                  UnsupportedEncodingException {
         super(fileName, csn);
     }
 
@@ -42,8 +42,9 @@ public abstract class Printable extends PrintStream {
         super(file);
     }
 
-    public Printable(File file,
-                     String csn) throws FileNotFoundException, UnsupportedEncodingException {
+    public Printable(File file, String csn) throws
+                                            FileNotFoundException,
+                                            UnsupportedEncodingException {
         super(file, csn);
     }
 

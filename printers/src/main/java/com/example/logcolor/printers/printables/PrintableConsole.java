@@ -24,9 +24,8 @@ public class PrintableConsole extends Printable {
         this.outputStream = out;
     }
 
-    public PrintableConsole(OutputStream out,
-                            boolean autoFlush,
-                            String encoding) throws UnsupportedEncodingException {
+    public PrintableConsole(OutputStream out, boolean autoFlush, String encoding) throws
+                                                                                  UnsupportedEncodingException {
         super(out, autoFlush, encoding);
         this.outputStream = out;
     }
@@ -36,8 +35,9 @@ public class PrintableConsole extends Printable {
         this.outputStream = out;
     }
 
-    public PrintableConsole(String fileName,
-                            String csn) throws FileNotFoundException, UnsupportedEncodingException {
+    public PrintableConsole(String fileName, String csn) throws
+                                                         FileNotFoundException,
+                                                         UnsupportedEncodingException {
         super(fileName, csn);
         this.outputStream = out;
     }
@@ -47,8 +47,9 @@ public class PrintableConsole extends Printable {
         this.outputStream = out;
     }
 
-    public PrintableConsole(File file,
-                            String csn) throws FileNotFoundException, UnsupportedEncodingException {
+    public PrintableConsole(File file, String csn) throws
+                                                   FileNotFoundException,
+                                                   UnsupportedEncodingException {
         super(file, csn);
         this.outputStream = out;
     }

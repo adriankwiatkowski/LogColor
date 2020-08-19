@@ -45,6 +45,14 @@ public enum LogLevel {
           ANSI_WHITE.getColor(),
           ANSI_BG_RED.getColor());
 
+    public static final int MIN_LOG_LEVEL = Arrays.stream(LogLevel.values())
+                                                  .min(Comparator.comparingInt(LogLevel::getLevel))
+                                                  .get()
+                                                  .getLevel();
+    public static final int MAX_LOG_LEVEL = Arrays.stream(LogLevel.values())
+                                                  .max(Comparator.comparingInt(LogLevel::getLevel))
+                                                  .get()
+                                                  .getLevel();
     private final int level;
     private final String levelTag;
     private final Color dayThemeForeground;
@@ -89,13 +97,4 @@ public enum LogLevel {
     public Color getNightThemeBackground() {
         return nightThemeBackground;
     }
-
-    public static final int MIN_LOG_LEVEL = Arrays.stream(LogLevel.values())
-                                                  .min(Comparator.comparingInt(LogLevel::getLevel))
-                                                  .get()
-                                                  .getLevel();
-    public static final int MAX_LOG_LEVEL = Arrays.stream(LogLevel.values())
-                                                  .max(Comparator.comparingInt(LogLevel::getLevel))
-                                                  .get()
-                                                  .getLevel();
 }
