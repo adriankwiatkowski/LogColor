@@ -11,9 +11,7 @@ LogColor is a highly customizable logging library.
 - Built-in implementation for console and java window
 - Supports day/night theme.
 
-# Adding project dependency to gradle
-
-Using jitpack.io:
+# Adding project dependency using gradle
 
 Step 1. Add the JitPack repository to your build file
 
