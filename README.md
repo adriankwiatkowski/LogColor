@@ -16,7 +16,7 @@ LogColor is a highly customizable logging library.
 Step 1. Add the JitPack repository to your build file
 
 Add it in your root build.gradle at the end of repositories:
-```groovy
+```gradle
 allprojects {
     repositories {
 		...
@@ -26,7 +26,7 @@ allprojects {
 ```
 
 Step 2. Add the dependency
-```groovy
+```gradle
 dependencies {
     // You can look up version in a badge.
     // implementation 'com.github.adriankwiatkowski:LogColor:ReleaseVersion'
@@ -42,7 +42,7 @@ More info on https://jitpack.io/
 # How do I use LogColor?
 Simple use cases will look something like this:
 
-Printing using Printer (recommended way, because it uses multithreading by default):
+Printing using Printer (recommended way, uses multithreading by default):
 ```java
 Color foreground = AnsiColor.ANSI_BRIGHT_BLUE.getColor();
 Color background = AnsiColor.ANSI_BRIGHT_BG_WHITE.getColor();
@@ -59,7 +59,18 @@ Printer.print(msg, foreground, background);
 Printer.print(msg, center, space);
 Printer.print(msg, foreground, background, center, space);
 
-TextAttribute textAttribute = new TextAttribute.Builder().setForeground(foreground).setBackground(background).setTextAlignment(center).setExtraSpace(4).setTextStyle(EnumSet.of(TextStyle.BOLD, TextStyle.ITALIC, TextStyle.UNDERLINE)).build();
+TextAttribute textAttribute = new TextAttribute.Builder()
+        .setForeground(foreground)
+        .setBackground(background)
+        .setTextAlignment(center)
+        .setExtraSpace(4)
+        .setTextStyle(
+                EnumSet.of(
+                        TextStyle.BOLD,
+                        TextStyle.ITALIC,
+                        TextStyle.UNDERLINE
+                ))
+        .build();
 Printer.print(msg, textAttribute);
 Printer.println(msg, textAttribute);
 ```
@@ -85,12 +96,18 @@ TextAttribute textAttribute =
 		TextStyle.UNDERLINE))
 	.build();
 
-PrintableManager.getInstance().setDefaultFormat(AnsiColor.ANSI_BLACK, AnsiColor.ANSI_BRIGHT_BG_BLUE); 
+PrintableManager.getInstance().setDefaultFormat(
+        AnsiColor.ANSI_BLACK.getColor(),
+        AnsiColor.ANSI_BRIGHT_BG_BLUE.getColor()
+); 
 PrintableManager.getInstance().setDefaultFormat(textAttribute);
 
 // Applies only to current Printable instance.
 Printable printable = PrintableManager.getInstance().getPrintable();
-printable.setDefaultFormat(AnsiColor.ANSI_BLACK, AnsiColor.ANSI_BRIGHT_BG_BLUE); 
+printable.setDefaultFormat(
+        AnsiColor.ANSI_BLACK.getColor(),
+        AnsiColor.ANSI_BRIGHT_BG_BLUE.getColor()
+); 
 printable.setDefaultFormat(textAttribute);
 ```
 
@@ -118,15 +135,18 @@ System.out.println(" And another one that will appear on the same line.");
 // you can set default format for future prints on this Printable like this.
 // Remember this format will only be used in this particular instance of Printable.
 printableManager.getPrintable()
-    .setDefaultFormat(AnsiColor.ANSI_BLACK,
-        AnsiColor.ANSI_BRIGHT_BG_BLUE,
+    .setDefaultFormat(AnsiColor.ANSI_BLACK.getColor(),
+        AnsiColor.ANSI_BRIGHT_BG_BLUE.getColor(),
         TextAlignment.LEFT);
 
 // If you want to format current and all future instances of Printable
 // you have to set it globally using PrintableManager class.
-PrintableManager.getInstance().setDefaultFormat(AnsiColor.ANSI_BLACK,
-    AnsiColor.ANSI_BRIGHT_BG_BLUE,
-    TextAlignment.CENTER);
+PrintableManager.getInstance()
+        .setDefaultFormat(
+                AnsiColor.ANSI_BLACK.getColor(),
+                AnsiColor.ANSI_BRIGHT_BG_BLUE.getColor(),
+                TextAlignment.CENTER
+        );
 
 // Now our prints will be formatted using specified format, that we set earlier.
 System.out.print("Formatted text");
@@ -191,7 +211,7 @@ Log.i("Informative message without tag!");
 #### Using Log Manager class
 ```java
 LogManager.getInstance().setMinLogLevel(LogLevel.INFO);
-...
+// ...
 // Although you don't need to check if LogLevel you want to print is loggable,
 // it is considered a good practice.
 if (LogManager.getInstance().isLoggable(LogLevel.DEBUG)) {
@@ -204,7 +224,7 @@ LogManager.getInstance().setShowDate(false);
 LogManager.getInstance().setShowTag(false);
 
 // You can customize colors for all log levels.
-java.awt.Color color;
+java.awt.Color color = java.awt.Color.DARK_GRAY;
 LogManager.getInstance().setColorTagBackgroundDay(color);
 LogManager.getInstance().setColorTagBackgroundDay(AnsiColor.ANSI_BG_BLACK.getColor());
 ```
